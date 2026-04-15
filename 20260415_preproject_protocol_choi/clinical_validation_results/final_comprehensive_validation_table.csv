@@ -1,0 +1,25 @@
+drug_id,drug_name,original_category,new_grade,grade_number,brca_trials_count,brca_papers_est,fda_approval,repurposing_value,notes
+1621,PCI-34051,B,Grade 3,3,2,1-10,No,Moderate,Research compound
+1009,Tretinoin,B,Grade 2,2,10,10-50,No,Limited,Historical BRCA trials
+2057,Remodelin,B,Grade 3,3,2,1-10,No,Moderate,Research compound
+2107,LJI308,B,Grade 3,3,2,1-10,No,Moderate,Research compound
+1626,OTX015,B,Grade 3,3,2,1-10,No,Moderate,Research compound
+1017,Olaparib,A,Grade 1,1,126,>100,Yes (2018),None (approved),BRCA1/2-mut BRCA approved
+2145,PBD-288,,Grade 4,4,0,0,No,High*,"Tool compound, no SMILES"
+1708,CDK9_5576,,Grade 4,4,0,0,No,High*,"Tool compound, no SMILES"
+1709,CDK9_5038,,Grade 4,4,0,0,No,High*,"Tool compound, no SMILES"
+1777,GSK2276186C,,Grade 4,4,0,0,No,High*,"Tool compound, no SMILES"
+1043,JNK Inhibitor VIII,B,Grade 3,3,2,1-10,No,Moderate,Research compound
+1799,Ibrutinib,C,Grade 4,4,2,<10,Yes (CLL),HIGH,"BTK inhibitor, CLL/MCL approved"
+1819,Docetaxel,A,Grade 1,1,100,>100,Yes (1996),None (approved),BRCA standard chemo
+1821,765771,,Grade 4,4,0,0,No,High*,"Tool compound, no SMILES"
+1133,Serdemetan,B,Grade 3,3,2,1-10,No,Moderate,MDM2 inhibitor
+1190,Gemcitabine,A,Grade 1,1,100,>100,Yes (2004),None (approved),BRCA approved (metastatic)
+1194,SB505124,C,Grade 3,3,2,1-10,No,Moderate,Research compound
+1237,EPZ004777,B,Grade 3,3,2,5-10,No,Moderate,"DOT1L inhibitor, highest safety"
+1378,Bleomycin (50 uM),B,Grade 2,2,20,20-50,Yes (other),Limited,"Historical use, pulmonary toxicity"
+1917,AZD6738,C,Grade 2,2,6,10-50,No,Limited,"ATR inhibitor, 6 BRCA trials recruiting"
+1931,MIRA-1,B,Grade 3,3,2,1-10,No,Moderate,TP53 modulator
+1558,Lapatinib,A,Grade 1,1,211,>100,Yes (2007),None (approved),HER2+ BRCA approved
+1581,Bromosporine,B,Grade 3,3,2,1-10,No,Moderate,BRD inhibitor
+2038,UNC0638,C,Grade 3,3,2,1-10,No,Moderate,Research compound

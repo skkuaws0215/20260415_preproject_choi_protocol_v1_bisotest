@@ -1,0 +1,27 @@
+[
+  {
+    "drug_id": 2145,
+    "drug_name": "PBD-288",
+    "smiles": null
+  },
+  {
+    "drug_id": 1708,
+    "drug_name": "CDK9_5576",
+    "smiles": null
+  },
+  {
+    "drug_id": 1709,
+    "drug_name": "CDK9_5038",
+    "smiles": null
+  },
+  {
+    "drug_id": 1777,
+    "drug_name": "GSK2276186C",
+    "smiles": null
+  },
+  {
+    "drug_id": 1821,
+    "drug_name": "765771",
+    "smiles": null
+  }
+]

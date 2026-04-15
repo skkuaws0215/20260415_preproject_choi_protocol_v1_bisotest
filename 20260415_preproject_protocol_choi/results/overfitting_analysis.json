@@ -1,0 +1,127 @@
+{
+  "data_summary": {
+    "n_samples": 6366,
+    "n_features": 5524,
+    "feature_sample_ratio": 0.8677348413446434,
+    "n_groups": 243,
+    "mean_train_size": 4244.0,
+    "mean_val_size": 2122.0
+  },
+  "experiments": {
+    "Baseline": {
+      "train_spearman": 0.9066752939440157,
+      "val_spearman": 0.5229094017550414,
+      "val_std": 0.036881423457264466,
+      "gap": 0.3837658921889742,
+      "fold_metrics": [
+        {
+          "train_spearman": 0.9068591581925689,
+          "val_spearman": 0.4801057276464239,
+          "gap": 0.426753430546145
+        },
+        {
+          "train_spearman": 0.9059204318755711,
+          "val_spearman": 0.5184995514089973,
+          "gap": 0.38742088046657386
+        },
+        {
+          "train_spearman": 0.9072462917639069,
+          "val_spearman": 0.5701229262097031,
+          "gap": 0.33712336555420386
+        }
+      ]
+    },
+    "a) Top 1000 Features": {
+      "train_spearman": 0.9152084561082038,
+      "val_spearman": 0.5128058698282182,
+      "val_std": 0.057787979506999904,
+      "gap": 0.40240258627998554,
+      "fold_metrics": [
+        {
+          "train_spearman": 0.9143600901323794,
+          "val_spearman": 0.5261348689861955,
+          "gap": 0.38822522114618385
+        },
+        {
+          "train_spearman": 0.9158509643871825,
+          "val_spearman": 0.43631351621276965,
+          "gap": 0.47953744817441285
+        },
+        {
+          "train_spearman": 0.9154143138050492,
+          "val_spearman": 0.5759692242856893,
+          "gap": 0.3394450895193599
+        }
+      ]
+    },
+    "b) Regularization": {
+      "train_spearman": 0.8742695147731498,
+      "val_spearman": 0.5165084122175756,
+      "val_std": 0.03226178708385528,
+      "gap": 0.3577611025555742,
+      "fold_metrics": [
+        {
+          "train_spearman": 0.8734312321475793,
+          "val_spearman": 0.5056992548880804,
+          "gap": 0.3677319772594989
+        },
+        {
+          "train_spearman": 0.8717662377925661,
+          "val_spearman": 0.48352541545568706,
+          "gap": 0.38824082233687907
+        },
+        {
+          "train_spearman": 0.877611074379304,
+          "val_spearman": 0.5603005663089594,
+          "gap": 0.31731050807034455
+        }
+      ]
+    },
+    "c) Early Stopping": {
+      "train_spearman": 0.8926644745365145,
+      "val_spearman": 0.533522168160831,
+      "val_std": 0.0347567782343267,
+      "gap": 0.3591423063756836,
+      "fold_metrics": [
+        {
+          "train_spearman": 0.9194066359259444,
+          "val_spearman": 0.5046725958748806,
+          "gap": 0.41473404005106385
+        },
+        {
+          "train_spearman": 0.89285591393978,
+          "val_spearman": 0.5134820869163703,
+          "gap": 0.3793738270234097
+        },
+        {
+          "train_spearman": 0.8657308737438194,
+          "val_spearman": 0.5824118216912421,
+          "gap": 0.28331905205257735
+        }
+      ]
+    },
+    "d) Strong Subsampling": {
+      "train_spearman": 0.9070071192276091,
+      "val_spearman": 0.5096712583337627,
+      "val_std": 0.04551051728810179,
+      "gap": 0.3973358608938464,
+      "fold_metrics": [
+        {
+          "train_spearman": 0.9064622803963044,
+          "val_spearman": 0.4744945649800009,
+          "gap": 0.43196771541630347
+        },
+        {
+          "train_spearman": 0.9067448793012634,
+          "val_spearman": 0.48058240544525094,
+          "gap": 0.4261624738560124
+        },
+        {
+          "train_spearman": 0.9078141979852594,
+          "val_spearman": 0.573936804576036,
+          "gap": 0.3338773934092234
+        }
+      ]
+    }
+  }
+}

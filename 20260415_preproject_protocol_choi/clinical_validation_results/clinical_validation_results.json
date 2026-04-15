@@ -1,0 +1,251 @@
+{
+  "summary": {
+    "total_drugs": 24,
+    "grade1_approved": 4,
+    "grade2_clinical": 3,
+    "grade3_preclinical": 11,
+    "grade4_true_repurposing": 6
+  },
+  "drugs": [
+    {
+      "drug_id": 1621,
+      "drug_name": "PCI-34051",
+      "original_category": "B",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 1009,
+      "drug_name": "Tretinoin",
+      "original_category": "B",
+      "new_grade": "Grade 2: Clinical Trials",
+      "clinical_trials_brca": "Phase 2/3: NCT00002558, NCT00003013",
+      "pubmed_count_estimate": "10-50",
+      "notes": "Active trials: Phase 2/3",
+      "grade_number": 2
+    },
+    {
+      "drug_id": 2057,
+      "drug_name": "Remodelin",
+      "original_category": "B",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 2107,
+      "drug_name": "LJI308",
+      "original_category": "B",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 1626,
+      "drug_name": "OTX015",
+      "original_category": "B",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 1017,
+      "drug_name": "Olaparib",
+      "original_category": "A",
+      "new_grade": "Grade 1: FDA/EMA Approved",
+      "clinical_trials_brca": "Multiple Phase 3 trials",
+      "pubmed_count_estimate": ">100",
+      "notes": "FDA approved 2018 for BRCA1/2-mutated BRCA",
+      "grade_number": 1
+    },
+    {
+      "drug_id": 2145,
+      "drug_name": "PBD-288",
+      "original_category": NaN,
+      "new_grade": "Grade 4: True Repurposing",
+      "clinical_trials_brca": "None (proprietary/tool compound)",
+      "pubmed_count_estimate": "0",
+      "notes": "Proprietary tool compound - no public BRCA data",
+      "grade_number": 4
+    },
+    {
+      "drug_id": 1708,
+      "drug_name": "CDK9_5576",
+      "original_category": NaN,
+      "new_grade": "Grade 4: True Repurposing",
+      "clinical_trials_brca": "None (proprietary/tool compound)",
+      "pubmed_count_estimate": "0",
+      "notes": "Proprietary tool compound - no public BRCA data",
+      "grade_number": 4
+    },
+    {
+      "drug_id": 1709,
+      "drug_name": "CDK9_5038",
+      "original_category": NaN,
+      "new_grade": "Grade 4: True Repurposing",
+      "clinical_trials_brca": "None (proprietary/tool compound)",
+      "pubmed_count_estimate": "0",
+      "notes": "Proprietary tool compound - no public BRCA data",
+      "grade_number": 4
+    },
+    {
+      "drug_id": 1777,
+      "drug_name": "GSK2276186C",
+      "original_category": NaN,
+      "new_grade": "Grade 4: True Repurposing",
+      "clinical_trials_brca": "None (proprietary/tool compound)",
+      "pubmed_count_estimate": "0",
+      "notes": "Proprietary tool compound - no public BRCA data",
+      "grade_number": 4
+    },
+    {
+      "drug_id": 1043,
+      "drug_name": "JNK Inhibitor VIII",
+      "original_category": "B",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 1799,
+      "drug_name": "Ibrutinib",
+      "original_category": "C",
+      "new_grade": "Grade 4: True Repurposing",
+      "clinical_trials_brca": "Limited (NCT02403271 - solid tumors, terminated)",
+      "pubmed_count_estimate": "<5",
+      "notes": "BTK inhibitor - approved for CLL/MCL, minimal BRCA evidence",
+      "grade_number": 4
+    },
+    {
+      "drug_id": 1819,
+      "drug_name": "Docetaxel",
+      "original_category": "A",
+      "new_grade": "Grade 1: FDA/EMA Approved",
+      "clinical_trials_brca": "Multiple Phase 3 trials",
+      "pubmed_count_estimate": ">100",
+      "notes": "FDA approved 1996 for Metastatic/neoadjuvant BRCA",
+      "grade_number": 1
+    },
+    {
+      "drug_id": 1821,
+      "drug_name": "765771",
+      "original_category": NaN,
+      "new_grade": "Grade 4: True Repurposing",
+      "clinical_trials_brca": "None (proprietary/tool compound)",
+      "pubmed_count_estimate": "0",
+      "notes": "Proprietary tool compound - no public BRCA data",
+      "grade_number": 4
+    },
+    {
+      "drug_id": 1133,
+      "drug_name": "Serdemetan",
+      "original_category": "B",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 1190,
+      "drug_name": "Gemcitabine",
+      "original_category": "A",
+      "new_grade": "Grade 1: FDA/EMA Approved",
+      "clinical_trials_brca": "Multiple Phase 3 trials",
+      "pubmed_count_estimate": ">100",
+      "notes": "FDA approved 2004 for Metastatic BRCA (combination)",
+      "grade_number": 1
+    },
+    {
+      "drug_id": 1194,
+      "drug_name": "SB505124",
+      "original_category": "C",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 1237,
+      "drug_name": "EPZ004777",
+      "original_category": "B",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "None found",
+      "pubmed_count_estimate": "5-10",
+      "notes": "DOT1L inhibitor - preclinical BRCA research, MLL-leukemia trials",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 1378,
+      "drug_name": "Bleomycin (50 uM)",
+      "original_category": "B",
+      "new_grade": "Grade 2: Clinical Trials",
+      "clinical_trials_brca": "Historical use (not current standard)",
+      "pubmed_count_estimate": "20-50",
+      "notes": "FDA approved for other cancers, limited modern BRCA trials",
+      "grade_number": 2
+    },
+    {
+      "drug_id": 1917,
+      "drug_name": "AZD6738",
+      "original_category": "C",
+      "new_grade": "Grade 2: Clinical Trials",
+      "clinical_trials_brca": "Phase 1/2: NCT02264678, NCT02223923",
+      "pubmed_count_estimate": "10-50",
+      "notes": "Active trials: Phase 1/2",
+      "grade_number": 2
+    },
+    {
+      "drug_id": 1931,
+      "drug_name": "MIRA-1",
+      "original_category": "B",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 1558,
+      "drug_name": "Lapatinib",
+      "original_category": "A",
+      "new_grade": "Grade 1: FDA/EMA Approved",
+      "clinical_trials_brca": "Multiple Phase 3 trials",
+      "pubmed_count_estimate": ">100",
+      "notes": "FDA approved 2007 for HER2+ BRCA",
+      "grade_number": 1
+    },
+    {
+      "drug_id": 1581,
+      "drug_name": "Bromosporine",
+      "original_category": "B",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    },
+    {
+      "drug_id": 2038,
+      "drug_name": "UNC0638",
+      "original_category": "C",
+      "new_grade": "Grade 3: Preclinical Research",
+      "clinical_trials_brca": "Limited or none",
+      "pubmed_count_estimate": "1-10",
+      "notes": "Research compound - limited BRCA clinical data",
+      "grade_number": 3
+    }
+  ]
+}

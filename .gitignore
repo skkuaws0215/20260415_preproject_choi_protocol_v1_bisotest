@@ -1,0 +1,19 @@
+# Large data files (>100MB) - stored in S3
+20260415_preproject_protocol_choi/data/X_numeric.npy
+20260415_preproject_protocol_choi/data/X_numeric_context_smiles.npy
+20260415_preproject_protocol_choi/data/X_numeric_smiles.npy
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Claude Code internal
+.claude/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp

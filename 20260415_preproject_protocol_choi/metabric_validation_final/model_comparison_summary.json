@@ -1,0 +1,52 @@
+{
+  "ensemble": {
+    "model": "RF + ResidualMLP + TabNet (2A, Weighted)",
+    "oof_spearman": 0.5520509936016167,
+    "weights": {
+      "RandomForest": 0.3302056555269923,
+      "ResidualMLP": 0.3433804627249357,
+      "TabNet": 0.32641388174807195
+    },
+    "top30_count": 30,
+    "method_a_expressed": 26,
+    "method_b_significant": 20,
+    "p_at_20": 0.15
+  },
+  "single": {
+    "model": "ResidualMLP (2C)",
+    "oof_spearman": 0.5488218178896932,
+    "top30_count": 30,
+    "method_a_expressed": 25,
+    "method_b_significant": 17,
+    "p_at_20": 0.15
+  },
+  "consensus": {
+    "overlap_count": 24,
+    "overlap_drugs": [
+      "PCI-34051",
+      "Tretinoin",
+      "Remodelin",
+      "LJI308",
+      "OTX015",
+      "Olaparib",
+      "PBD-288",
+      "CDK9_5576",
+      "CDK9_5038",
+      "GSK2276186C",
+      "JNK Inhibitor VIII",
+      "Ibrutinib",
+      "Docetaxel",
+      "765771",
+      "Serdemetan",
+      "Gemcitabine",
+      "SB505124",
+      "EPZ004777",
+      "Bleomycin (50 uM)",
+      "AZD6738",
+      "MIRA-1",
+      "Lapatinib",
+      "Bromosporine",
+      "UNC0638"
+    ]
+  }
+}

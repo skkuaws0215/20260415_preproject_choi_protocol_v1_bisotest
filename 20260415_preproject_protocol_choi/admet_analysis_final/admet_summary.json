@@ -1,0 +1,53 @@
+{
+  "total_drugs": 19,
+  "verdict_counts": {
+    "WARNING": 11,
+    "PASS": 7,
+    "FAIL": 1
+  },
+  "category_counts": {
+    "B": 11,
+    "C": 4,
+    "A": 4
+  },
+  "recommendation_counts": {
+    "CANDIDATE": 12,
+    "APPROVED": 4,
+    "REJECTED": 2,
+    "CAUTION": 1
+  },
+  "avg_safety_score": 22.98795283057631,
+  "avg_matches": 1.894736842105263,
+  "top_5_drugs": [
+    {
+      "drug_name": "EPZ004777",
+      "safety_score": 119.119,
+      "verdict": "PASS",
+      "final_recommendation": "CANDIDATE"
+    },
+    {
+      "drug_name": "Ibrutinib",
+      "safety_score": 111.89599999999999,
+      "verdict": "PASS",
+      "final_recommendation": "CANDIDATE"
+    },
+    {
+      "drug_name": "Lapatinib",
+      "safety_score": 98.67699999999999,
+      "verdict": "PASS",
+      "final_recommendation": "APPROVED"
+    },
+    {
+      "drug_name": "Olaparib",
+      "safety_score": 24.121999999999996,
+      "verdict": "PASS",
+      "final_recommendation": "APPROVED"
+    },
+    {
+      "drug_name": "AZD6738",
+      "safety_score": 9.515,
+      "verdict": "PASS",
+      "final_recommendation": "CANDIDATE"
+    }
+  ]
+}

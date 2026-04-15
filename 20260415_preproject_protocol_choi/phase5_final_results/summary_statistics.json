@@ -1,0 +1,21 @@
+{
+  "total_consensus_drugs": 24,
+  "drugs_with_smiles": 19,
+  "drugs_without_smiles": 5,
+  "admet_pass": 7,
+  "admet_warning": 11,
+  "admet_fail": 1,
+  "admet_no_data": 5,
+  "tier1_count": 4,
+  "tier2_count": 1,
+  "tier3_count": 13,
+  "known_brca_drugs": 4,
+  "brca_research_drugs": 11,
+  "repurposing_drugs": 4,
+  "model_performance": {
+    "ensemble_spearman": 0.5520509936016167,
+    "single_spearman": 0.5488218178896932,
+    "consensus_overlap": 24,
+    "metabric_method_b_significant": 20
+  }
+}

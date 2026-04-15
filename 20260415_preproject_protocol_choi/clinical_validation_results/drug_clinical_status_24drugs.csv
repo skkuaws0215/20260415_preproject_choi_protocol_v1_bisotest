@@ -1,0 +1,25 @@
+drug_id,drug_name,original_category,new_grade,clinical_trials_brca,pubmed_count_estimate,notes,grade_number
+1621,PCI-34051,B,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3
+1009,Tretinoin,B,Grade 2: Clinical Trials,"Phase 2/3: NCT00002558, NCT00003013",10-50,Active trials: Phase 2/3,2
+2057,Remodelin,B,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3
+2107,LJI308,B,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3
+1626,OTX015,B,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3
+1017,Olaparib,A,Grade 1: FDA/EMA Approved,Multiple Phase 3 trials,>100,FDA approved 2018 for BRCA1/2-mutated BRCA,1
+2145,PBD-288,,Grade 4: True Repurposing,None (proprietary/tool compound),0,Proprietary tool compound - no public BRCA data,4
+1708,CDK9_5576,,Grade 4: True Repurposing,None (proprietary/tool compound),0,Proprietary tool compound - no public BRCA data,4
+1709,CDK9_5038,,Grade 4: True Repurposing,None (proprietary/tool compound),0,Proprietary tool compound - no public BRCA data,4
+1777,GSK2276186C,,Grade 4: True Repurposing,None (proprietary/tool compound),0,Proprietary tool compound - no public BRCA data,4
+1043,JNK Inhibitor VIII,B,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3
+1799,Ibrutinib,C,Grade 4: True Repurposing,"Limited (NCT02403271 - solid tumors, terminated)",<5,"BTK inhibitor - approved for CLL/MCL, minimal BRCA evidence",4
+1819,Docetaxel,A,Grade 1: FDA/EMA Approved,Multiple Phase 3 trials,>100,FDA approved 1996 for Metastatic/neoadjuvant BRCA,1
+1821,765771,,Grade 4: True Repurposing,None (proprietary/tool compound),0,Proprietary tool compound - no public BRCA data,4
+1133,Serdemetan,B,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3
+1190,Gemcitabine,A,Grade 1: FDA/EMA Approved,Multiple Phase 3 trials,>100,FDA approved 2004 for Metastatic BRCA (combination),1
+1194,SB505124,C,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3
+1237,EPZ004777,B,Grade 3: Preclinical Research,None found,5-10,"DOT1L inhibitor - preclinical BRCA research, MLL-leukemia trials",3
+1378,Bleomycin (50 uM),B,Grade 2: Clinical Trials,Historical use (not current standard),20-50,"FDA approved for other cancers, limited modern BRCA trials",2
+1917,AZD6738,C,Grade 2: Clinical Trials,"Phase 1/2: NCT02264678, NCT02223923",10-50,Active trials: Phase 1/2,2
+1931,MIRA-1,B,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3
+1558,Lapatinib,A,Grade 1: FDA/EMA Approved,Multiple Phase 3 trials,>100,FDA approved 2007 for HER2+ BRCA,1
+1581,Bromosporine,B,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3
+2038,UNC0638,C,Grade 3: Preclinical Research,Limited or none,1-10,Research compound - limited BRCA clinical data,3

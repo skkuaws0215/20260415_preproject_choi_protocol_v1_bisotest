@@ -1,0 +1,8 @@
+drug_id,drug_name,target,category,safety_score,overall_score,tier,recommendation,drug_target_evidence,target_brca_relevance,clinical_evidence,mechanism_rationale,safety_profile
+1237,EPZ004777,DOT1L,B,119.12,6.5,Tier 2,PROMISING CANDIDATE - Preclinical validation needed,strong,moderate,weak,moderate,strong
+1799,Ibrutinib,BTK,C,111.9,5.0,Tier 3,"EXPLORATORY - Mechanism unclear, but approved drug with good safety",strong,weak,moderate,weak,strong
+1558,Lapatinib,"EGFR, ERBB2",A,98.68,9.5,Tier 1 (KNOWN),POSITIVE CONTROL - Validates prediction model accuracy,strong,strong,strong,strong,strong
+1017,Olaparib,"PARP1, PARP2",A,24.12,9.0,Tier 1 (KNOWN),POSITIVE CONTROL - Validates prediction model for genomic subtypes,strong,strong,strong,strong,moderate
+1917,AZD6738,ATR,C,9.52,8.5,Tier 1,"STRONG CANDIDATE - Clinical validation ongoing, excellent mechanistic rationale",strong,strong,strong,strong,moderate
+1378,Bleomycin (50 uM),dsDNA break induction,B,7.83,4.5,Tier 3,"NOT RECOMMENDED - Toxicity outweighs benefits, replaced by newer agents",strong,moderate,moderate,moderate,weak
+1819,Docetaxel,Microtubule stabiliser,A,7.45,8.0,Tier 1 (KNOWN),POSITIVE CONTROL - Validates prediction model for chemotherapy,strong,strong,strong,strong,weak

@@ -1,0 +1,71 @@
+{
+  "validation_date": "2026-04-16T19:35:26",
+  "source": "s3://say2-4team/Lung_raw/",
+  "destination": "/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260416_new_pre_project_biso_Lung/curated_data/",
+  "download_duration_minutes": 15,
+  "total_size_gb": 35.5,
+  "total_files": 206,
+  "zero_byte_files": 0,
+  "status": "SUCCESS",
+  "datasets": {
+    "gdsc": {
+      "file_count": 5,
+      "size": "69 MB",
+      "zero_byte_files": 0,
+      "status": "OK"
+    },
+    "admet": {
+      "file_count": 46,
+      "size": "6.7 MB",
+      "zero_byte_files": 0,
+      "status": "OK"
+    },
+    "cptac": {
+      "file_count": 87,
+      "size": "266 MB",
+      "zero_byte_files": 0,
+      "status": "OK"
+    },
+    "depmap": {
+      "file_count": 8,
+      "size": "864 MB",
+      "zero_byte_files": 0,
+      "status": "OK"
+    },
+    "drugbank": {
+      "file_count": 2,
+      "size": "1.9 GB",
+      "zero_byte_files": 0,
+      "status": "OK"
+    },
+    "validation": {
+      "file_count": 43,
+      "size": "2.0 GB",
+      "zero_byte_files": 0,
+      "status": "OK",
+      "note": "additional_sources data"
+    },
+    "chembl": {
+      "file_count": 5,
+      "size": "5.5 GB",
+      "zero_byte_files": 0,
+      "status": "OK"
+    },
+    "lincs": {
+      "file_count": 10,
+      "size": "25 GB",
+      "zero_byte_files": 0,
+      "status": "OK",
+      "note": "Includes LInc1000(세포주) and lincs_main subdirectories"
+    }
+  },
+  "validation_checks": {
+    "all_files_downloaded": true,
+    "no_zero_byte_files": true,
+    "file_count_verified": true,
+    "size_verification": "PASS"
+  },
+  "next_steps": [
+    "Upload to S3: s3://say2-4team/20260408_new_pre_project_biso/20260416_new_pre_project_biso_Lung/curated_data/"
+  ]
+}

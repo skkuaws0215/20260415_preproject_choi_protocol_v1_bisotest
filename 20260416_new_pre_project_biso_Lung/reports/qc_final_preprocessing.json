@@ -1,0 +1,65 @@
+{
+  "qc_date": "2026-04-16",
+  "stage": "전처리 최종 QC (Name 정규화 적용)",
+  "labels": {
+    "shape": [
+      148239,
+      4
+    ],
+    "unique_samples": 578,
+    "unique_drugs": 295,
+    "ic50_missing": 0,
+    "ic50_mean": 2.875594904269457,
+    "ic50_std": 2.756249773632857,
+    "ic50_min": -8.563891,
+    "ic50_max": 13.558148,
+    "binary_label_dist": {
+      "0": 104938,
+      "1": 43301
+    },
+    "outlier_ic50_3sigma": 1622
+  },
+  "sample_features": {
+    "shape": [
+      1150,
+      18444
+    ],
+    "n_genes": 18443,
+    "missing_ratio": 0.0,
+    "matched_samples": 578
+  },
+  "drug_features": {
+    "shape": [
+      295,
+      5
+    ],
+    "has_smiles": 243,
+    "smiles_missing": 52,
+    "smiles_coverage": "243/295 (82.4%)"
+  },
+  "cell_line_matching": {
+    "gdsc_total": 969,
+    "matched": 578,
+    "unmatched": 391,
+    "match_rate": 59.6,
+    "method": "Cell line name 정규화 (lowercase, 특수문자 제거)",
+    "improvement": "+89 samples vs 원본 (489 → 578)"
+  },
+  "final_usable_data": {
+    "samples": 578,
+    "drugs": 295,
+    "labels": 148239,
+    "estimated_coverage": "148239/170510 (86.9%)"
+  },
+  "issues": {
+    "cell_line_unmatched": "391개 GDSC cell line이 DepMap CRISPR 데이터 없음",
+    "smiles_missing": "52개 약물 (17.6%)이 SMILES 구조 정보 없음",
+    "ic50_outliers": "1,622개 측정값이 3-sigma 범위 밖 (전체의 1.1%)"
+  },
+  "status": "PASS",
+  "recommendations": [
+    "578 샘플로 분석 진행 권장",
+    "SMILES 없는 52개 약물은 구조 기반 분석에서 제외",
+    "IC50 outlier는 로그 변환 후 클리핑 고려"
+  ]
+}

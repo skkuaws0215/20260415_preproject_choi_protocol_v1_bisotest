@@ -1,0 +1,31 @@
+# 대용량 데이터 파일
+data/*.npy
+*.parquet
+curated_data/
+temp_chembl/
+fe_qc/
+raw_data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# 모델 파일
+*.pkl
+*.h5
+*.pth
+*.ckpt
+
+# Logs (선택적으로 포함)
+# logs/
+
+# CatBoost 정보
+catboost_info/
+
+# 임시 파일
+*.tmp
+*.bak
+.DS_Store

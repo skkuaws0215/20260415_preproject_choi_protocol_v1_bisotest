@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-04-17T12:59:45.336967",
+  "initial_shape": [
+    125427,
+    20514
+  ],
+  "initial_counts": {
+    "gene": 18435,
+    "morgan": 2048,
+    "lincs": 5,
+    "target": 10,
+    "pathway": 0,
+    "drug_desc": 9,
+    "drug_other": 5
+  },
+  "steps": [
+    {
+      "feature_type": "gene",
+      "step": "low_variance",
+      "threshold": 0.01,
+      "removed": 13732,
+      "remaining": 4703
+    },
+    {
+      "feature_type": "gene",
+      "step": "high_correlation",
+      "threshold": 0.95,
+      "removed": 0,
+      "remaining": 4703
+    },
+    {
+      "feature_type": "morgan",
+      "step": "low_variance",
+      "threshold": 0.01,
+      "removed": 1009,
+      "remaining": 1039
+    },
+    {
+      "feature_type": "morgan",
+      "step": "high_correlation",
+      "threshold": 0.95,
+      "removed": 7,
+      "remaining": 1032
+    },
+    {
+      "feature_type": "lincs_target_pathway_drug",
+      "step": "keep_all",
+      "removed": 0,
+      "remaining": 29
+    }
+  ],
+  "final_counts": {
+    "gene": 4703,
+    "morgan": 1032,
+    "other": 29,
+    "total_features": 5764
+  }
+}

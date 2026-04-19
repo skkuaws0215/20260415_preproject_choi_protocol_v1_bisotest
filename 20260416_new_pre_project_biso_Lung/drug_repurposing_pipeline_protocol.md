@@ -389,7 +389,7 @@ feature_selection_log.json     → 단계별 제거 수 기록
 Spearman, Ensemble Gain, Diversity, Error Overlap, Consensus Score
 ```
 
-### 9-5. BRCA 결과 참고
+### 9-5. BRCA 결과
 
 | 순위 | 조합 | 입력셋 | 방식 | Spearman |
 |:----:|------|:------:|------|:--------:|
@@ -402,6 +402,50 @@ Spearman, Ensemble Gain, Diversity, Error Overlap, Consensus Score
 - Phase 2A에서 앙상블 효과 최대
 - SMILES/Context는 DL 단일에만 효과적, 앙상블에서는 diversity 감소
 - Diversity vs Error Overlap 상관: -0.997
+
+### 9-6. Lung 결과 (2026-04-19)
+
+**양수 Gain 조합 (4/24):**
+
+| 순위 | 조합 | 입력셋 | 방식 | Spearman | Best Single | Gain |
+|:----:|------|:------:|------|:--------:|:-----------:|:----:|
+| 1 | ML+DL 혼합 (CatBoost+ResidualMLP+TabNet) | 2A | Weighted | 0.4797 | 0.4765 | **+0.0033** |
+| 2 | ML+DL 혼합 (CatBoost+ResidualMLP+TabNet) | 2A | Simple | 0.4790 | 0.4765 | +0.0025 |
+| 3 | DL Top3 (ResidualMLP+TabTransformer+TabNet) | 2C | Weighted | 0.4290 | 0.4277 | +0.0013 |
+| 4 | DL Top3 (ResidualMLP+TabTransformer+TabNet) | 2C | Simple | 0.4290 | 0.4277 | +0.0012 |
+
+**최종 추천:** Phase 2C **CatBoost 단일 모델** (Spearman: 0.5030)
+
+**Lung 핵심 발견:**
+- **앙상블 제한적 효과**: 24개 중 4개만 양수 Gain (17%)
+- **CatBoost 압도적 우위**: 대부분 앙상블보다 단일 모델 우수
+- 최대 Gain: +0.0033 (0.7% 향상) - 복잡도 대비 미미
+- Diversity vs Gain 상관: -0.2562 (p=0.2268) - 낮은 상관
+- Error Overlap 높음 (0.6~0.8) - 모델 간 유사한 오류 패턴
+- **결론**: 단일 모델(CatBoost) 사용 권장
+
+### 9-7. BRCA vs Lung 앙상블 비교
+
+| 지표 | BRCA | Lung | 차이점 |
+|------|------|------|--------|
+| **최고 단일 모델** | ResidualMLP (0.5493) | CatBoost (0.5030) | Lung은 ML 모델 우위 |
+| **최고 앙상블** | 혼합 Weighted (0.5521) | 혼합 Weighted (0.4797) | BRCA가 0.07 더 높음 |
+| **최대 Gain** | +0.0028 | +0.0033 | 유사 (둘 다 미미) |
+| **양수 Gain 비율** | TBD | 4/24 (17%) | Lung은 대부분 실패 |
+| **Diversity 효과** | 음수 상관 (-0.997) | 음수 상관 (-0.26) | 둘 다 높은 다양성≠높은 성능 |
+| **최종 추천** | ResidualMLP 단일 | CatBoost 단일 | **둘 다 단일 모델 권장** |
+
+**공통 패턴:**
+- 앙상블 효과 제한적 (Gain < 0.01)
+- 단일 최고 모델이 앙상블과 비슷하거나 우수
+- 높은 Diversity가 성능 보장하지 않음
+- Phase 2A에서 앙상블 효과가 가장 큼
+- 복잡도 증가 대비 성능 향상 미미
+
+**차이점:**
+- BRCA: DL 모델(ResidualMLP) 최고
+- Lung: ML 모델(CatBoost) 최고
+- Lung은 앙상블 실패율이 더 높음 (83% vs TBD)
 
 ---
 
@@ -651,4 +695,5 @@ CatBoost 단독 채택 (v3.1)
 
 | 날짜 | 버전 | 변경 내용 |
 |------|:----:|----------|
+| 2026-04-19 | v1.1 | Lung Phase 2+3 완료, 앙상블 분석 추가, BRCA vs Lung 비교 추가 |
 | 2026-04-17 | v1.0 | 초안 작성 (BRCA 완료, Lung FE 완료 기준) |

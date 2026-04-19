@@ -1,0 +1,14 @@
+{
+  "Phase 2B_hit_rate_10": 1.0,
+  "Phase 2B_hit_rate_50": 1.0,
+  "Phase 2B_hit_rate_100": 1.0,
+  "Phase 2B_mrr": 0.15755149760061657,
+  "Phase 2B_coverage": 0.6551724137931034,
+  "Phase 2C_hit_rate_10": 1.0,
+  "Phase 2C_hit_rate_50": 1.0,
+  "Phase 2C_hit_rate_100": 1.0,
+  "Phase 2C_mrr": 0.1441149480804739,
+  "Phase 2C_coverage": 0.7931034482758621,
+  "prism_matched_drugs": 29,
+  "prism_match_rate": 0.6744186046511628
+}

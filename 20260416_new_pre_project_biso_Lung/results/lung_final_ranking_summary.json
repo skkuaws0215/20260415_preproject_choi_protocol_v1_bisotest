@@ -1,0 +1,59 @@
+{
+  "total_drugs": 43,
+  "validation_sources": 4,
+  "avg_confidence": 54.651162790697676,
+  "avg_validation_score": 0.5465116279069767,
+  "high_confidence_drugs": 21,
+  "top_10_drugs": [
+    {
+      "drug_name": "Paclitaxel",
+      "multi_objective_score": 0.675,
+      "confidence": 75
+    },
+    {
+      "drug_name": "Topotecan",
+      "multi_objective_score": 0.5394299054954954,
+      "confidence": 100
+    },
+    {
+      "drug_name": "Docetaxel",
+      "multi_objective_score": 0.49833333333333335,
+      "confidence": 75
+    },
+    {
+      "drug_name": "Docetaxel",
+      "multi_objective_score": 0.4708333333333333,
+      "confidence": 75
+    },
+    {
+      "drug_name": "Dactinomycin",
+      "multi_objective_score": 0.45000000000000007,
+      "confidence": 50
+    },
+    {
+      "drug_name": "Vinorelbine",
+      "multi_objective_score": 0.37605263157894736,
+      "confidence": 75
+    },
+    {
+      "drug_name": "Palbociclib",
+      "multi_objective_score": 0.3706603051456188,
+      "confidence": 100
+    },
+    {
+      "drug_name": "Temsirolimus",
+      "multi_objective_score": 0.36645997206256714,
+      "confidence": 100
+    },
+    {
+      "drug_name": "Entinostat",
+      "multi_objective_score": 0.34945664704300633,
+      "confidence": 100
+    },
+    {
+      "drug_name": "SL0101",
+      "multi_objective_score": 0.3416666666666667,
+      "confidence": 25
+    }
+  ]
+}

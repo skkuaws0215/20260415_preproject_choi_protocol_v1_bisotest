@@ -1,0 +1,13 @@
+{
+  "Phase 2B_precision_10": 0.6,
+  "Phase 2B_precision_50": 0.4666666666666667,
+  "Phase 2B_drugs_with_trials": 14,
+  "Phase 2B_avg_trials": 104.78571428571429,
+  "Phase 2C_precision_10": 0.6,
+  "Phase 2C_precision_50": 0.5333333333333333,
+  "Phase 2C_drugs_with_trials": 16,
+  "Phase 2C_avg_trials": 96.4375,
+  "ct_matched_drugs": 21,
+  "ct_match_rate": 0.4883720930232558,
+  "ct_total_trials": 1561
+}

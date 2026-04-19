@@ -1,0 +1,8 @@
+{
+  "cptac_datasets": 2,
+  "drugs_with_targets": 39,
+  "unique_targets": 57,
+  "drug_target_pairs_with_expression": 86,
+  "drugs_with_expression_data": 22,
+  "targets_with_expression_data": 31
+}

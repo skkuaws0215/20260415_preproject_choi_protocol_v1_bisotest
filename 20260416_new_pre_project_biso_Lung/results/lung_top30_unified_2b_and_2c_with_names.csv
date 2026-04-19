@@ -1,0 +1,44 @@
+canonical_drug_id,in_2b,rank_2b,ic50_2b,in_2c,rank_2c,ic50_2c,DRUG_ID,DRUG_NAME,TARGET,TARGET_PATHWAY,SYNONYMS
+1593,True,30.0,1.635861361146052,True,18.0,1.2383682496453432,1593,Entinostat,"HDAC1, HDAC3",Chromatin histone acetylation,MS-275
+1706,True,12.0,0.902943373258124,False,,,1706,AZD5153,BRD4,Chromatin other,"SN1045566955, AZD5153"
+1817,True,29.0,1.604947744734159,False,,,1817,Romidepsin,"HDAC1, HDAC2, HDAC3, HDAC8",Chromatin histone acetylation,"Istodax, FK228, Depsipeptide"
+1908,False,,,True,15.0,1.0690536482919102,1908,Ulixertinib,"ERK1, ERK2",ERK MAPK signaling,"BVD-523, VRT752271"
+1843,True,28.0,1.6008571700766514,True,29.0,1.548202285657691,1843,LMP744,TOP1,DNA replication,MJ-III-65
+2110,True,24.0,1.4668039084104092,False,,,2110,GSK591,PMRT5,Chromatin histone methylation,"EPZ015866, GSK3203591"
+1720,True,26.0,1.5388147939637609,False,,,1720,AZD5991,MCL1,Apoptosis regulation,"SN1049446612, AZD5991"
+1026,True,16.0,1.2546890061730656,False,,,1026,Tanespimycin,HSP90,Protein stability and degradation,"17-AAG, BMS-722782"
+1830,True,18.0,1.2871974235548966,False,,,1830,Gallibiscoquinazole,,Unclassified,
+1007,True,6.0,-1.3233146302227203,True,16.0,1.1361731335171907,1007,Docetaxel,Microtubule stabiliser,Mitosis,"RP-56976, Taxotere"
+1810,True,8.0,-0.0102039966254315,True,14.0,1.0223043698570806,1810,Mitoxantrone,TOP2,DNA replication,
+1016,True,10.0,0.0949278296938103,False,,,1016,Temsirolimus,MTOR,PI3K/MTOR signaling,"CCI-779, Torisel"
+2148,True,27.0,1.545733435339914,False,,,2148,POMHEX,,Unclassified,
+1911,True,7.0,-1.0264358329789682,True,9.0,0.7361276435668097,1911,Dactinomycin,RNA polymerase,Other,"Actinomycin D, Cosmegen, Lyovac, Meractinomycin, Ac-De, ActD"
+1051,True,23.0,1.4361192165094503,True,21.0,1.2635536914621497,1051,Alisertib,AURKA,Mitosis,MLN8237
+1802,False,,,True,12.0,0.8758405569893063,1802,Zoledronate, ,Other,"Zoledronic acid, Zometa, Reclast"
+1809,True,11.0,0.1735633116136136,True,11.0,0.8286761887776659,1809,Teniposide,,DNA replication,Vumon
+1917,False,,,True,26.0,1.4625333296980323,1917,AZD6738,ATR,Genome integrity,"AZD 6738, AZD-6738"
+1096,False,,,True,24.0,1.3637499233370365,1096,Tozasertib,"AURKA, AURKB, AURKC, others",Mitosis,"MK 0457,MK-0457,MK-045, VX-680 VX 680 VX-68"
+2048,False,,,True,19.0,1.2473345910682765,2048,Vinorelbine,Microtubule destabiliser,Mitosis,"vinorelbine tartrate, Navelbine, Exelbine"
+1613,False,,,True,28.0,1.526538571699027,1613,VE-822,ATR,Genome integrity,"VE 822, VE822, Berzosertib"
+1617,True,22.0,1.4040462295038694,False,,,1617,AZD5582,"XIAP, cIAP",Apoptosis regulation,"GTPL7710, AOB5560"
+1819,True,5.0,-1.3275035247717089,True,6.0,0.5850131647836839,1819,Docetaxel,Microtubule stabiliser,Mitosis,"RP-56976, Taxotere"
+2011,True,15.0,1.0433131235200632,True,30.0,1.553178924439743,2011,ICL-SIRT078,SIR2,Other,
+1811,True,1.0,-3.428227885930393,True,2.0,-0.4862226730255907,1811,Dactinomycin,RNA polymerase,Other,Actinomycin D
+1237,False,,,True,22.0,1.2818166803970443,1237,EPZ004777,DOT1L,Chromatin histone methylation,EPZ-004777
+1039,True,2.0,-2.9673536757364363,True,3.0,-0.1037654193352981,1039,SL0101,"RSK, AURKB, PIM1, PIM3","Other, kinases","SL-0101, SL 0101-1"
+1004,True,14.0,1.0301983758816042,False,,,1004,Vinblastine,Microtubule destabiliser,Mitosis,Velban
+1581,True,13.0,0.9814178072971216,False,,,1581,Bromosporine,"CECR2, BRD2, BRD4, BRD9",Chromatin other,"ethyl N-[6-(3-methanesulfonamido-4-methylphenyl)-3-methyl-[1,2,4]triazolo[4,3-b]pyridazin-8-yl]carbamate"
+1072,False,,,True,13.0,0.8878668825333711,1072,Avagacestat,"Amyloid beta20, Amyloid beta40",Other,"BMS-708163, BMS 708163"
+1511,True,9.0,0.0598131075212471,True,4.0,0.268622970109531,1511,Epirubicin,Anthracycline,DNA replication,"Ellence, Farmorubicin, IMI-28"
+1598,True,17.0,1.270441684409925,False,,,1598,LGK974,PORCN,WNT signaling,LGK-974
+1080,True,4.0,-1.7252495997635326,True,1.0,-0.5681769362327035,1080,Paclitaxel,Microtubule stabiliser,Mitosis,"BMS-181339-01, Taxol, Onxol, Paxene, Praxel, Abraxane"
+1084,True,25.0,1.5198595568488638,True,20.0,1.2514343809264517,1084,Rapamycin,MTORC1,PI3K/MTOR signaling,"AY-22989, Sirolimus, WY-090217, Torisel, Rapamune"
+1922,False,,,True,23.0,1.305183110994645,1922,Cediranib,"VEGFR, FLT1, FLT2, FLT3, FLT4, KIT, PDGFRB",RTK signaling,"AZD2171, AZD 2171, AZD-2171, Recentin"
+1940,False,,,True,25.0,1.367544502371529,1940,WIKI4,"TNKS1, TNKS2",WNT signaling,"WIKI-4, WIKI 4"
+1091,False,,,True,27.0,1.5148106953937268,1091,BMS-536924,"IGF1R, IR",IGF1R signaling,BMS 536924
+1626,False,,,True,7.0,0.662281453064777,1626,OTX015,"BRD2, BRD3, BRD4",Chromatin other,"Birabresib, OTX-015, MK-8628"
+1910,True,20.0,1.3600749134294183,True,10.0,0.7643679422008993,1910,ABT737,"BCL2, BCL-XL,  BCL-W, BCL-B, BFL1",Apoptosis regulation,
+2172,True,21.0,1.397916198134528,False,,,2172,JQ1,"BRD2, BRD3, BRD4, BRDT",Chromatin other,"JQ-1, (+)-JQ-1"
+1054,True,19.0,1.333637511096586,True,8.0,0.7103216653583512,1054,Palbociclib,"CDK4, CDK6",Cell cycle,"PD0332991, PD-0332991, PF-00080665-73"
+2002,False,,,True,17.0,1.1972222512413149,2002,N30652-18-1,,Unclassified,
+1808,True,3.0,-1.8727832677234535,True,5.0,0.5304977433098609,1808,Topotecan,TOP1,DNA replication,

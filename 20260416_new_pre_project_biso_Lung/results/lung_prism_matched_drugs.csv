@@ -1,0 +1,30 @@
+canonical_drug_id,DRUG_NAME,prism_broad_id,prism_name,prism_target,prism_moa,prism_phase,match_type
+1593,Entinostat,BRD-K77908580-001-09-6,entinostat,"HDAC1, HDAC2, HDAC3, HDAC9",HDAC inhibitor,Phase 3,exact_name
+1817,Romidepsin,BRD-K61397605-001-03-4,romidepsin,"HDAC1, HDAC2, HDAC3, HDAC4, HDAC5, HDAC6, HDAC7, HDAC8, HDAC9",HDAC inhibitor,Launched,exact_name
+1908,Ulixertinib,BRD-K28965160-001-01-1,BVD-523,,MAP kinase inhibitor,Phase 1/Phase 2,synonym
+1026,Tanespimycin,BRD-K81473043-001-14-6,tanespimycin,HSP90AA1,HSP inhibitor,Phase 3,exact_name
+1007,Docetaxel,BRD-K30577245-001-04-3,docetaxel,"BCL2, MAP2, MAP4, MAPT, NR1I2, TUBB, TUBB1",tubulin polymerization inhibitor,Launched,exact_name
+1810,Mitoxantrone,BRD-K21680192-300-14-4,mitoxantrone,TOP2A,topoisomerase inhibitor,Launched,exact_name
+1016,Temsirolimus,BRD-K42898655-001-01-8,temsirolimus,MTOR,mTOR inhibitor,Launched,exact_name
+1911,Dactinomycin,BRD-K70578146-001-06-7,dactinomycin,POLR2A,RNA polymerase inhibitor,Launched,exact_name
+1051,Alisertib,BRD-K75295174-001-05-0,alisertib,AURKA,Aurora kinase inhibitor,Phase 3,exact_name
+1809,Teniposide,BRD-A35588707-001-05-5,teniposide,"TOP2A, TOP2B",topoisomerase inhibitor,Launched,exact_name
+1917,AZD6738,BRD-A36013532-001-01-3,AZD6738,ATR,ATR kinase inhibitor,Phase 1/Phase 2,exact_name
+1096,Tozasertib,BRD-K59369769-001-20-3,tozasertib,"AURKA, AURKB, AURKC, LCK","Aurora kinase inhibitor, Bcr-Abl kinase inhibitor, FLT3 inhibitor, JAK inhibitor",Phase 2,exact_name
+2048,Vinorelbine,BRD-K69280563-001-01-8,vinorelbine,"TUBA1A, TUBA1B, TUBA1C, TUBA3C, TUBA3D, TUBA3E, TUBA4A, TUBB, TUBB1, TUBB2A, TUBB2B, TUBB3, TUBB4A, TUBB4B, TUBB6, TUBB8",tubulin polymerization inhibitor,Launched,exact_name
+1613,VE-822,BRD-K04701033-001-04-7,VE-822,"ATM, ATR, MTOR, PIK3CG",ATR kinase inhibitor,Phase 2,exact_name
+1819,Docetaxel,BRD-K30577245-001-04-3,docetaxel,"BCL2, MAP2, MAP4, MAPT, NR1I2, TUBB, TUBB1",tubulin polymerization inhibitor,Launched,exact_name
+1811,Dactinomycin,BRD-K70578146-001-06-7,dactinomycin,POLR2A,RNA polymerase inhibitor,Launched,exact_name
+1237,EPZ004777,BRD-K69070623-003-01-7,EPZ004777,DOT1L,histone lysine methyltransferase inhibitor,Preclinical,exact_name
+1004,Vinblastine,BRD-K06519765-001-01-1,vinblastine,"JUN, TUBA1A, TUBB, TUBD1, TUBE1, TUBG1","microtubule inhibitor, tubulin polymerization inhibitor",Launched,exact_name
+1581,Bromosporine,BRD-K44665581-001-01-8,bromosporine,,bromodomain inhibitor,Preclinical,exact_name
+1072,Avagacestat,BRD-K83720053-001-03-8,avagacestat,PSEN1,gamma secretase inhibitor,Phase 2,exact_name
+1511,Epirubicin,BRD-K04548931-003-16-5,epirubicin,"CHD1, TOP2A",topoisomerase inhibitor,Launched,exact_name
+1598,LGK974,BRD-K16810791-001-01-0,LGK-974,PORCN,porcupine inhibitor,Phase 2,synonym
+1080,Paclitaxel,BRD-K62008436-001-22-1,paclitaxel,"BCL2, MAP2, MAP4, MAPT, NR1I2, TLR4, TUBB, TUBB1",tubulin polymerization inhibitor,Launched,exact_name
+1084,Rapamycin,BRD-A79768653-001-12-0,sirolimus,"FGF2, FKBP1A, MTOR",mTOR inhibitor,Launched,synonym
+1922,Cediranib,BRD-K86930074-001-05-0,cediranib,"CSF1R, FLT1, FLT3, FLT4, KDR, KIT, PDGFRA, PDGFRB","KIT inhibitor, VEGFR inhibitor",Phase 3,exact_name
+1940,WIKI4,BRD-K19316653-001-02-0,WIKI4,TNKS2,"Wnt pathway inhibitor, tankyrase inhibitor",Preclinical,exact_name
+1626,OTX015,BRD-K43471985-001-03-0,OTX015,"BRD2, BRD3, BRD4",bromodomain inhibitor,Phase 1/Phase 2,exact_name
+1054,Palbociclib,BRD-K51313569-003-03-3,palbociclib,"CDK4, CDK6",CDK inhibitor,Launched,exact_name
+1808,Topotecan,BRD-K55696337-003-24-4,topotecan,"TOP1, TOP1MT",topoisomerase inhibitor,Launched,exact_name

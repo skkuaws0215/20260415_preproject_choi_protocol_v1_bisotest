@@ -818,10 +818,110 @@ Step 5. 분자 그래프 GNN 추가 (Branch C) — 선택
 
 ---
 
-## 17. 변경 이력
+## 17. 32개 평가 지표 체크리스트
+
+### 17-1. 개요
+
+파이프라인의 전체 성능을 **32개 핵심 지표**로 평가합니다.
+- **Step 2~5**: 19개 (59.4%) ✅ 완료
+- **Step 6**: 13개 (40.6%) ⏳ 진행 예정
+
+### 17-2. ✅ 예측 성능 지표 (8/8 완료)
+
+| 지표 | 평가 방법 | 데이터 소스 | 상태 |
+|------|----------|------------|:----:|
+| **Spearman Correlation** | GroupCV (3-fold by drug) | JSON | ✅ |
+| **Pearson Correlation** | GroupCV (3-fold by drug) | JSON + OOF | ✅ |
+| **R² Score** | GroupCV (3-fold by drug) | JSON + OOF | ✅ |
+| **Kendall's Tau** | GroupCV (3-fold by drug) | JSON + OOF | ✅ |
+| **MAE** (Mean Absolute Error) | GroupCV (3-fold by drug) | JSON | ✅ |
+| **RMSE** (Root Mean Squared Error) | GroupCV (3-fold by drug) | JSON | ✅ |
+| **MedianAE** (Median Absolute Error) | GroupCV (3-fold by drug) | OOF npy | ✅ |
+| **P95 Error** (95th Percentile Error) | GroupCV (3-fold by drug) | OOF npy | ✅ |
+
+**주요 결과 (Lung Phase 2B):**
+- CatBoost: Spearman=0.4823, Pearson=0.5271, R²=0.2560, Kendall=0.3381
+
+### 17-3. ✅ 과적합 지표 (5/5 완료)
+
+| 지표 | 평가 방법 | 데이터 소스 | 상태 |
+|------|----------|------------|:----:|
+| **Train-Val Gap** | Train Spearman - Val Spearman | JSON | ✅ |
+| **Train/Val Ratio** | Train Spearman / Val Spearman | JSON | ✅ |
+| **Fold Std** | Std of 3-fold Spearman | JSON | ✅ |
+| **Train R²** | R² on training set | JSON | ✅ |
+| **Val R²** | R² on validation set | JSON | ✅ |
+
+**주요 결과 (Lung Phase 2B CatBoost):**
+- Train/Val Ratio: 1.81 (안정적, 과적합 낮음)
+- Train Spearman: 0.8705, Val Spearman: 0.4823
+
+### 17-4. ✅ 앙상블 지표 (6/6 완료)
+
+| 지표 | 평가 방법 | 데이터 소스 | 상태 |
+|------|----------|------------|:----:|
+| **Ensemble Gain** | Ensemble Spearman - Best Single | OOF npy | ✅ |
+| **Diversity Score** | Avg pairwise Spearman | OOF npy | ✅ |
+| **Error Overlap** | Shared error proportion | OOF npy | ✅ |
+| **Consensus Score** | Mean std of predictions | OOF npy | ✅ |
+| **Weighted vs Simple** | Performance comparison | OOF npy | ✅ |
+| **Best Combination** | Top ensemble config | OOF npy | ✅ |
+
+**주요 결과 (Lung Phase 3):**
+- Best Ensemble: Mixed Weighted (CatBoost+ResidualMLP+TabNet), Gain: +0.0033
+- Positive Gain: 4/24 (17%)
+- **권장**: 단일 CatBoost 모델 사용 (앙상블 효과 제한적)
+
+### 17-5. ⏳ 약물 랭킹 지표 (0/9 진행 예정 - Step 6)
+
+| 지표 | 평가 방법 | 데이터 소스 | 상태 |
+|------|----------|------------|:----:|
+| **Top 10 Hit Rate** | Top 10 약물 중 검증 데이터 적중률 | CPTAC/COSMIC/PRISM | ⏳ |
+| **Top 50 Hit Rate** | Top 50 약물 중 검증 데이터 적중률 | CPTAC/COSMIC/PRISM | ⏳ |
+| **Top 100 Hit Rate** | Top 100 약물 중 검증 데이터 적중률 | CPTAC/COSMIC/PRISM | ⏳ |
+| **Precision@10** | Top 10 정밀도 | Clinical Trials | ⏳ |
+| **Precision@50** | Top 50 정밀도 | Clinical Trials | ⏳ |
+| **Recall@100** | Top 100 재현율 | Clinical Trials | ⏳ |
+| **NDCG@10** | Normalized DCG (순위 품질) | CPTAC/COSMIC/PRISM | ⏳ |
+| **MRR** (Mean Reciprocal Rank) | 첫 적중 순위의 역수 평균 | CPTAC/COSMIC/PRISM | ⏳ |
+| **Coverage Rate** | 검증 데이터 커버리지 | CPTAC/COSMIC/PRISM | ⏳ |
+
+### 17-6. ⏳ 일반화 지표 (0/4 진행 예정)
+
+| 지표 | 평가 방법 | 데이터 소스 | 상태 |
+|------|----------|------------|:----:|
+| **Scaffold Split Performance** | Scaffold-based CV | Scaffold split | ⏳ |
+| **Multi-seed Consistency (Mean)** | 3+ 시드 평균 | Multiple seeds | ⏳ |
+| **Multi-seed Consistency (Std)** | 3+ 시드 표준편차 | Multiple seeds | ⏳ |
+| **Cross-dataset Validation** | 외부 데이터셋 검증 | CPTAC/COSMIC/PRISM | ⏳ |
+
+### 17-7. 지표 수집 현황 요약
+
+```
+✅ 완료: 19/32 (59.4%)
+  ├─ 예측 성능: 8/8
+  ├─ 과적합: 5/5
+  └─ 앙상블: 6/6
+
+⏳ 진행 예정: 13/32 (40.6%)
+  ├─ 약물 랭킹: 0/9 (Step 6)
+  └─ 일반화: 0/4 (Multi-seed, Scaffold split 필요)
+```
+
+### 17-8. 파일 위치
+
+- **종합 지표 CSV**: `results/lung_all_metrics_comprehensive.csv`
+- **체크리스트 CSV**: `results/lung_32_metrics_checklist.csv`
+- **대시보드 HTML**: `lung_pipeline_dashboard.html`
+- **Phase 3 앙상블 결과**: `results/lung_phase3_ensemble_results.json`
+
+---
+
+## 18. 변경 이력
 
 | 날짜 | 버전 | 변경 내용 |
 |------|:----:|----------|
 | 2026-04-17 | v1.0 | 초안 작성 (BRCA 완료, Lung FE 완료 기준) |
 | 2026-04-19 | v1.1 | Phase 2+3 완료. Lung 앙상블 결과, BRCA vs Lung 비교표, 범용 모델 선택 전략 추가 |
 | 2026-04-19 | v1.2 | 향후 멀티모달 브랜치 전략 추가 (예정 사항 기재) |
+| 2026-04-19 | v1.3 | 32개 평가 지표 체크리스트 추가 (19/32 완료, 13/32 Step 6 예정) |

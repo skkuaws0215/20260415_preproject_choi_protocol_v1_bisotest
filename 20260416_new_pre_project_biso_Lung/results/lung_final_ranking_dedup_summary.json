@@ -1,0 +1,60 @@
+{
+  "total_drugs": 41,
+  "duplicates_removed": 2,
+  "validation_sources": 4,
+  "avg_confidence": 54.26829268292683,
+  "avg_validation_score": 0.5426829268292683,
+  "high_confidence_drugs": 20,
+  "top_10_drugs": [
+    {
+      "drug_name": "Paclitaxel",
+      "multi_objective_score": 0.675,
+      "confidence": 75
+    },
+    {
+      "drug_name": "Topotecan",
+      "multi_objective_score": 0.5394299054954954,
+      "confidence": 100
+    },
+    {
+      "drug_name": "Docetaxel",
+      "multi_objective_score": 0.4983333333333333,
+      "confidence": 75
+    },
+    {
+      "drug_name": "Dactinomycin",
+      "multi_objective_score": 0.45,
+      "confidence": 50
+    },
+    {
+      "drug_name": "Vinorelbine",
+      "multi_objective_score": 0.3760526315789473,
+      "confidence": 75
+    },
+    {
+      "drug_name": "Palbociclib",
+      "multi_objective_score": 0.3706603051456188,
+      "confidence": 100
+    },
+    {
+      "drug_name": "Temsirolimus",
+      "multi_objective_score": 0.3664599720625671,
+      "confidence": 100
+    },
+    {
+      "drug_name": "Entinostat",
+      "multi_objective_score": 0.3494566470430063,
+      "confidence": 100
+    },
+    {
+      "drug_name": "SL0101",
+      "multi_objective_score": 0.3416666666666667,
+      "confidence": 25
+    },
+    {
+      "drug_name": "Alisertib",
+      "multi_objective_score": 0.3385760613187656,
+      "confidence": 100
+    }
+  ]
+}

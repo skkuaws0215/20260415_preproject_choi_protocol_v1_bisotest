@@ -1,0 +1,53 @@
+{
+  "total_candidates": 41,
+  "admet_pass": 40,
+  "top_15_selected": 15,
+  "category_distribution": {
+    "RESEARCH_PHASE": 8,
+    "FDA_APPROVED_LUNG": 4,
+    "REPURPOSING_CANDIDATE": 2,
+    "CLINICAL_TRIAL": 1
+  },
+  "top_5_recommendations": [
+    {
+      "recommendation_rank": 1,
+      "drug_name": "Paclitaxel",
+      "usage_category": "FDA_APPROVED_LUNG",
+      "multi_objective_score": 0.675,
+      "confidence": 75,
+      "n_clinical_trials": 489
+    },
+    {
+      "recommendation_rank": 2,
+      "drug_name": "Topotecan",
+      "usage_category": "FDA_APPROVED_LUNG",
+      "multi_objective_score": 0.5394299054954954,
+      "confidence": 100,
+      "n_clinical_trials": 63
+    },
+    {
+      "recommendation_rank": 3,
+      "drug_name": "Docetaxel",
+      "usage_category": "FDA_APPROVED_LUNG",
+      "multi_objective_score": 0.4983333333333333,
+      "confidence": 75,
+      "n_clinical_trials": 423
+    },
+    {
+      "recommendation_rank": 4,
+      "drug_name": "Vinorelbine",
+      "usage_category": "FDA_APPROVED_LUNG",
+      "multi_objective_score": 0.3760526315789473,
+      "confidence": 75,
+      "n_clinical_trials": 65
+    },
+    {
+      "recommendation_rank": 5,
+      "drug_name": "Palbociclib",
+      "usage_category": "RESEARCH_PHASE",
+      "multi_objective_score": 0.3706603051456188,
+      "confidence": 100,
+      "n_clinical_trials": 17
+    }
+  ]
+}

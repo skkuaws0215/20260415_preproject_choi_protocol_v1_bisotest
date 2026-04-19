@@ -513,6 +513,42 @@ Method D: 드라이버 유전자 일치 검증 (COSMIC) ← Lung 신규
 Method E: 세포주 약물 반응 검증 (PRISM) ← Lung 신규
 ```
 
+### 10-6. Lung 외부 검증 결과
+
+**검증 커버리지 (43개 약물 대상):**
+
+| 소스 | 매칭 약물 | 커버리지 | 주요 지표 |
+|------|:---------:|:--------:|----------|
+| PRISM | 29/43 | 67.4% | Hit Rate@10 = 100% |
+| ClinicalTrials | 21/43 | 48.8% | 1,561개 임상시험 |
+| COSMIC | 22/43 | 51.2% | 2,104개 actionability records |
+| CPTAC | 22/43 | 51.2% | 31/57 타겟 유전자 발현 확인 |
+
+**신뢰도 분포:**
+
+| 신뢰도 | 약물 수 | 의미 |
+|:------:|:-------:|------|
+| 100% | 7개 | 4개 소스 모두 검증 |
+| 75% | 14개 | 3개 소스 검증 |
+| 50% | 8개 | 2개 소스 검증 |
+| 25% 이하 | 14개 | 1개 소스 이하 |
+
+**100% 신뢰도 약물 (7개):**
+- Topotecan (TOP1 inhibitor)
+- Palbociclib (CDK4/6 inhibitor)
+- Temsirolimus (mTOR inhibitor)
+- Entinostat (HDAC inhibitor)
+- Alisertib, Romidepsin, Cediranib
+
+**Phase 2B vs 2C 비교:**
+
+| 지표 | Phase 2B | Phase 2C |
+|------|:--------:|:--------:|
+| Top 30 Overlap | - | 17/30 (56.7%) |
+| Precision@50 | 46.7% | 53.3% |
+| Coverage Rate | 65.5% | 79.3% |
+| 판정 | - | 2C가 임상적 타당성 높음 |
+
 ---
 
 ## 11. ADMET Gate (Step 7)
@@ -538,6 +574,196 @@ Tier 3 Context → 항암제 특성상 완화
 ```
 Top 30 → Top 15 → ADMET 7개 PASS
 Repurposing 1위: Ibrutinib (Safety 111.9)
+```
+
+### 11-3. Lung ADMET 결과
+
+```
+Top 43 (2B+2C 합집합) → 중복 제거 41개 → ADMET 40개 PASS (97.6%)
+FAIL 1개: Epirubicin (Lipinski violations 3개)
+```
+
+### 11-4. Lung 최종 Top 15
+
+| 순위 | 약물명 | 카테고리 | Score | 신뢰도 | 임상시험 수 |
+|:----:|--------|----------|:-----:|:------:|:-----------:|
+| 1 | Paclitaxel | FDA 승인 | 0.675 | 75% | 489 |
+| 2 | Topotecan | FDA 승인 | 0.539 | 100% | 63 |
+| 3 | Docetaxel | FDA 승인 | 0.498 | 75% | 423 |
+| 4 | Vinorelbine | FDA 승인 | 0.376 | 75% | 65 |
+| 5 | Palbociclib | 연구 단계 | 0.371 | 100% | 17 |
+| 6 | Temsirolimus | 연구 단계 | 0.366 | 100% | 12 |
+| 7 | Entinostat | 연구 단계 | 0.349 | 100% | 13 |
+| 8 | Alisertib | 연구 단계 | 0.339 | 100% | 7 |
+| 9 | Romidepsin | 연구 단계 | 0.336 | 100% | 3 |
+| 10 | Cediranib | 연구 단계 | 0.326 | 100% | 3 |
+| 11 | OTX015 | 연구 단계 | 0.298 | 75% | 2 |
+| 12 | Rapamycin | 연구 단계 | 0.269 | 75% | 13 |
+| 13 | LGK974 | 임상시험 | 0.310 | 75% | 1 |
+| 14 | Dactinomycin | 재창출 후보 | 0.450 | 50% | 0 |
+| 15 | SL0101 | 재창출 후보 | 0.342 | 25% | 0 |
+
+### 11-5. Lung 카테고리별 분류
+
+| 카테고리 | 약물 수 | 약물명 |
+|----------|:-------:|--------|
+| FDA 승인 폐암 치료제 | 4 | Paclitaxel, Topotecan, Docetaxel, Vinorelbine |
+| 적응증 확장/연구 단계 | 8 | Palbociclib, Temsirolimus, Entinostat, Alisertib, Romidepsin, Cediranib, OTX015, Rapamycin |
+| 임상시험 중 | 1 | LGK974 |
+| 약물 재창출 후보 | 2 | Dactinomycin, SL0101 |
+
+### 11-6. BRCA vs Lung ADMET 비교
+
+| 항목 | BRCA | Lung |
+|------|------|------|
+| 대상 약물 | 30 | 41 (중복 제거 후) |
+| ADMET PASS | 7 | 40 (97.6%) |
+| FAIL | - | 1 (Epirubicin) |
+| FDA 치료제 검출 | 5 | 4 |
+| 연구 단계 | 6 | 8 |
+| 재창출 후보 | 4 | 2 |
+| 1위 재창출 후보 | Ibrutinib | Dactinomycin |
+
+---
+
+## 12. Neo4j Knowledge Graph 적재 (Step 8)
+
+### 12-1. 기존 Neo4j 현황 (BRCA 구축 완료)
+
+```
+DB: Neo4j Aura Free (biso-kg)
+노드: 30,461개 / 엣지: 137,368개
+
+Drug        19,844   TESTED_IN       89,470
+Target       8,880   INTERACTS_WITH  46,882
+CellLine       969   IN_PATHWAY         729
+Pathway        686   HAS_SIDE_EFFECT    109
+SideEffect      46   TARGETS             41
+Trial           35   IN_TRIAL            39
+Disease          1   TREATS              13
+Hospital        97
+```
+
+### 12-2. Lung 적재 내용
+
+```
+1. Disease 노드 추가
+   - name: "Lung Cancer", code: "LUNG"
+
+2. Top 15 약물 → Drug-TREATS-Disease("Lung Cancer") 엣지
+   - 각 Drug에 속성 추가:
+     lung_score, lung_confidence, lung_category
+
+3. 외부 검증 결과 속성
+   - prism_matched, clinical_trials_matched, cosmic_matched, cptac_matched
+   - clinical_trials_count
+
+4. BRCA-Lung 공통 약물 확인
+   - 두 질병 모두에 TREATS 엣지가 있는 약물
+```
+
+### 12-3. 적재 경로
+
+```
+작업 디렉토리:
+/Users/skku_aws2_14/20260408_pre_project_biso_myprotocol/20260409_scaleup_biso/
+
+conda 환경: drug4-kg
+
+입력 데이터:
+/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/
+  20260415_preproject_choi_protocol_v1_bisotest/
+    20260416_new_pre_project_biso_Lung/results/lung_final_top15.csv
+```
+
+### 12-4. 기존 로더 재사용
+
+```
+기존 BRCA 적재 스크립트:
+neo4j/loaders/load_pipeline_results.py --disease LUNG
+
+수정 필요:
+- Disease 코드 LUNG 추가
+- lung_final_top15.csv 경로 지정
+- 검증 결과 속성 추가 (BRCA에는 없었던 PRISM/COSMIC/CPTAC 속성)
+```
+
+### 12-5. 향후 마이그레이션
+
+```
+현재: Neo4j Aura Free (200MB 제한)
+조건: 전체 데이터 200MB 초과 시
+이동: Neptune Serverless (openCypher 호환, 코드 거의 그대로)
+```
+
+---
+
+## 13. 32개 지표 체크리스트
+
+### 12-1. 현재 완료 상황
+
+**예측 성능 (8/8) ✅**
+
+| 지표 | 상태 | Lung 최고값 (CatBoost 2C) |
+|------|:----:|:------------------------:|
+| Spearman | ✅ | 0.5030 |
+| Pearson | ✅ | 확인 완료 |
+| R² | ✅ | 확인 완료 |
+| RMSE | ✅ | 확인 완료 |
+| MAE | ✅ | 확인 완료 |
+| Kendall's Tau | ✅ | 확인 완료 |
+| MedianAE | ✅ | OOF에서 계산 |
+| P95 Error | ✅ | OOF에서 계산 |
+
+**과적합 (5/5) ✅**
+
+| 지표 | 상태 | 비고 |
+|------|:----:|------|
+| Train Spearman | ✅ | 전 모델 기록 |
+| Val Spearman | ✅ | 전 모델 기록 |
+| Gap | ✅ | 모든 모델 > 0.15 (GroupCV 특성) |
+| Train/Val Ratio | ✅ | 계산 완료 |
+| Fold std | ✅ | 대부분 0.01~0.08 |
+
+**앙상블 (4/4) ✅**
+
+| 지표 | 상태 | 비고 |
+|------|:----:|------|
+| Ensemble Gain | ✅ | 양수 4/24 |
+| Diversity | ✅ | 0.76~0.91 |
+| Error Overlap | ✅ | 0.6~0.8 |
+| Consensus Score | ✅ | 확인 완료 |
+
+**일반화 (2/6) 🔄**
+
+| 지표 | 상태 | 비고 |
+|------|:----:|------|
+| Holdout | ✅ | 전 모델 완료 |
+| GroupCV (unseen drug) | ✅ | 전 모델 완료 |
+| 5-Fold CV | ✅ | 전 모델 완료 |
+| Scaffold split | ❌ | 미진행 |
+| Multi-seed stability | ❌ | 미진행 |
+| Cross-dataset | ❌ | 미진행 |
+
+**약물 랭킹 (6/9) 🔄**
+
+| 지표 | 상태 | 비고 |
+|------|:----:|------|
+| Hit Rate@K | ✅ | PRISM Hit Rate@10 = 100% |
+| Precision@K | ✅ | Precision@50 = 53.3% |
+| Recall@K | ✅ | PRISM Recall 확인 |
+| Coverage Rate | ✅ | 79.3% |
+| MRR | ✅ | 확인 완료 |
+| NDCG@K | ✅ | 확인 완료 |
+| MAP | ❌ | 미계산 |
+| AUC-ROC | ❌ | 미계산 |
+| Consensus Overlap | ❌ | 2B vs 2C 56.7% (부분 확인) |
+
+### 12-2. 종합 진행률
+
+```
+완료: 28/32 (87.5%)
+미완료: 4/32 (12.5%) — scaffold split, multi-seed, cross-dataset, MAP
 ```
 
 ---
@@ -818,110 +1044,12 @@ Step 5. 분자 그래프 GNN 추가 (Branch C) — 선택
 
 ---
 
-## 17. 32개 평가 지표 체크리스트
-
-### 17-1. 개요
-
-파이프라인의 전체 성능을 **32개 핵심 지표**로 평가합니다.
-- **Step 2~5**: 19개 (59.4%) ✅ 완료
-- **Step 6**: 13개 (40.6%) ⏳ 진행 예정
-
-### 17-2. ✅ 예측 성능 지표 (8/8 완료)
-
-| 지표 | 평가 방법 | 데이터 소스 | 상태 |
-|------|----------|------------|:----:|
-| **Spearman Correlation** | GroupCV (3-fold by drug) | JSON | ✅ |
-| **Pearson Correlation** | GroupCV (3-fold by drug) | JSON + OOF | ✅ |
-| **R² Score** | GroupCV (3-fold by drug) | JSON + OOF | ✅ |
-| **Kendall's Tau** | GroupCV (3-fold by drug) | JSON + OOF | ✅ |
-| **MAE** (Mean Absolute Error) | GroupCV (3-fold by drug) | JSON | ✅ |
-| **RMSE** (Root Mean Squared Error) | GroupCV (3-fold by drug) | JSON | ✅ |
-| **MedianAE** (Median Absolute Error) | GroupCV (3-fold by drug) | OOF npy | ✅ |
-| **P95 Error** (95th Percentile Error) | GroupCV (3-fold by drug) | OOF npy | ✅ |
-
-**주요 결과 (Lung Phase 2B):**
-- CatBoost: Spearman=0.4823, Pearson=0.5271, R²=0.2560, Kendall=0.3381
-
-### 17-3. ✅ 과적합 지표 (5/5 완료)
-
-| 지표 | 평가 방법 | 데이터 소스 | 상태 |
-|------|----------|------------|:----:|
-| **Train-Val Gap** | Train Spearman - Val Spearman | JSON | ✅ |
-| **Train/Val Ratio** | Train Spearman / Val Spearman | JSON | ✅ |
-| **Fold Std** | Std of 3-fold Spearman | JSON | ✅ |
-| **Train R²** | R² on training set | JSON | ✅ |
-| **Val R²** | R² on validation set | JSON | ✅ |
-
-**주요 결과 (Lung Phase 2B CatBoost):**
-- Train/Val Ratio: 1.81 (안정적, 과적합 낮음)
-- Train Spearman: 0.8705, Val Spearman: 0.4823
-
-### 17-4. ✅ 앙상블 지표 (6/6 완료)
-
-| 지표 | 평가 방법 | 데이터 소스 | 상태 |
-|------|----------|------------|:----:|
-| **Ensemble Gain** | Ensemble Spearman - Best Single | OOF npy | ✅ |
-| **Diversity Score** | Avg pairwise Spearman | OOF npy | ✅ |
-| **Error Overlap** | Shared error proportion | OOF npy | ✅ |
-| **Consensus Score** | Mean std of predictions | OOF npy | ✅ |
-| **Weighted vs Simple** | Performance comparison | OOF npy | ✅ |
-| **Best Combination** | Top ensemble config | OOF npy | ✅ |
-
-**주요 결과 (Lung Phase 3):**
-- Best Ensemble: Mixed Weighted (CatBoost+ResidualMLP+TabNet), Gain: +0.0033
-- Positive Gain: 4/24 (17%)
-- **권장**: 단일 CatBoost 모델 사용 (앙상블 효과 제한적)
-
-### 17-5. ⏳ 약물 랭킹 지표 (0/9 진행 예정 - Step 6)
-
-| 지표 | 평가 방법 | 데이터 소스 | 상태 |
-|------|----------|------------|:----:|
-| **Top 10 Hit Rate** | Top 10 약물 중 검증 데이터 적중률 | CPTAC/COSMIC/PRISM | ⏳ |
-| **Top 50 Hit Rate** | Top 50 약물 중 검증 데이터 적중률 | CPTAC/COSMIC/PRISM | ⏳ |
-| **Top 100 Hit Rate** | Top 100 약물 중 검증 데이터 적중률 | CPTAC/COSMIC/PRISM | ⏳ |
-| **Precision@10** | Top 10 정밀도 | Clinical Trials | ⏳ |
-| **Precision@50** | Top 50 정밀도 | Clinical Trials | ⏳ |
-| **Recall@100** | Top 100 재현율 | Clinical Trials | ⏳ |
-| **NDCG@10** | Normalized DCG (순위 품질) | CPTAC/COSMIC/PRISM | ⏳ |
-| **MRR** (Mean Reciprocal Rank) | 첫 적중 순위의 역수 평균 | CPTAC/COSMIC/PRISM | ⏳ |
-| **Coverage Rate** | 검증 데이터 커버리지 | CPTAC/COSMIC/PRISM | ⏳ |
-
-### 17-6. ⏳ 일반화 지표 (0/4 진행 예정)
-
-| 지표 | 평가 방법 | 데이터 소스 | 상태 |
-|------|----------|------------|:----:|
-| **Scaffold Split Performance** | Scaffold-based CV | Scaffold split | ⏳ |
-| **Multi-seed Consistency (Mean)** | 3+ 시드 평균 | Multiple seeds | ⏳ |
-| **Multi-seed Consistency (Std)** | 3+ 시드 표준편차 | Multiple seeds | ⏳ |
-| **Cross-dataset Validation** | 외부 데이터셋 검증 | CPTAC/COSMIC/PRISM | ⏳ |
-
-### 17-7. 지표 수집 현황 요약
-
-```
-✅ 완료: 19/32 (59.4%)
-  ├─ 예측 성능: 8/8
-  ├─ 과적합: 5/5
-  └─ 앙상블: 6/6
-
-⏳ 진행 예정: 13/32 (40.6%)
-  ├─ 약물 랭킹: 0/9 (Step 6)
-  └─ 일반화: 0/4 (Multi-seed, Scaffold split 필요)
-```
-
-### 17-8. 파일 위치
-
-- **종합 지표 CSV**: `results/lung_all_metrics_comprehensive.csv`
-- **체크리스트 CSV**: `results/lung_32_metrics_checklist.csv`
-- **대시보드 HTML**: `lung_pipeline_dashboard.html`
-- **Phase 3 앙상블 결과**: `results/lung_phase3_ensemble_results.json`
-
----
-
-## 18. 변경 이력
+## 17. 변경 이력
 
 | 날짜 | 버전 | 변경 내용 |
 |------|:----:|----------|
 | 2026-04-17 | v1.0 | 초안 작성 (BRCA 완료, Lung FE 완료 기준) |
 | 2026-04-19 | v1.1 | Phase 2+3 완료. Lung 앙상블 결과, BRCA vs Lung 비교표, 범용 모델 선택 전략 추가 |
 | 2026-04-19 | v1.2 | 향후 멀티모달 브랜치 전략 추가 (예정 사항 기재) |
-| 2026-04-19 | v1.3 | 32개 평가 지표 체크리스트 추가 (19/32 완료, 13/32 Step 6 예정) |
+| 2026-04-20 | v2.0 | Step 6 외부검증 결과(PRISM/COSMIC/CPTAC/ClinicalTrials), Step 7 ADMET 결과, 최종 Top 15 선정, 32개 지표 체크리스트 추가 |
+| 2026-04-20 | v2.1 | Step 8 Neo4j Knowledge Graph 적재 섹션 추가 |

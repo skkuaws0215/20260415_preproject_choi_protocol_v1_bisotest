@@ -266,30 +266,14 @@ params {
 | Morgan FP | ~2,048개 | ✅ Low var + High corr |
 | LINCS/Target/Pathway/Drug desc | ~25개 | ❌ 전부 유지 |
 
-### 7-3. 질병별 Feature Selection 결과
+### 7-3. BRCA 결과 참고
 
-#### BRCA (기준)
-
-| 항목 | 원본 | Selection 후 | 제거율 |
-|------|:----:|:------------:|:------:|
-| Gene | 18,310 | 4,415 | 75.9% |
-| Morgan FP | 2,048 | 1,094 | 46.6% |
-| 기타 | 25 | 25 | 0% |
-| **합계** | **20,383** | **5,534** | **72.8%** |
-
-#### Lung (완료, 2026-04-17)
-
-| 항목 | 원본 | Low Var 제거 | High Corr 제거 | 최종 | 제거율 |
-|------|:----:|:------------:|:--------------:|:----:|:------:|
-| Gene | 18,435 | 4,703 | 4,703 | **4,703** | 74.5% |
-| Morgan FP | 2,048 | 1,039 | 1,032 | **1,032** | 49.6% |
-| LINCS | 5 | - | - | **5** | 0% |
-| Target | 10 | - | - | **10** | 0% |
-| Drug desc | 9 | - | - | **9** | 0% |
-| Drug other | 5 | - | - | **5** | 0% |
-| **합계** | **20,512** | **-** | **-** | **5,764** | **71.9%** |
-
-**비교:** Lung 제거율(71.9%) vs BRCA(72.8%) → 거의 동일하여 일관성 확인 ✅
+| 항목 | 원본 | Selection 후 |
+|------|:----:|:------------:|
+| Gene | ~18,310 | 4,415 |
+| Morgan FP | ~2,048 | 1,094 |
+| 기타 | 25 | 25 |
+| 합계 | ~20,383 | 5,534 |
 
 ### 7-4. 산출물
 
@@ -389,63 +373,81 @@ feature_selection_log.json     → 단계별 제거 수 기록
 Spearman, Ensemble Gain, Diversity, Error Overlap, Consensus Score
 ```
 
-### 9-5. BRCA 결과
+### 9-5. BRCA 앙상블 결과
 
-| 순위 | 조합 | 입력셋 | 방식 | Spearman |
-|:----:|------|:------:|------|:--------:|
-| 1 | ML+DL 혼합 (RF+ResidualMLP+TabNet) | 2A | Weighted | **0.5521** |
-| 2 | ResidualMLP 단일 | 2C | - | 0.5493 |
-| 3 | FRC | 2C | Simple | 0.5452 |
+| 순위 | 조합 | 입력셋 | 방식 | GroupCV Spearman | Gain |
+|:----:|------|:------:|------|:----------------:|:----:|
+| 1 | ML+DL 혼합 (RF+ResidualMLP+TabNet) | 2A | Weighted | **0.5521** | +0.0112 |
+| 2 | ResidualMLP 단일 | 2C | - | 0.5493 | - |
+| 3 | ML Top3 | 2A | Weighted | 0.5455 | +0.0045 |
+| 4 | FRC | 2C | Simple | 0.5452 | 음수 |
 
-**BRCA 핵심 발견:**
-- 프로토콜 조합 Gain 전부 음수, 커스텀만 양수
-- Phase 2A에서 앙상블 효과 최대
-- SMILES/Context는 DL 단일에만 효과적, 앙상블에서는 diversity 감소
-- Diversity vs Error Overlap 상관: -0.997
+### 9-6. Lung 앙상블 결과
 
-### 9-6. Lung 결과 (2026-04-19)
-
-**양수 Gain 조합 (4/24):**
-
-| 순위 | 조합 | 입력셋 | 방식 | Spearman | Best Single | Gain |
-|:----:|------|:------:|------|:--------:|:-----------:|:----:|
-| 1 | ML+DL 혼합 (CatBoost+ResidualMLP+TabNet) | 2A | Weighted | 0.4797 | 0.4765 | **+0.0033** |
-| 2 | ML+DL 혼합 (CatBoost+ResidualMLP+TabNet) | 2A | Simple | 0.4790 | 0.4765 | +0.0025 |
-| 3 | DL Top3 (ResidualMLP+TabTransformer+TabNet) | 2C | Weighted | 0.4290 | 0.4277 | +0.0013 |
-| 4 | DL Top3 (ResidualMLP+TabTransformer+TabNet) | 2C | Simple | 0.4290 | 0.4277 | +0.0012 |
-
-**최종 추천:** Phase 2C **CatBoost 단일 모델** (Spearman: 0.5030)
+| 순위 | 조합 | 입력셋 | 방식 | GroupCV Spearman | Gain |
+|:----:|------|:------:|------|:----------------:|:----:|
+| 1 | CatBoost 단일 | 2C | - | **0.5030** | - |
+| 2 | ML+DL 혼합 (CatBoost+ResidualMLP+TabNet) | 2A | Weighted | 0.4797 | +0.0033 |
+| 3 | ML+DL 혼합 | 2A | Simple | 0.4790 | +0.0025 |
+| 4 | DL Top3 | 2C | Weighted | 0.4290 | +0.0013 |
 
 **Lung 핵심 발견:**
-- **앙상블 제한적 효과**: 24개 중 4개만 양수 Gain (17%)
-- **CatBoost 압도적 우위**: 대부분 앙상블보다 단일 모델 우수
-- 최대 Gain: +0.0033 (0.7% 향상) - 복잡도 대비 미미
-- Diversity vs Gain 상관: -0.2562 (p=0.2268) - 낮은 상관
-- Error Overlap 높음 (0.6~0.8) - 모델 간 유사한 오류 패턴
-- **결론**: 단일 모델(CatBoost) 사용 권장
+- 양수 Gain: 4/24 (17%), 최대 +0.0033
+- 음수 Gain: 20/24 (83%)
+- CatBoost 단일이 대부분 앙상블보다 우수
+- Error Overlap 높음 (0.6~0.8): 모델들이 비슷한 오류 발생
 
 ### 9-7. BRCA vs Lung 앙상블 비교
 
-| 지표 | BRCA | Lung | 차이점 |
-|------|------|------|--------|
-| **최고 단일 모델** | ResidualMLP (0.5493) | CatBoost (0.5030) | Lung은 ML 모델 우위 |
-| **최고 앙상블** | 혼합 Weighted (0.5521) | 혼합 Weighted (0.4797) | BRCA가 0.07 더 높음 |
-| **최대 Gain** | +0.0028 | +0.0033 | 유사 (둘 다 미미) |
-| **양수 Gain 비율** | TBD | 4/24 (17%) | Lung은 대부분 실패 |
-| **Diversity 효과** | 음수 상관 (-0.997) | 음수 상관 (-0.26) | 둘 다 높은 다양성≠높은 성능 |
-| **최종 추천** | ResidualMLP 단일 | CatBoost 단일 | **둘 다 단일 모델 권장** |
+| 항목 | BRCA | Lung | 비교 |
+|------|------|------|------|
+| 최고 앙상블 | Mixed Weighted 2A (0.5521) | Mixed Weighted 2A (0.4797) | BRCA +0.072 |
+| 최고 단일 | ResidualMLP 2C (0.5493) | CatBoost 2C (0.5030) | BRCA +0.046 |
+| 앙상블 vs 단일 | 앙상블 승 (+0.003) | 단일 승 (+0.023) | 다른 패턴 |
+| 최종 채택 | 앙상블 (0.5521) | 단일 (0.5030) | - |
+| 양수 Gain 수 | 6/24 | 4/24 | BRCA 더 많음 |
+| 모델 선호 | DL (ResidualMLP) | ML (CatBoost) | 질병별 다름 |
+| 앙상블 최고 Phase | 2A | 2A | **동일** |
+| 단일 최고 Phase | 2C | 2C | **동일** |
+| 최고 앙상블 조합 | Mixed Weighted | Mixed Weighted | **동일** |
+| 프로토콜 조합(FRC) Gain | 전부 음수 | 전부 음수 | **동일** |
 
-**공통 패턴:**
-- 앙상블 효과 제한적 (Gain < 0.01)
-- 단일 최고 모델이 앙상블과 비슷하거나 우수
-- 높은 Diversity가 성능 보장하지 않음
-- Phase 2A에서 앙상블 효과가 가장 큼
-- 복잡도 증가 대비 성능 향상 미미
+### 9-8. 단일 모델 Top 5 비교 (GroupCV)
 
-**차이점:**
-- BRCA: DL 모델(ResidualMLP) 최고
-- Lung: ML 모델(CatBoost) 최고
-- Lung은 앙상블 실패율이 더 높음 (83% vs TBD)
+**Phase 2A:**
+
+| 순위 | BRCA 모델 | BRCA Sp | Lung 모델 | Lung Sp |
+|:----:|-----------|:-------:|-----------|:-------:|
+| 1 | LightGBM | 0.5410 | CatBoost | 0.4765 |
+| 2 | ResidualMLP | 0.5343 | ResidualMLP | 0.4531 |
+| 3 | CatBoost | 0.5277 | TabTransformer | 0.4498 |
+| 4 | TabTransformer | 0.5201 | LightGBM | 0.4490 |
+| 5 | TabNet | 0.5189 | TabNet | 0.4369 |
+
+**Phase 2C:**
+
+| 순위 | BRCA 모델 | BRCA Sp | Lung 모델 | Lung Sp |
+|:----:|-----------|:-------:|-----------|:-------:|
+| 1 | ResidualMLP | 0.5493 | CatBoost | 0.5030 |
+| 2 | TabTransformer | 0.5483 | ResidualMLP | 0.4277 |
+| 3 | TabNet | 0.5449 | XGBoost | 0.4235 |
+| 4 | CatBoost | 0.5277 | TabTransformer | 0.4186 |
+| 5 | LightGBM | 0.5201 | LightGBM DART | 0.4142 |
+
+### 9-9. 입력셋 효과 비교
+
+**SMILES 추가 효과 (A→B, GroupCV):**
+
+| | BRCA ML 평균 | BRCA DL 평균 | Lung ML 평균 | Lung DL 평균 |
+|--|:---:|:---:|:---:|:---:|
+| A→B 변화 | +0.006 | +0.012 | -0.005 | -0.017 |
+
+**Context 추가 효과 (B→C, GroupCV):**
+
+| | BRCA ML 평균 | BRCA DL 평균 | Lung ML 평균 | Lung DL 평균 |
+|--|:---:|:---:|:---:|:---:|
+| B→C 변화 | -0.003 | +0.008 | -0.035 | -0.015 |
+| 예외 | - | - | CatBoost +0.021 | - |
 
 ---
 
@@ -691,9 +693,135 @@ CatBoost 단독 채택 (v3.1)
 
 ---
 
-## 15. 변경 이력
+## 15. 범용 모델 선택 전략
+
+> BRCA + Lung 2개 질병 실험 결과에서 도출된 전략.
+> 대장암, IPF, RA 등 추가 질병에서 검증 후 확정.
+
+### 15-1. 확인된 공통 패턴
+
+```
+2개 질병(BRCA, Lung) 모두에서 동일한 패턴:
+
+1. 앙상블 최고 Phase = 2A (numeric-only)
+2. 단일 모델 최고 Phase = 2C (+Context+SMILES)
+3. 앙상블 최고 조합 = Mixed Weighted (ML+DL 혼합)
+4. 프로토콜 기본 조합(FRC) = 항상 실패 (Gain 음수)
+5. SMILES/Context = DL 일부에만 효과, 앙상블에서는 diversity 감소
+```
+
+### 15-2. 질병별 다른 패턴
+
+| 항목 | BRCA | Lung | 의미 |
+|------|------|------|------|
+| 최종 채택 | 앙상블 | 단일 | 데이터 특성에 따라 다름 |
+| 선호 모델 유형 | DL (ResidualMLP) | ML (CatBoost) | 질병별 최적 모델 다름 |
+| 앙상블 Gain | +0.003 (미세 양수) | -0.023 (음수) | 앙상블 효과 질병별 차이 |
+| Context 효과 | DL에서 소폭 양수 | CatBoost에만 양수 | 활용 방식 다름 |
+
+### 15-3. 범용 파이프라인 전략
+
+```
+새 질병 투입
+    ↓
+Phase 2A 학습 (필수) — numeric-only
+Phase 2C 학습 (필수) — +Context+SMILES  
+Phase 2B (선택) — 시간 여유 있으면
+    ↓
+메인: Mixed Weighted 앙상블 (2A)
+  → CatBoost(Boosting) + ResidualMLP(Residual) + TabNet(Attention)
+  → 서로 다른 특성의 모델로 diversity 확보
+    ↓
+서브: 단일 모델 최고 (2C)
+  → CatBoost 또는 ResidualMLP (질병별 자동 선택)
+    ↓
+GroupCV 비교
+  → 앙상블 Gain 양수 → 앙상블 채택 (BRCA 패턴)
+  → 앙상블 Gain 음수 → 단일 채택 (Lung 패턴)
+```
+
+### 15-4. 검증 현황
+
+| 질병 | 메인 (앙상블 2A) | 서브 (단일 2C) | 채택 | 검증 |
+|------|:----------------:|:--------------:|:----:|:----:|
+| BRCA | 0.5521 | 0.5493 | 앙상블 | ✅ |
+| Lung | 0.4797 | 0.5030 | 단일 | ✅ |
+| 대장암 | - | - | - | 예정 |
+| IPF | - | - | - | 예정 |
+| RA | - | - | - | 예정 |
+
+### 15-5. 시간 최적화
+
+```
+기존: Phase 2A + 2B + 2C 전부 (3배 시간)
+최적화: Phase 2A + 2C만 필수 (2배 시간)
+  → 2B는 2A→2C 사이의 중간값이라 생략 가능
+  → 2A/2C 결과로 SMILES/Context 효과 판단 충분
+
+추가 최적화:
+  → 15개 모델 중 Graph 2개 스킵 가능 (시간 대비 효과 낮음)
+  → ExtraTrees GroupCV 스킵 가능 (Holdout으로 경향 확인)
+  → 실질 필수: ML 5개 + DL 7개 = 12개 모델 × 2 Phase = 24 실험
+```
+
+---
+
+## 16. 향후 확장: 멀티모달 브랜치 전략 (예정)
+
+> 이 섹션은 향후 이미지/Graph 모달리티 추가 시 참고용으로 기재.
+> 현재는 미구현. 타질병 baseline 완료 후 진행.
+
+### 16-1. 브랜치 구조
+
+```
+Branch A (기존, 현재 완료):
+  numeric features → ML/DL → 앙상블 A
+
+Branch B (신규, 예정):
+  이미지 데이터 → CNN/ViT → 앙상블 B
+
+Branch C (신규, 예정):
+  분자 그래프 (SMILES → GNN) → 앙상블 C
+
+최종 통합:
+  멀티모달 앙상블 (A + B + C) → 약물 랭킹
+```
+
+### 16-2. 질병별 이미지 데이터 가용성
+
+| 질병 | 이미지 데이터 | 소스 | Branch B 적용 |
+|------|:------------:|------|:------------:|
+| BRCA | ❌ | - | 불가 |
+| Lung | ✅ | CT, H&E 병리, CPTAC | 가능 |
+| 대장암 | ✅ | 병리 슬라이드 | 가능 |
+| IPF | ✅ | CT (폐 섬유화) | 가능 |
+| RA | ✅ | X-ray, MRI | 가능 |
+
+### 16-3. 브랜치 전략 장점
+
+```
+1. 기존 파이프라인 수정 없이 독립 개발/테스트
+2. Branch A가 baseline → 이미지 추가 효과 정확히 측정
+3. 이미지 모델 실패해도 기존 결과 영향 없음
+4. 이미지 데이터 없는 질병(BRCA)은 Branch A만 사용
+```
+
+### 16-4. 진행 순서 (예정)
+
+```
+Step 1. 타질병 현재 프로토콜 baseline 완료 (Branch A)  ← 현재 진행 중
+Step 2. 이미지 데이터 수집 및 전처리 (Branch B 준비)
+Step 3. 이미지 모델 학습 (CNN, ViT 등)
+Step 4. 멀티모달 앙상블 (A + B) 성능 비교
+Step 5. 분자 그래프 GNN 추가 (Branch C) — 선택
+```
+
+---
+
+## 17. 변경 이력
 
 | 날짜 | 버전 | 변경 내용 |
 |------|:----:|----------|
-| 2026-04-19 | v1.1 | Lung Phase 2+3 완료, 앙상블 분석 추가, BRCA vs Lung 비교 추가 |
 | 2026-04-17 | v1.0 | 초안 작성 (BRCA 완료, Lung FE 완료 기준) |
+| 2026-04-19 | v1.1 | Phase 2+3 완료. Lung 앙상블 결과, BRCA vs Lung 비교표, 범용 모델 선택 전략 추가 |
+| 2026-04-19 | v1.2 | 향후 멀티모달 브랜치 전략 추가 (예정 사항 기재) |

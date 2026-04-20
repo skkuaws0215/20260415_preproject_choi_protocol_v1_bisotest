@@ -77,6 +77,7 @@ tr:hover td{background:rgba(59,130,246,0.05)}
     <button class="nb" onclick="sp('validation',this)">✦ 외부검증</button>
     <button class="nb" onclick="sp('admet',this)">⊕ ADMET</button>
     <button class="nb" onclick="sp('neo4j',this)">⬡ Neo4j</button>
+    <button class="nb" onclick="sp('llm',this)">◉ LLM</button>
     <button class="nb" onclick="sp('future',this)">→ 향후 계획</button>
   </div>
 </div>
@@ -116,7 +117,7 @@ tr:hover td{background:rgba(59,130,246,0.05)}
   </div>
 
   <div class="sl">워크플로우</div>
-  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px">
+  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px">
     <div class="wc" onclick="sp('data',document.querySelectorAll('#navbtns .nb')[1])">
       <div class="wc-top"><span class="wc-icon" style="color:var(--green)">◆</span><span class="st st-done">완료</span></div>
       <div class="wc-title">Phase 1: 데이터</div><div class="wc-detail">125,427 pairs
@@ -146,6 +147,11 @@ Top 15 선정 완료</div>
       <div class="wc-top"><span class="wc-icon" style="color:var(--green)">◆</span><span class="st st-done">완료</span></div>
       <div class="wc-title">Step 8: Neo4j</div><div class="wc-detail">30,563 노드
 BRCA+Lung 공통 6개</div>
+    </div>
+    <div class="wc" onclick="sp('llm',document.querySelectorAll('#navbtns .nb')[7])">
+      <div class="wc-top"><span class="wc-icon" style="color:var(--green)">◆</span><span class="st st-done">완료</span></div>
+      <div class="wc-title">Step 9: LLM</div><div class="wc-detail">Ollama llama3.1
+7가지 질의 테스트 통과</div>
     </div>
   </div>
 </div>
@@ -539,6 +545,80 @@ BRCA+Lung 공통 6개</div>
   </div>
 </div>
 
+<!-- ===== LLM ===== -->
+<div id="pg-llm" class="page">
+  <div class="sl" style="margin-top:16px">Step 9: LLM 연동</div>
+  <h2 style="font-size:20px;font-weight:700;margin-bottom:20px">Ollama (llama3.1) · Neo4j 기반 자연어 질의</h2>
+
+  <div class="g4" style="margin-bottom:28px">
+    <div class="mc ac"><div class="ml2">LLM 엔진</div><div class="mv">Ollama</div><div class="ms">llama3.1 8B · 로컬 무료</div></div>
+    <div class="mc"><div class="ml2">질의 유형</div><div class="mv">7가지</div><div class="ms">테스트 전부 통과</div></div>
+    <div class="mc"><div class="ml2">API 엔드포인트</div><div class="mv">/api/chat</div><div class="ms">FastAPI 연동</div></div>
+    <div class="mc"><div class="ml2">향후 전환</div><div class="mv">Bedrock</div><div class="ms">다수 질병 완성 후</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">아키텍처</div>
+    <div class="code-block">
+      <div>사용자 질문</div>
+      <div style="color:var(--dim)">&nbsp;&nbsp;↓</div>
+      <div>FastAPI <span style="color:var(--cyan)">/api/chat</span></div>
+      <div style="color:var(--dim)">&nbsp;&nbsp;↓</div>
+      <div>질문 분석 → <span style="color:var(--green)">Neo4j Cypher 쿼리</span> 생성</div>
+      <div style="color:var(--dim)">&nbsp;&nbsp;↓</div>
+      <div>Neo4j 조회 (약물/질병/타겟/임상시험/부작용)</div>
+      <div style="color:var(--dim)">&nbsp;&nbsp;↓</div>
+      <div>조회 결과 + 질문 → <span style="color:var(--amber)">LLM (Ollama llama3.1)</span></div>
+      <div style="color:var(--dim)">&nbsp;&nbsp;↓</div>
+      <div style="color:var(--cyan)">근거 기반 답변 반환</div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-top:20px">
+    <div class="card">
+      <div class="card-title">지원 질의 유형 (7가지)</div>
+      <table>
+        <thead><tr><th>유형</th><th>예시 질문</th><th>Neo4j 쿼리</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--cyan)">약물 추천</td><td>"폐암에 효과적인 약물 추천해줘"</td><td>Drug-TREATS-Disease</td></tr>
+          <tr><td style="color:var(--purple)">크로스 질병</td><td>"유방암이랑 폐암 둘 다 쓰는 약물?"</td><td>공통 TREATS 조회</td></tr>
+          <tr><td style="color:var(--green)">임상시험</td><td>"Entinostat 임상시험 있어?"</td><td>Drug-IN_TRIAL</td></tr>
+          <tr><td>약물 상세</td><td>"Palbociclib 타겟이 뭐야?"</td><td>Drug-TARGETS-Target</td></tr>
+          <tr><td style="color:var(--red)">부작용</td><td>"Paclitaxel 부작용 알려줘"</td><td>Drug-HAS_SIDE_EFFECT</td></tr>
+          <tr><td style="color:var(--amber)">재창출</td><td>"다른 암에서 재창출 가능한 약물?"</td><td>category 필터</td></tr>
+          <tr><td>검증 근거</td><td>"Topotecan 근거가 뭐야?"</td><td>신뢰도 + 4개 소스</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">LLM 단계별 전환 전략</div>
+      <table>
+        <thead><tr><th>단계</th><th>LLM</th><th>비용</th><th>시점</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td style="color:var(--green)">현재</td><td>Ollama (llama3.1)</td><td style="color:var(--green)">무료</td><td>지금</td></tr>
+          <tr><td>향후</td><td>AWS Bedrock</td><td>유료</td><td>3+ 질병 완성 후</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:16px;padding:12px;background:var(--bg);border-radius:8px;font-size:11px;color:var(--muted);line-height:1.8">
+        <div><span style="color:var(--green)">전환 용이성:</span> 프롬프트 템플릿 동일 유지</div>
+        <div><span style="color:var(--green)">ollama_client.py</span> → <span style="color:var(--cyan)">bedrock_client.py</span> 교체만 필요</div>
+        <div>Neo4j → Neptune 마이그레이션과 동시 진행 가능</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <div class="card-title">구현 파일 구조</div>
+    <div class="code-block">
+      <div>20260409_scaleup_biso/</div>
+      <div>&nbsp;&nbsp;├── chat/api_server.py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--amber)">← /api/chat Ollama 연동 (수정)</span></div>
+      <div>&nbsp;&nbsp;├── llm/ollama_client.py&nbsp;&nbsp;&nbsp;<span style="color:var(--green)">← Ollama API 호출 (신규)</span></div>
+      <div>&nbsp;&nbsp;├── llm/neo4j_to_prompt.py&nbsp;<span style="color:var(--green)">← 질문→Cypher→프롬프트 (신규)</span></div>
+      <div>&nbsp;&nbsp;└── 기존 12개 엔드포인트&nbsp;&nbsp;&nbsp;<span style="color:var(--dim)">← 수정 없음</span></div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== FUTURE ===== -->
 <div id="pg-future" class="page">
   <div class="sl" style="margin-top:16px">향후 계획</div>
@@ -604,7 +684,7 @@ function sp(id, btn) {
   document.getElementById('pg-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
   else {
-    const map = {overview:0, data:1, training:2, ensemble:3, validation:4, admet:5, neo4j:6, future:7};
+    const map = {overview:0, data:1, training:2, ensemble:3, validation:4, admet:5, neo4j:6, llm:7, future:8};
     document.querySelectorAll('#navbtns .nb')[map[id]]?.classList.add('active');
   }
   window.scrollTo(0, 0);

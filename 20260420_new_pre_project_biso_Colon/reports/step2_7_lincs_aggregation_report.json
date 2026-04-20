@@ -1,0 +1,58 @@
+{
+  "input_lincs_signatures": 18823,
+  "input_unique_pert_iname": 10612,
+  "gdsc_total_drugs": 295,
+  "matched_signatures": 797,
+  "matched_unique_drugs": 91,
+  "match_rate_percent": 30.85,
+  "output_drugs": 91,
+  "output_genes": 12328,
+  "output_shape": [
+    91,
+    12329
+  ],
+  "missing_values": 0,
+  "output_file_mb": 12.81,
+  "matched_drug_examples": {
+    "1511": {
+      "name": "epirubicin",
+      "n_signatures": 3
+    },
+    "2055": {
+      "name": "mycophenolic-acid",
+      "n_signatures": 2
+    },
+    "1080": {
+      "name": "paclitaxel",
+      "n_signatures": 3
+    },
+    "1243": {
+      "name": "piperlongumine",
+      "n_signatures": 16
+    },
+    "1809": {
+      "name": "teniposide",
+      "n_signatures": 16
+    },
+    "1199": {
+      "name": "tamoxifen",
+      "n_signatures": 31
+    },
+    "1816": {
+      "name": "fulvestrant",
+      "n_signatures": 16
+    },
+    "1810": {
+      "name": "mitoxantrone",
+      "n_signatures": 3
+    },
+    "1012": {
+      "name": "vorinostat",
+      "n_signatures": 115
+    },
+    "1494": {
+      "name": "SN-38",
+      "n_signatures": 14
+    }
+  }
+}

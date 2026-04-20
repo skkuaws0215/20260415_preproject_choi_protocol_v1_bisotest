@@ -28,7 +28,7 @@
 |------|-------------|
 | GDSC2 | `Colon_raw/GDSC/GDSC2-dataset.csv` (품질 우선) |
 | DepMap | `Colon_raw/depmap/CRISPRGeneEffect.csv` — wide → long **직접 변환** |
-| LINCS | `curated_data/lincs/GSE92742/` 사용 (Lung 선례 일관) — `Colon_raw/LInc1000/GSE70138/` 보유하나 미사용 |
+| LINCS | `Colon_raw/LInc1000/GSE70138/` **만** 사용 — **GSE92742 미사용** (Lung 대비 차이 문서화) |
 | DrugBank | `Colon_raw/drugbank/` |
 | ChEMBL | `Colon_raw/chembl/` |
 | 루트 Parquet 4개 | `Colon_raw/` 루트의 집약 parquet — **입력에서 배제** (원시만 사용) |
@@ -56,9 +56,8 @@
 ## Subtype 태깅
 
 - **Stratified 평가:** COAD vs READ, MSI
-- **메타데이터 저장만:** RAS, BRAF, BRAF V600E (세부)
+- **메타데이터 저장만:** RAS, BRAF
 - **이번 라운드 미사용:** HER2, CMS, sidedness
-- **추가 카테고리 발견:** MACR (Mucinous Adenocarcinoma, 10.3%) — `primary_site` 필드에 그대로 보존, Step 6 평가 단계에서 처리 방침 결정 예정
 
 ## 메타데이터 (cBioPortal 최소 활용)
 
@@ -71,7 +70,7 @@
 ## Lung 대비 프로토콜 차이
 
 1. **전처리 신규:** Lung은 기존 `curated_data/` 활용 가정 — Colon은 전처리 단계부터 구축.
-2. **LINCS:** Colon과 Lung 모두 **GSE92742** 사용 (Colon 초기 계획 GSE70138에서 변경, sig_id prefix 검증으로 Lung 방식 따름). 자세한 경과는 `differences.md` 참조.
+2. **LINCS:** Colon은 **GSE70138만** — Lung은 **GSE92742** 중심.
 3. **Subtype + stratified 평가** 신규.
 4. **외부 검증:** GSE39582 추가 — Lung은 CPTAC 중심.
 5. **`Colon_raw/` 루트 parquet 4개 배제** — 원시 파이프라인만 사용.
@@ -81,16 +80,6 @@
 `curated_data/`, `data/`, `scripts/`, `logs/`, `reports/`, `results/`  
 `curated_data/{gdsc,depmap,lincs,drugbank,chembl,admet,cbioportal,geo,validation,processed}`  
 `curated_data/validation/{cosmic,prism,clinicaltrials}`
-
-## 실행 상태 (2026-04-20 기준)
-
-- **Step 2 (전처리) 완료**
-  - 7개 data/ 산출물 생성 완료
-  - 통합 QC ALL PASSED (이슈 0건)
-  - 상세 실행 기록: `differences.md` 참조
-- **Step 3+ (FE 이후) 미시작**
-  - v2.3 프로토콜 적용 예정 (수정 불필요)
-  - Nextflow on AWS Batch 환경
 
 ---
 

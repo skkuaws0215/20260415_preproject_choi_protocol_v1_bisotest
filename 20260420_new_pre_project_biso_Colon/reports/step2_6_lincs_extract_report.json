@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-04-20T19:13:56.854180",
+  "input": {
+    "gctx": "curated_data/lincs/GSE92742/GSE92742_Broad_LINCS_Level5_COMPZ.MODZ_n473647x12328.gctx.gz",
+    "sig_info": "curated_data/lincs/GSE92742/GSE92742_Broad_LINCS_sig_info.txt.gz"
+  },
+  "filter": {
+    "pert_type": "trt_cp",
+    "cells": [
+      "CL34",
+      "HCT116",
+      "HT115",
+      "HT29",
+      "LOVO",
+      "MDST8",
+      "NCIH508",
+      "RKO",
+      "SNU1040",
+      "SNUC5",
+      "SW480",
+      "SW620",
+      "SW948"
+    ]
+  },
+  "output": {
+    "path": "data/lincs_colon.parquet",
+    "shape": [
+      18823,
+      12336
+    ],
+    "size_mb": 1295.31,
+    "meta_cols": 8,
+    "gene_cols": 12328
+  },
+  "cell_distribution": {
+    "CL34": 356,
+    "HCT116": 363,
+    "HT115": 355,
+    "HT29": 14513,
+    "LOVO": 360,
+    "MDST8": 358,
+    "NCIH508": 360,
+    "RKO": 362,
+    "SNU1040": 361,
+    "SNUC5": 351,
+    "SW480": 363,
+    "SW620": 362,
+    "SW948": 359
+  },
+  "total_sigs": 18823,
+  "ht29_ratio": 0.771
+}

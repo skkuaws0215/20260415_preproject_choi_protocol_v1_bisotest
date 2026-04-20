@@ -1,0 +1,52 @@
+# Colon Pipeline Cursor Rules
+
+## Project
+Drug repurposing pipeline for Colorectal Cancer (COAD+READ).
+Base: /Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260420_new_pre_project_biso_Colon
+
+## Reference Sources (Read-Only)
+- Lung: .../20260415_preproject_choi_protocol_v1_bisotest-1/20260416_new_pre_project_biso_Lung
+- BRCA: /Users/skku_aws2_14/20260408_pre_project_biso_myprotocol/20260408_pre_project_biso_myprotocol
+
+## CRITICAL RULES
+1. curated_data/ is READ-ONLY. Never modify or delete.
+2. Colon_raw/ root 4 parquet files are EXCLUDED:
+   - drug_features_catalog.parquet
+   - drug_target_mapping.parquet
+   - gdsc_ic50.parquet
+   - lincs_drug_signature_normalized.parquet
+3. Use ONLY these Colon_raw/ subdirectories:
+   gdsc, depmap, lincs(GSE70138 only), drugbank, chembl, admet, cBioPortal, geo(GSE39582 only)
+4. DO NOT USE: gtex, msigdb, opentargets, string (baseline first)
+5. Copied scripts: modify ONLY BASE_DIR, paths, log messages. DO NOT change logic.
+6. Before modifying copied scripts, show DIFF and get approval.
+7. If error occurs, STOP and report. Do NOT solve arbitrarily.
+8. If uncertain, say "I don't know" and ask user.
+9. Do NOT use s3://say2-4team/20260409_eseo/ (not owned).
+
+## LINCS Cell Line Policy (FIXED)
+Include 13: CL34, HCT116, HT115, HT29, LOVO, MDST8, NCIH508, RKO, SNU1040, SNUC5, SW480, SW620, SW948
+Exclude: HELA, HELA.311 (cervical), HT29.311 (Cas9), NCIH716 (no data)
+
+## Subtype Tagging
+- For evaluation stratification: COAD/READ, MSI
+- Metadata only (no stratification): RAS, BRAF
+- Skipped this round: HER2, CMS, sidedness
+
+## When Writing Code
+- Use pathlib over os.path
+- Use f-strings
+- Add docstrings with input/output shapes
+- Log all file I/O with timestamps to logs/
+- Never hardcode credentials
+- Reference Lung/BRCA scripts by path comments when adapting
+
+## Coding Environment
+- Python 3.10, conda env: drug4
+- pandas, pyarrow for parquet
+- cmapPy for LINCS gctx parsing
+
+## Before Each Action
+- Show what files will be created/modified
+- Get approval before destructive operations
+- Run in order, confirm each step before next

@@ -1,0 +1,47 @@
+# Colon 파이프라인 Cursor Rules
+
+You are working on a drug repurposing pipeline for Colorectal Cancer (COAD+READ).
+
+## Project Base Path
+/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260420_new_pre_project_biso_Colon
+
+## Reference Pipeline (Lung)
+/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260416_new_pre_project_biso_Lung
+
+## CRITICAL RULES - NEVER VIOLATE
+1. curated_data/ is READ-ONLY. Never modify or delete.
+2. s3://say2-4team/Colon_raw/ root parquet files (4 files) are EXCLUDED:
+   - drug_features_catalog.parquet
+   - drug_target_mapping.parquet
+   - gdsc_ic50.parquet
+   - lincs_drug_signature_normalized.parquet
+3. Use ONLY these Colon_raw/ subdirectories: gdsc, depmap, lincs(GSE70138 only), drugbank, chembl, admet, cBioPortal, geo(GSE39582 only)
+4. DO NOT USE: gtex, msigdb, opentargets, string (baseline first)
+5. Protocol (code) = reuse Lung original. Data = Colon-specific only.
+6. If proxy data needed, STOP and ask user.
+7. If error occurs, STOP and report. Do NOT solve arbitrarily.
+8. If uncertain, say "I don't know" and ask user.
+
+## Subtype Tagging Policy
+- For evaluation stratification: COAD/READ, MSI
+- Metadata only (record but don't stratify): RAS, BRAF
+- Skipped this round: HER2, CMS, sidedness
+
+## External Validation (Option B)
+1st round: CPTAC-CRC + GSE39582 + COSMIC-CRC + PRISM(CRC) + ClinicalTrials(CRC)
+2nd round (later): GSE17536, GSE17538
+
+## When Writing Code
+- Always add language-level type hints
+- Add docstrings with input/output shapes
+- Log all file I/O with timestamps
+- Use logs/ directory for all logs
+- Never hardcode credentials
+- Reference Lung scripts by path comments when adapting
+
+## Coding Preferences
+- Python 3.10, conda env: drug4
+- Prefer pathlib over os.path
+- Prefer f-strings
+- Use pandas/pyarrow for parquet
+- Explicit error messages with file paths

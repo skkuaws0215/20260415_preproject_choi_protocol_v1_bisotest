@@ -1,0 +1,252 @@
+{
+  "timestamp": "2026-04-20T19:38:34.329241",
+  "files": {
+    "labels": {
+      "exists": true,
+      "size_bytes": 130339,
+      "size_mb": 0.12
+    },
+    "drug_features": {
+      "exists": true,
+      "size_bytes": 27239,
+      "size_mb": 0.03
+    },
+    "drug_target_mapping": {
+      "exists": true,
+      "size_bytes": 5902,
+      "size_mb": 0.01
+    },
+    "lincs_colon": {
+      "exists": true,
+      "size_bytes": 1358230780,
+      "size_mb": 1295.31
+    },
+    "lincs_colon_drug_level": {
+      "exists": true,
+      "size_bytes": 12808727,
+      "size_mb": 12.22
+    },
+    "colon_subtype_metadata": {
+      "exists": true,
+      "size_bytes": 23033,
+      "size_mb": 0.02
+    },
+    "depmap_crispr_long": {
+      "exists": true,
+      "size_bytes": 173964791,
+      "size_mb": 165.91
+    }
+  },
+  "schemas": {
+    "labels": {
+      "shape": [
+        12538,
+        4
+      ],
+      "columns": [
+        "sample_id",
+        "canonical_drug_id",
+        "ic50",
+        "binary_label"
+      ],
+      "n_columns": 4,
+      "dtypes_sample": {
+        "sample_id": "object",
+        "canonical_drug_id": "object",
+        "ic50": "float64",
+        "binary_label": "int64"
+      }
+    },
+    "drug_features": {
+      "shape": [
+        295,
+        5
+      ],
+      "columns": [
+        "canonical_drug_id",
+        "canonical_smiles",
+        "canonical_smiles_raw",
+        "drug_name_norm",
+        "has_smiles"
+      ],
+      "n_columns": 5,
+      "dtypes_sample": {
+        "canonical_drug_id": "object",
+        "canonical_smiles": "object",
+        "canonical_smiles_raw": "object",
+        "drug_name_norm": "object",
+        "has_smiles": "int64"
+      }
+    },
+    "drug_target_mapping": {
+      "shape": [
+        485,
+        2
+      ],
+      "columns": [
+        "canonical_drug_id",
+        "target_gene_symbol"
+      ],
+      "n_columns": 2,
+      "dtypes_sample": {
+        "canonical_drug_id": "object",
+        "target_gene_symbol": "object"
+      }
+    },
+    "lincs_colon": {
+      "shape": [
+        18823,
+        12336
+      ],
+      "columns": [
+        "sig_id",
+        "5720",
+        "466",
+        "6009",
+        "2309",
+        "387",
+        "3553",
+        "427",
+        "5898",
+        "23365",
+        "6657",
+        "5054",
+        "3108",
+        "1950",
+        "351"
+      ],
+      "n_columns": 12336,
+      "dtypes_sample": {
+        "sig_id": "object",
+        "5720": "float32",
+        "466": "float32",
+        "6009": "float32",
+        "2309": "float32",
+        "387": "float32",
+        "3553": "float32",
+        "427": "float32",
+        "5898": "float32",
+        "23365": "float32"
+      }
+    },
+    "lincs_colon_drug_level": {
+      "shape": [
+        91,
+        12329
+      ],
+      "columns": [
+        "canonical_drug_id",
+        "5720",
+        "466",
+        "6009",
+        "2309",
+        "387",
+        "3553",
+        "427",
+        "5898",
+        "23365",
+        "6657",
+        "5054",
+        "3108",
+        "1950",
+        "351"
+      ],
+      "n_columns": 12329,
+      "dtypes_sample": {
+        "canonical_drug_id": "object",
+        "5720": "float32",
+        "466": "float32",
+        "6009": "float32",
+        "2309": "float32",
+        "387": "float32",
+        "3553": "float32",
+        "427": "float32",
+        "5898": "float32",
+        "23365": "float32"
+      }
+    },
+    "colon_subtype_metadata": {
+      "shape": [
+        594,
+        11
+      ],
+      "columns": [
+        "patient_id",
+        "sample_id",
+        "primary_site",
+        "oncotree_code",
+        "msi_score_mantis",
+        "msi_sensor_score",
+        "msi_status",
+        "subtype",
+        "ras_mutation",
+        "braf_mutation",
+        "braf_v600e"
+      ],
+      "n_columns": 11,
+      "dtypes_sample": {
+        "patient_id": "object",
+        "sample_id": "object",
+        "primary_site": "object",
+        "oncotree_code": "object",
+        "msi_score_mantis": "float64",
+        "msi_sensor_score": "float64",
+        "msi_status": "object",
+        "subtype": "object",
+        "ras_mutation": "int64",
+        "braf_mutation": "int64"
+      }
+    },
+    "depmap_crispr_long": {
+      "shape": [
+        20443404,
+        3
+      ],
+      "columns": [
+        "cell_line_name",
+        "gene_name",
+        "dependency"
+      ],
+      "n_columns": 3,
+      "dtypes_sample": {
+        "cell_line_name": "object",
+        "gene_name": "object",
+        "dependency": "float64"
+      }
+    }
+  },
+  "consistency": {
+    "labels_vs_features": {
+      "labels": 295,
+      "features": 295,
+      "intersection": 295,
+      "labels_only": 0,
+      "features_only": 0
+    },
+    "dtm_subset_of_features": true,
+    "lincs_subset_of_features": true,
+    "labels_cells": 46,
+    "labels_in_depmap": 15,
+    "labels_not_in_depmap": 31,
+    "lincs_cells": 13
+  },
+  "statistics": {
+    "drug_features_nan_cols": {
+      "canonical_smiles": 17.63,
+      "canonical_smiles_raw": 17.63
+    },
+    "colon_subtype_metadata_nan_cols": {
+      "msi_score_mantis": 6.23,
+      "msi_sensor_score": 1.68,
+      "msi_status": 6.23,
+      "subtype": 22.73
+    },
+    "binary_label_distribution": {
+      "0": 8776,
+      "1": 3762
+    },
+    "lincs_ht29_pct": 77.1
+  },
+  "issues": [],
+  "passed": true
+}

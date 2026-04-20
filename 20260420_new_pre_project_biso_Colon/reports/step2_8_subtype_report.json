@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-04-20T19:33:52.324014",
+  "input": {
+    "clinical_sample": "/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260420_new_pre_project_biso_Colon/curated_data/cbioportal/coadread_tcga_pan_can_atlas_2018/data_clinical_sample.txt",
+    "clinical_patient": "/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260420_new_pre_project_biso_Colon/curated_data/cbioportal/coadread_tcga_pan_can_atlas_2018/data_clinical_patient.txt",
+    "mutations": "/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260420_new_pre_project_biso_Colon/curated_data/cbioportal/coadread_tcga_pan_can_atlas_2018/data_mutations.txt"
+  },
+  "config": {
+    "msi_mantis_threshold": 0.4,
+    "excluded_variant_classes": [
+      "3'Flank",
+      "3'UTR",
+      "5'Flank",
+      "5'UTR",
+      "IGR",
+      "Intron",
+      "RNA",
+      "Silent",
+      "Splice_Region"
+    ]
+  },
+  "output": {
+    "path": "/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260420_new_pre_project_biso_Colon/data/colon_subtype_metadata.parquet",
+    "shape": [
+      594,
+      11
+    ]
+  },
+  "stats": {
+    "total_samples": 594,
+    "primary_site": {
+      "COAD": 378,
+      "READ": 155,
+      "MACR": 61
+    },
+    "msi_status": {
+      "MSS": 468,
+      "MSI-H": 89
+    },
+    "subtype_top10": {
+      "COAD_CIN": 226,
+      "nan": 135,
+      "READ_CIN": 102,
+      "COAD_MSI": 60,
+      "COAD_GS": 49,
+      "READ_GS": 9,
+      "COAD_POLE": 6,
+      "READ_POLE": 4,
+      "READ_MSI": 3
+    },
+    "ras_mutation_positive": 246,
+    "braf_mutation_positive": 62,
+    "braf_v600e_positive": 48,
+    "msi_h_count": 89,
+    "mss_count": 468
+  }
+}

@@ -614,8 +614,55 @@ BRCA+Lung 공통 6개</div>
       <div>&nbsp;&nbsp;├── chat/api_server.py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--amber)">← /api/chat Ollama 연동 (수정)</span></div>
       <div>&nbsp;&nbsp;├── llm/ollama_client.py&nbsp;&nbsp;&nbsp;<span style="color:var(--green)">← Ollama API 호출 (신규)</span></div>
       <div>&nbsp;&nbsp;├── llm/neo4j_to_prompt.py&nbsp;<span style="color:var(--green)">← 질문→Cypher→프롬프트 (신규)</span></div>
+      <div>&nbsp;&nbsp;├── static/index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--green)">← 채팅 UI (신규)</span></div>
       <div>&nbsp;&nbsp;└── 기존 12개 엔드포인트&nbsp;&nbsp;&nbsp;<span style="color:var(--dim)">← 수정 없음</span></div>
     </div>
+  </div>
+
+  <div class="g2" style="margin-top:20px">
+    <div class="card" style="border-color:rgba(34,211,238,0.3)">
+      <div class="card-title" style="color:var(--cyan)">채팅 UI 접속 방법</div>
+      <div class="code-block">
+        <div><span style="color:var(--cyan)">채팅 UI:</span> http://localhost:8000/</div>
+        <div><span style="color:var(--dim)">Swagger:</span> http://localhost:8000/docs</div>
+        <div style="margin-top:12px"><span style="color:var(--amber)">서버 실행:</span></div>
+        <div>&nbsp;&nbsp;conda activate drug4-kg</div>
+        <div>&nbsp;&nbsp;ollama serve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--dim)">← 터미널 1</span></div>
+        <div>&nbsp;&nbsp;python3 chat/api_server.py&nbsp;<span style="color:var(--dim)">← 터미널 2</span></div>
+        <div style="margin-top:12px"><span style="color:var(--purple)">외부 접속:</span></div>
+        <div>&nbsp;&nbsp;ngrok http 8000</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">채팅 UI 기능</div>
+      <table>
+        <thead><tr><th>기능</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>예시 질문 버튼</td><td>4개 (클릭 시 자동 입력)</td></tr>
+          <tr><td>자유 입력</td><td>Enter 또는 전송 버튼</td></tr>
+          <tr><td>메타데이터</td><td>Intent, Source 표시</td></tr>
+          <tr><td>로딩 표시</td><td>점 3개 애니메이션</td></tr>
+          <tr><td>반응형</td><td>모바일/데스크톱 지원</td></tr>
+          <tr><td>한국어</td><td>질문·답변 완벽 지원</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <div class="card-title">질의 테스트 결과 (7/7 통과)</div>
+    <table>
+      <thead><tr><th>#</th><th>질문</th><th>Intent</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>폐암에 효과적인 약물 추천해줘</td><td>drug_recommendation</td><td style="color:var(--green)">✅ Top 3 추천</td></tr>
+        <tr><td>2</td><td>유방암+폐암 공통 약물은?</td><td>drug_comparison</td><td style="color:var(--green)">✅ 6개 공통 약물</td></tr>
+        <tr><td>3</td><td>Entinostat 임상시험 있어?</td><td>trial_info</td><td style="color:var(--green)">✅ 13건 확인</td></tr>
+        <tr><td>4</td><td>Palbociclib 타겟이 뭐야?</td><td>target_info</td><td style="color:var(--green)">✅ 정확 응답</td></tr>
+        <tr><td>5</td><td>Paclitaxel 부작용 알려줘</td><td>side_effect</td><td style="color:var(--green)">✅ 부작용 설명</td></tr>
+        <tr><td>6</td><td>재창출 가능한 약물 알려줘</td><td>general</td><td style="color:var(--green)">✅ 통계 제공</td></tr>
+        <tr><td>7</td><td>Topotecan 검증 근거가 뭐야?</td><td>drug_info</td><td style="color:var(--green)">✅ Score/신뢰도</td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 

@@ -11,6 +11,7 @@
 | Step 0-1 | Stad_raw 기반 raw 수집/동기화 스크립트 구성 완료                     |
 | Step 2   | 전처리 완료 + depmap 재필터링 (filter_stad_depmap_to_labels.py 포함) |
 | Step 3   | FE 완료 (AWS Batch), features_rows=5118, sample join 83.3%          |
+| Step 3.5~5 | 대기 중 (Colon 완료 후 이식; v2.4 Scaffold split 포함, ML→DL→Graph 순서) |
 | Step 6   | STAD config 기반 외부검증 실행 경로 구성 완료 (Top30 대기)          |
 
 

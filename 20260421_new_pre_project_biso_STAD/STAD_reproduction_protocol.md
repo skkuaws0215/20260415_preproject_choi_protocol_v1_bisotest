@@ -126,6 +126,69 @@ nextflow run main.nf -profile awsbatch \
 
 최초 실행 이력: 2026-04-21
 
+## §3.5 학습 / 앙상블 (Step 3.5~5) — 대장암 완료 후 이식 예정
+
+**프로토콜 기반:** v2.4 (2026-04-21, Scaffold Split 공식화)
+
+#### STAD 실행 순서 (ML → DL → Graph, Scaffold 처음부터 포함)
+
+대장암(Colon)은 모델 측정 진행 중간에 Scaffold split이 사후 도입되어
+실행 순서가 꼬임(ml/dl 측정 후 역으로 scaffold 추가 등).
+STAD는 **Colon 구현 완료 후** 깔끔한 순서로 이식한다.
+
+실행 순서:
+1. **ML Phase 2A/2B/2C** (Holdout + 5-Fold CV + GroupCV + ScaffoldCV)
+2. **DL Phase 2A/2B/2C** (동일 4종 평가)
+3. **Graph Phase 2A/2B/2C** (GroupCV + ScaffoldCV, ⚠️ Scaffold 해석 주의)
+4. **앙상블 (Phase 3)**: 결과 통합, Top30 추출
+5. **최종 종합 평가 (Phase 2 comprehensive metrics)**
+
+#### 이식 대상 구현 (Colon에서 작업 중)
+
+- 전체 실험: Phase 2A/2B/2C × (ML 6 + DL 7 + Graph 2) = 45 실험
+- 평가 방식 4종:
+  - Holdout (train:test = 8:2)
+  - 5-Fold CV (일반 KFold)
+  - GroupCV (drug split, canonical_drug_id 기준 3-fold)
+  - **ScaffoldCV (v2.4 신규, Murcko scaffold 기준 3-fold)**
+
+#### Scaffold Split 구현 (Colon 참조)
+
+핵심 스크립트 (Colon에서 이식 예정):
+- `compute_scaffolds.py` — RDKit MurckoScaffoldSmiles 계산
+- `run_ml_scaffold_all.py` — ML 6 모델 × 3 Phase
+- `run_dl_scaffold_all.py` — DL 7 모델 × 3 Phase
+- `run_graph_scaffold_all.py` — Graph 2 모델 × 3 Phase
+
+설정:
+- `eval_mode='scaffoldcv'`
+- 결과 파일 접미사: `_scaffoldcv.json`
+- GroupKFold 구조는 drug split과 동일, `groups` 파라미터만 scaffold_id로 교체
+
+#### ⚠️ Graph + Scaffold 해석 주의 (v2.4 §8-2)
+
+Graph 모델(GraphSAGE, GAT)에 Scaffold split 적용 시, **KNN graph의 edge가
+scaffold 경계를 넘을 수 있음** (transductive 특성상 val 노드가 train 노드의
+이웃이 될 수 있음). 이로 인해:
+
+- 완전히 엄격한 scaffold 검증은 불가능
+- **상대적 비교**는 유효
+- 결과 해석 시 반드시 "Graph+Scaffold는 상대 비교만" 명시할 것
+
+#### STAD 적용 예상
+
+- labels: 24 cells, 20 CRISPR 포함, 295 drugs
+- Scaffold 수: Colon 결과 참고 후 Step 3.5 진입 시점에 업데이트
+- 예상 산출: `results/stad_top30_phase2b_catboost_with_names.csv`,
+  `stad_top30_phase2c_catboost_with_names.csv`,
+  `stad_top30_unified_2b_and_2c_with_names.csv` (Step 6 전제)
+
+#### STAD 적용 시점
+
+- **Colon Step 4 완료 후** 시작
+- Colon의 `run_*_scaffold_all.py` 등을 STAD 경로로 이식
+- STAD는 Colon의 retrofitting 순서 꼬임 없이 처음부터 ML→DL→Graph 순서로 깔끔히 실행
+
 ## 4. 외부검증 (Step 6)
 
 Step 6 실행 전, 학습 산출 Top30 CSV 3종이 필요합니다.

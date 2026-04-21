@@ -5,8 +5,8 @@
 ## 개요
 
 - **질병:** 위암 (Stomach adenocarcinoma, **TCGA-STAD**)
-- **목표:** drug repurposing 파이프라인 (프로토콜 v2.3) — **코드는 Colon/Lung과 동일 구조**, **데이터만 STAD**
-- **기반 프로토콜:** `drug_repurposing_pipeline_protocol.md` v2.3 (Downloads 사본)
+- **목표:** drug repurposing 파이프라인 (프로토콜 v2.4) — **코드는 Colon/Lung과 동일 구조**, **데이터만 STAD**
+- **기반 프로토콜:** `drug_repurposing_pipeline_protocol.md` v2.4 (Downloads 사본, Scaffold Split §8-3 공식 도입, Colon 기준 이식 예정)
 - **참조 코드:** [20260420_new_pre_project_biso_Colon](../20260420_new_pre_project_biso_Colon), [20260416_new_pre_project_biso_Lung](../20260416_new_pre_project_biso_Lung)
 
 ## 현재 운영 상태 (2026-04-21 갱신)
@@ -86,7 +86,7 @@ for drug repurposing evidence, with LINCS used as supporting signal for AGS only
 - **GitHub:** `skkuaws0215/20260415_preproject_choi_protocol_v1_bisotest` — choi_protocol 학습·앙상블 코드는 저장소 내 기존 경로(팀 가이드 `PROTOCOL_CHOI_통합실행가이드` 참조)
 - **연결 방식:** 본 프로젝트 `data/` 산출물(`labels.parquet`, `drug_features.parquet`, `depmap/depmap_crispr_long_stad.parquet`, `lincs_stad_drug_level_with_crispr_prefix.parquet`, `drug_target_mapping.parquet`) 경로를 학습 설정에 **STAD S3** (`params.s3_base` 아래 `data/`)로 지정
 - **Nextflow dry-run:** 로컬에서 `cd nextflow && nextflow config .` — Batch 전 `params` 해석 확인
-- **Neo4j:** Disease 코드 `STAD`, Top-N 속성·검증 필드는 프로토콜 v2.3 Lung §12-2 패턴 복제
+- **Neo4j:** Disease 코드 `STAD`, Top-N 속성·검증 필드는 프로토콜 v2.4 Lung §12-2 패턴 복제
 
 ## 절대 규칙 요약
 

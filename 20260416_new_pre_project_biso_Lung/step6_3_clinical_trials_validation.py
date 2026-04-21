@@ -8,62 +8,91 @@ Step 6.3: Clinical Trials Validation
 """
 
 import json
+import sys
+from pathlib import Path
+
+_LUNG = Path(__file__).resolve().parent
+if str(_LUNG) not in sys.path:
+    sys.path.insert(0, str(_LUNG))
+
 import pandas as pd
 import numpy as np
-from pathlib import Path
 import re
 
-def load_clinical_trials_data():
+from step6_validation_context import Step6ValidationContext
+
+
+def load_clinical_trials_data(ctx: Step6ValidationContext):
     """Load Clinical Trials JSON data."""
 
     print("="*80)
     print("STEP 6.3: CLINICAL TRIALS VALIDATION")
     print("="*80)
 
-    ct_base = 'curated_data/validation/clinicaltrials/'
+    lines: list[str] = []
+
+    if not ctx.clinical_trials_enabled or ctx.clinical_trials_base is None:
+        print("\n⚠️  ClinicalTrials: disabled or base_dir not set — skip")
+        lines.append("clinical_trials: skipped (disabled or missing base_dir)")
+        ctx.merge_step_sources("6.3_clinical_trials", lines)
+        return []
+
+    ct_base = ctx.clinical_trials_base
+    stem = ctx.clinical_trials_stem
+    lines.append(f"clinical_trials.base_dir={ct_base}")
+    lines.append(f"clinical_trials.file_stem={stem}")
 
     # Load summary first
-    summary_file = f'{ct_base}clinicaltrials_lung_cancer_summary.json'
-    if Path(summary_file).exists():
-        with open(summary_file, 'r') as f:
+    summary_file = ct_base / f"{stem}_summary.json"
+    if summary_file.exists():
+        with open(summary_file, "r", encoding="utf-8") as f:
             summary = json.load(f)
         print(f"\n✓ Clinical Trials Summary:")
         print(f"  - Query: {summary.get('query')}")
         print(f"  - Total studies: {summary.get('study_count')}")
         print(f"  - Pages: {summary.get('pages')}")
+        lines.append(f"read summary {summary_file}")
 
     # Load all studies (this is large - 384 MB)
-    all_studies_file = f'{ct_base}clinicaltrials_lung_cancer_all_studies.json'
+    all_studies_file = ct_base / f"{stem}_all_studies.json"
 
-    if not Path(all_studies_file).exists():
+    if not all_studies_file.exists():
         print(f"\n⚠️  All studies file not found: {all_studies_file}")
         print("Loading from paginated files instead...")
 
-        # Load from page files
-        all_studies = []
-        for page_num in range(1, 16):  # 15 pages
-            page_file = f'{ct_base}clinicaltrials_lung_cancer_page_{page_num:03d}.json'
-            if Path(page_file).exists():
-                print(f"  Loading page {page_num}/15...", end='\r')
-                with open(page_file, 'r') as f:
-                    page_data = json.load(f)
-                    if 'studies' in page_data:
-                        all_studies.extend(page_data['studies'])
+        # Load from page files (discover by glob)
+        all_studies: list = []
+        page_files = sorted(ct_base.glob(f"{stem}_page_*.json"))
+        if not page_files:
+            print(f"\n⚠️  No paginated files matching {stem}_page_*.json under {ct_base}")
+            lines.append("clinical_trials: no paginated page files found")
+            ctx.merge_step_sources("6.3_clinical_trials", lines)
+            return []
+
+        for i, page_file in enumerate(page_files, start=1):
+            print(f"  Loading page {i}/{len(page_files)}...", end="\r")
+            with open(page_file, "r", encoding="utf-8") as f:
+                page_data = json.load(f)
+            if "studies" in page_data:
+                all_studies.extend(page_data["studies"])
+            lines.append(f"read paginated {page_file}")
 
         print(f"\n✓ Loaded {len(all_studies)} studies from paginated files")
+        ctx.merge_step_sources("6.3_clinical_trials", lines)
         return all_studies
 
-    print(f"\nLoading: {Path(all_studies_file).name} (this may take a while...)")
-    with open(all_studies_file, 'r') as f:
+    print(f"\nLoading: {all_studies_file.name} (this may take a while...)")
+    with open(all_studies_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    if 'studies' in data:
-        studies = data['studies']
+    if "studies" in data:
+        studies = data["studies"]
     else:
         studies = data
 
     print(f"✓ Loaded {len(studies)} studies")
-
+    lines.append(f"read combined {all_studies_file}")
+    ctx.merge_step_sources("6.3_clinical_trials", lines)
     return studies
 
 def extract_interventions(studies):
@@ -226,13 +255,26 @@ def calculate_clinical_trial_metrics(top30_2b, top30_2c, ct_matches):
 
     return results
 
-def main():
+def main(argv=None):
+    ctx = Step6ValidationContext.load(argv)
+    for label, p in [
+        ("top30_2b", ctx.top30_2b),
+        ("top30_2c", ctx.top30_2c),
+        ("top30_unified", ctx.top30_unified),
+    ]:
+        if not p.exists():
+            raise FileNotFoundError(f"Required input missing ({label}): {p}")
+
     # Load clinical trials data
-    studies = load_clinical_trials_data()
+    studies = load_clinical_trials_data(ctx)
 
     if not studies:
-        print("\n❌ Cannot proceed without clinical trials data!")
-        return None
+        print("\n⚠️  No clinical trials data — writing empty metrics and exiting.")
+        results = {"ct_matched_drugs": 0, "ct_match_rate": 0.0, "note": "clinical_trials_skipped_or_empty"}
+        ctx.results_json("clinical_trials_validation_results").parent.mkdir(parents=True, exist_ok=True)
+        with open(ctx.results_json("clinical_trials_validation_results"), "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2)
+        return results
 
     # Extract interventions
     ct_interventions = extract_interventions(studies)
@@ -246,13 +288,13 @@ def main():
     print("LOADING TOP 30 DRUGS")
     print(f"{'─'*80}")
 
-    top30_2b = pd.read_csv('results/lung_top30_phase2b_catboost_with_names.csv')
-    top30_2c = pd.read_csv('results/lung_top30_phase2c_catboost_with_names.csv')
-    unified = pd.read_csv('results/lung_top30_unified_2b_and_2c_with_names.csv')
+    top30_2b = pd.read_csv(ctx.top30_2b)
+    top30_2c = pd.read_csv(ctx.top30_2c)
+    unified = pd.read_csv(ctx.top30_unified)
 
-    print(f"✓ Phase 2B: {len(top30_2b)} drugs")
-    print(f"✓ Phase 2C: {len(top30_2c)} drugs")
-    print(f"✓ Unified: {len(unified)} drugs")
+    print(f"✓ Phase 2B: {len(top30_2b)} drugs ({ctx.top30_2b})")
+    print(f"✓ Phase 2C: {len(top30_2c)} drugs ({ctx.top30_2c})")
+    print(f"✓ Unified: {len(unified)} drugs ({ctx.top30_unified})")
 
     # Match GDSC to clinical trials
     ct_matches = match_gdsc_to_clinical_trials(unified, ct_interventions)
@@ -266,14 +308,16 @@ def main():
             'note': 'No matches found'
         }
 
-        with open('results/lung_clinical_trials_validation_results.json', 'w') as f:
+        with open(ctx.results_json("clinical_trials_validation_results"), "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
 
         return results
 
     # Save matched drugs
-    ct_matches.to_csv('results/lung_clinical_trials_matched_drugs.csv', index=False)
-    print(f"\n✓ Saved: results/lung_clinical_trials_matched_drugs.csv")
+    out_csv = ctx.results_csv("clinical_trials_matched_drugs")
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    ct_matches.to_csv(out_csv, index=False)
+    print(f"\n✓ Saved: {out_csv}")
 
     # Calculate metrics
     metrics = calculate_clinical_trial_metrics(top30_2b, top30_2c, ct_matches)
@@ -284,15 +328,15 @@ def main():
         metrics['ct_match_rate'] = ct_matches['canonical_drug_id'].nunique() / len(unified)
         metrics['ct_total_trials'] = len(ct_matches)
 
-        with open('results/lung_clinical_trials_validation_results.json', 'w') as f:
+        with open(ctx.results_json("clinical_trials_validation_results"), "w", encoding="utf-8") as f:
             json.dump(metrics, f, indent=2)
 
         print(f"\n{'='*80}")
         print("CLINICAL TRIALS VALIDATION COMPLETE")
         print(f"{'='*80}")
-        print(f"✓ Saved: results/lung_clinical_trials_validation_results.json")
+        print(f"✓ Saved: {ctx.results_json('clinical_trials_validation_results')}")
 
     return metrics
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

@@ -7,21 +7,56 @@ Step 6.5: CPTAC Validation
 - Calculate target expression statistics
 """
 
+import json
+import sys
+import re
+from pathlib import Path
+from typing import Any, Dict, List
+
+_LUNG = Path(__file__).resolve().parent
+if str(_LUNG) not in sys.path:
+    sys.path.insert(0, str(_LUNG))
+
 import pandas as pd
 import numpy as np
-from pathlib import Path
-import re
 
-def load_cptac_clinical_data():
+from step6_validation_context import Step6ValidationContext
+
+
+def _pdc_files_list_matrix_like(files: List[Dict[str, Any]]) -> bool:
+    """Return True if manifest file entries suggest abundance / expression tables exist."""
+    if not files:
+        return False
+    name_hits = (
+        "abundance",
+        "gene abundance",
+        "normalized",
+        "ratio",
+        "protein abundance",
+        "proteome",
+        "protein expression",
+    )
+    for f in files:
+        name = (f.get("file_name") or "").lower()
+        cat = (f.get("data_category") or "").lower()
+        fmt = (f.get("file_format") or "").lower()
+        if any(h in name for h in name_hits):
+            return True
+        if "proteomic" in cat and fmt in ("tsv", "txt", "csv", "gct", "gctx"):
+            return True
+    return False
+
+
+def load_cptac_clinical_data(ctx: Step6ValidationContext):
     """Load CPTAC clinical data."""
 
     print("="*80)
     print("STEP 6.5: CPTAC VALIDATION")
     print("="*80)
 
-    cptac_base = Path('curated_data/cptac')
+    cptac_base = ctx.project_root / "curated_data" / "cptac"
 
-    datasets = ['luad_cptac_2020', 'lusc_cptac_2021']
+    datasets = list(ctx.cptac_cbio_datasets) or ["luad_cptac_2020", "lusc_cptac_2021"]
     clinical_data = {}
 
     for dataset in datasets:
@@ -44,6 +79,55 @@ def load_cptac_clinical_data():
             print(f"  ⚠️  Patient data not found")
 
     return clinical_data
+
+
+def load_pdc_manifest_summary(ctx: Step6ValidationContext):
+    """Summarize PDC ``filesPerStudy`` manifests (no raw proteome download)."""
+    lines: list[str] = []
+    mdir = ctx.cptac_manifest_dir
+    if mdir is None or not mdir.is_dir():
+        print(f"\n⚠️  PDC manifest directory missing or not a directory: {mdir}")
+        lines.append("cptac: pdc_manifest_dir missing")
+        ctx.merge_step_sources("6.5_cptac", lines)
+        return None
+    idx = mdir / "index.json"
+    if not idx.exists():
+        print(f"\n⚠️  PDC index.json not found under {mdir}")
+        lines.append(f"missing {idx}")
+        ctx.merge_step_sources("6.5_cptac", lines)
+        return None
+    data = json.loads(idx.read_text(encoding="utf-8"))
+    studies = data.get("studies") or []
+    lines.append(f"read {idx} (n_studies={len(studies)})")
+    matrix_like_any = False
+    for s in studies:
+        pid = s.get("pdc_study_id")
+        fp = mdir / f"files_{pid}.json"
+        if fp.exists():
+            lines.append(f"read {fp}")
+            try:
+                blob = json.loads(fp.read_text(encoding="utf-8"))
+                flist = blob.get("files")
+                if isinstance(flist, list) and _pdc_files_list_matrix_like(flist):
+                    matrix_like_any = True
+            except json.JSONDecodeError:
+                lines.append(f"warning corrupt json {fp}")
+        else:
+            lines.append(f"missing optional per-study file {fp}")
+    if len(studies) == 0:
+        print("\n⚠️  PDC index.json has no studies — proteomics manifest empty")
+        lines.append("pdc: index has zero studies (skip proteomics matrix integration)")
+    elif not matrix_like_any:
+        print(
+            "\n⚠️  PDC manifests contain no matrix-like proteomics file entries — "
+            "skipping downstream proteome matrix use (manifest audit only)"
+        )
+        lines.append(
+            "pdc: no matrix-like file entries in files_*.json (manifest-only audit; skip matrix)"
+        )
+    ctx.merge_step_sources("6.5_cptac", lines)
+    return data
+
 
 def load_target_expression(cptac_base, dataset, target_genes):
     """Load mRNA expression for target genes."""
@@ -203,30 +287,74 @@ def calculate_target_expression_stats(target_expression_data, targets_dict):
 
     return df_stats
 
-def main():
-    # Load clinical data
-    clinical_data = load_cptac_clinical_data()
+def main(argv=None):
+    ctx = Step6ValidationContext.load(argv)
+    if not ctx.top30_unified.exists():
+        raise FileNotFoundError(f"Required input missing: {ctx.top30_unified}")
+
+    clinical_data: dict = {}
+    if not ctx.cptac_enabled:
+        print("\n⚠️  CPTAC disabled — writing minimal summary")
+        ctx.merge_step_sources("6.5_cptac", ["cptac: disabled"])
+        results = {"note": "cptac_disabled", "cptac_datasets": 0}
+        ctx.results_json("cptac_validation_results").parent.mkdir(parents=True, exist_ok=True)
+        with open(ctx.results_json("cptac_validation_results"), "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2)
+        return results
+
+    if ctx.cptac_mode == "pdc_manifest":
+        unified = pd.read_csv(ctx.top30_unified)
+        targets_dict, unique_targets = extract_drug_targets(unified)
+        manifest = load_pdc_manifest_summary(ctx)
+        studies = (manifest or {}).get("studies") or []
+        total_files = sum(int(s.get("n_files") or 0) for s in studies)
+        total_bytes = sum(int(s.get("total_file_size_bytes") or 0) for s in studies)
+        results = {
+            "cptac_mode": "pdc_manifest",
+            "pdc_manifest_studies": len(studies),
+            "pdc_total_file_index_entries": total_files,
+            "pdc_total_file_size_bytes": total_bytes,
+            "drugs_with_targets": len(targets_dict),
+            "unique_targets": len(unique_targets),
+            "note": "Proteome expression stats skipped (manifest-only audit).",
+        }
+        ctx.results_json("cptac_validation_results").parent.mkdir(parents=True, exist_ok=True)
+        with open(ctx.results_json("cptac_validation_results"), "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2)
+        print(f"\n✓ Saved: {ctx.results_json('cptac_validation_results')}")
+        print(f"\n{'='*80}")
+        print("CPTAC VALIDATION COMPLETE (PDC manifest audit)")
+        print(f"{'='*80}")
+        return results
+
+    # Load clinical data (cBioPortal-style cohort folders)
+    clinical_data = load_cptac_clinical_data(ctx)
 
     # Load Top 30
     print(f"\n{'─'*80}")
     print("LOADING TOP 30 DRUGS")
     print(f"{'─'*80}")
 
-    unified = pd.read_csv('results/lung_top30_unified_2b_and_2c_with_names.csv')
-    print(f"✓ Loaded {len(unified)} drugs")
+    unified = pd.read_csv(ctx.top30_unified)
+    print(f"✓ Loaded {len(unified)} drugs from {ctx.top30_unified}")
 
     # Extract drug targets
     targets_dict, unique_targets = extract_drug_targets(unified)
 
     # Load target expression from CPTAC
-    cptac_base = Path('curated_data/cptac')
+    cptac_base = ctx.project_root / "curated_data" / "cptac"
     all_target_expression = {}
 
-    for dataset in ['luad_cptac_2020', 'lusc_cptac_2021']:
+    for dataset in ctx.cptac_cbio_datasets:
         print(f"\n[{dataset.upper()}]")
         target_expr = load_target_expression(cptac_base, dataset, unique_targets)
         if target_expr is not None:
             all_target_expression[dataset] = target_expr
+
+    ctx.merge_step_sources(
+        "6.5_cptac",
+        [f"cbio mode datasets={ctx.cptac_cbio_datasets}", f"cptac_base={cptac_base}"],
+    )
 
     # Calculate statistics
     all_stats = []
@@ -241,8 +369,10 @@ def main():
     # Combine stats
     if len(all_stats) > 0:
         df_combined_stats = pd.concat(all_stats, ignore_index=True)
-        df_combined_stats.to_csv('results/lung_cptac_target_expression_stats.csv', index=False)
-        print(f"\n✓ Saved: results/lung_cptac_target_expression_stats.csv")
+        out_csv = ctx.results_csv("cptac_target_expression_stats")
+        out_csv.parent.mkdir(parents=True, exist_ok=True)
+        df_combined_stats.to_csv(out_csv, index=False)
+        print(f"\n✓ Saved: {out_csv}")
 
         # Save summary
         results = {
@@ -254,11 +384,10 @@ def main():
             'targets_with_expression_data': df_combined_stats['target'].nunique()
         }
 
-        import json
-        with open('results/lung_cptac_validation_results.json', 'w') as f:
+        with open(ctx.results_json("cptac_validation_results"), "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
 
-        print(f"✓ Saved: results/lung_cptac_validation_results.json")
+        print(f"✓ Saved: {ctx.results_json('cptac_validation_results')}")
     else:
         print("\n⚠️  No expression data extracted")
 
@@ -269,9 +398,9 @@ def main():
             'note': 'Expression data extraction incomplete'
         }
 
-        import json
-        with open('results/lung_cptac_validation_results.json', 'w') as f:
+        with open(ctx.results_json("cptac_validation_results"), "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
+        ctx.merge_step_sources("6.5_cptac", ["cptac: cbio mode, no expression tables extracted"])
 
     print(f"\n{'='*80}")
     print("CPTAC VALIDATION COMPLETE")
@@ -280,4 +409,4 @@ def main():
     return results
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

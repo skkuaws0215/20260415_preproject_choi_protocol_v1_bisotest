@@ -7,25 +7,34 @@ Step 6.4: COSMIC Validation
 - Match Top 30 drugs to COSMIC actionable mutations
 """
 
+import json
+import sys
 import tarfile
+import os
+from pathlib import Path
+
+_LUNG = Path(__file__).resolve().parent
+if str(_LUNG) not in sys.path:
+    sys.path.insert(0, str(_LUNG))
+
 import pandas as pd
 import numpy as np
-from pathlib import Path
-import os
 
-def extract_cosmic_tar_files():
+from step6_validation_context import Step6ValidationContext
+
+
+def extract_cosmic_tar_files(cosmic_dir: Path):
     """Extract COSMIC tar files."""
 
     print("="*80)
     print("STEP 6.4: COSMIC VALIDATION")
     print("="*80)
 
-    cosmic_dir = Path('curated_data/validation/cosmic')
     extract_dir = cosmic_dir / 'extracted'
 
     if not cosmic_dir.exists():
         print(f"❌ Error: {cosmic_dir} not found!")
-        return None
+        return None, None
 
     # Create extraction directory
     extract_dir.mkdir(exist_ok=True)
@@ -61,6 +70,36 @@ def extract_cosmic_tar_files():
     print(f"\n✓ Total extracted files: {len(extracted_files)}")
 
     return extract_dir, extracted_files
+
+
+def load_cosmic_parquet_bundle(ctx: Step6ValidationContext):
+    """Load pre-built COSMIC actionability (and optional CGC) parquet from ``cosmic_parquet_dir``."""
+    lines: list[str] = []
+    if ctx.cosmic_parquet_dir is None:
+        print("⚠️  cosmic_parquet_dir not set")
+        lines.append("cosmic: parquet_bundle missing cosmic_parquet_dir")
+        ctx.merge_step_sources("6.4_cosmic", lines)
+        return None, None, None
+    d = ctx.cosmic_parquet_dir
+    act_path = d / ctx.cosmic_actionability_parquet
+    if not act_path.exists():
+        print(f"⚠️  Actionability parquet not found: {act_path}")
+        lines.append(f"missing {act_path}")
+        ctx.merge_step_sources("6.4_cosmic", lines)
+        return None, None, None
+    actionability = pd.read_parquet(act_path)
+    lines.append(f"read parquet {act_path}")
+    census = None
+    if ctx.cosmic_cancer_gene_census_parquet:
+        cpath = d / ctx.cosmic_cancer_gene_census_parquet
+        if cpath.exists():
+            census = pd.read_parquet(cpath)
+            lines.append(f"read parquet {cpath}")
+        else:
+            print(f"⚠️  Cancer Gene Census parquet missing (optional): {cpath}")
+            lines.append(f"optional missing {cpath}")
+    ctx.merge_step_sources("6.4_cosmic", lines)
+    return None, actionability, census
 
 def load_cancer_gene_census(extract_dir):
     """Load Cancer Gene Census."""
@@ -170,25 +209,63 @@ def match_top30_to_cosmic(top30_unified, actionability_df):
 
     return df_matches
 
-def main():
-    # Extract tar files
-    extract_dir, extracted_files = extract_cosmic_tar_files()
+def main(argv=None):
+    ctx = Step6ValidationContext.load(argv)
+    for p in (ctx.top30_unified,):
+        if not p.exists():
+            raise FileNotFoundError(f"Required input missing: {p}")
 
-    if extract_dir is None:
-        print("\n❌ Cannot proceed without COSMIC data!")
-        return None
+    extract_dir = None
+    actionability_data = None
+    cancer_gene_census = None
 
-    # Load data
-    cancer_gene_census = load_cancer_gene_census(extract_dir)
-    actionability_data = load_actionability_data(extract_dir)
+    if not ctx.cosmic_enabled:
+        print("\n⚠️  COSMIC disabled — skip with empty summary")
+        ctx.merge_step_sources("6.4_cosmic", ["cosmic: disabled"])
+    elif ctx.cosmic_mode == "parquet_bundle":
+        extract_dir, actionability_data, cancer_gene_census = load_cosmic_parquet_bundle(ctx)
+    else:
+        base = ctx.cosmic_extract_dir or (ctx.project_root / "curated_data" / "validation" / "cosmic")
+        extract_dir, _ = extract_cosmic_tar_files(base)
+        if extract_dir is None:
+            print("\n⚠️  COSMIC extract_dir missing — skip")
+            ctx.merge_step_sources("6.4_cosmic", ["cosmic: extract_dir missing"])
+        else:
+            cancer_gene_census = load_cancer_gene_census(extract_dir)
+            actionability_data = load_actionability_data(extract_dir)
+            ctx.merge_step_sources(
+                "6.4_cosmic",
+                [
+                    f"extract_dir={extract_dir}",
+                    f"actionability_rows={0 if actionability_data is None else len(actionability_data)}",
+                ],
+            )
+
+    if actionability_data is None:
+        print("\n⚠️  No COSMIC actionability — writing empty summary")
+        results = {
+            "cancer_gene_census_genes": len(cancer_gene_census) if cancer_gene_census is not None else 0,
+            "actionability_records": 0,
+            "cosmic_matched_drugs": 0,
+            "cosmic_match_rate": 0.0,
+            "note": "cosmic_skipped_or_empty",
+        }
+        ctx.merge_step_sources(
+            "6.4_cosmic",
+            ["cosmic: no actionability; wrote empty cosmic_validation_results"],
+        )
+        ctx.results_json("cosmic_validation_results").parent.mkdir(parents=True, exist_ok=True)
+        with open(ctx.results_json("cosmic_validation_results"), "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2)
+        return results
 
     # Load Top 30
     print(f"\n{'─'*80}")
     print("LOADING TOP 30 DRUGS")
     print(f"{'─'*80}")
 
-    unified = pd.read_csv('results/lung_top30_unified_2b_and_2c_with_names.csv')
-    print(f"✓ Loaded {len(unified)} drugs")
+    unified = pd.read_csv(ctx.top30_unified)
+    print(f"✓ Loaded {len(unified)} drugs from {ctx.top30_unified}")
 
     # Match to COSMIC
     cosmic_matches = match_top30_to_cosmic(unified, actionability_data)
@@ -202,24 +279,25 @@ def main():
     }
 
     if cosmic_matches is not None and len(cosmic_matches) > 0:
-        cosmic_matches.to_csv('results/lung_cosmic_matched_drugs.csv', index=False)
-        print(f"\n✓ Saved: results/lung_cosmic_matched_drugs.csv")
+        out_csv = ctx.results_csv("cosmic_matched_drugs")
+        out_csv.parent.mkdir(parents=True, exist_ok=True)
+        cosmic_matches.to_csv(out_csv, index=False)
+        print(f"\n✓ Saved: {out_csv}")
 
         results['cosmic_matched_drugs'] = cosmic_matches['canonical_drug_id'].nunique()
         results['cosmic_match_rate'] = results['cosmic_matched_drugs'] / len(unified)
         results['cosmic_actionability_records'] = len(cosmic_matches)
 
     # Save summary
-    import json
-    with open('results/lung_cosmic_validation_results.json', 'w') as f:
+    with open(ctx.results_json("cosmic_validation_results"), "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
 
     print(f"\n{'='*80}")
     print("COSMIC VALIDATION COMPLETE")
     print(f"{'='*80}")
-    print(f"✓ Saved: results/lung_cosmic_validation_results.json")
+    print(f"✓ Saved: {ctx.results_json('cosmic_validation_results')}")
 
     return results
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

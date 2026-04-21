@@ -9,53 +9,90 @@ Step 6.2: PRISM Validation
 - Calculate MRR (Mean Reciprocal Rank)
 """
 
+import json
+import sys
+from pathlib import Path
+
+_LUNG = Path(__file__).resolve().parent
+if str(_LUNG) not in sys.path:
+    sys.path.insert(0, str(_LUNG))
+
 import pandas as pd
 import numpy as np
-from pathlib import Path
 from scipy.stats import spearmanr
 from sklearn.metrics import ndcg_score
 
-def load_prism_data():
+from step6_validation_context import Step6ValidationContext
+
+
+def _lineage_mask(lineage_series: pd.Series, terms: list[str]) -> pd.Series:
+    if not terms:
+        return pd.Series(True, index=lineage_series.index)
+    mask = False
+    for t in terms:
+        mask = mask | lineage_series.fillna("").str.contains(t, case=False, na=False, regex=False)
+    return mask
+
+
+def load_prism_data(ctx: Step6ValidationContext):
     """Load PRISM treatment info and cell line info."""
 
     print("="*80)
     print("STEP 6.2: PRISM VALIDATION")
     print("="*80)
 
-    prism_base = 'curated_data/validation/prism/'
+    lines: list[str] = []
+    if not ctx.prism_enabled or ctx.prism_base is None:
+        print("\n⚠️  PRISM disabled or base_dir missing — skip")
+        lines.append("prism: disabled or missing base_dir")
+        ctx.merge_step_sources("6.2_prism", lines)
+        return None, None
+
+    prism_base = ctx.prism_base
 
     # Load treatment info
     print("\n[1/2] Loading PRISM treatment info...")
-    treatment_file = f'{prism_base}prism-repurposing-20q2-primary-screen-replicate-collapsed-treatment-info.csv'
+    treatment_file = prism_base / "prism-repurposing-20q2-primary-screen-replicate-collapsed-treatment-info.csv"
 
-    if not Path(treatment_file).exists():
+    if not treatment_file.exists():
         print(f"❌ Error: {treatment_file} not found!")
+        lines.append(f"missing {treatment_file}")
+        ctx.merge_step_sources("6.2_prism", lines)
         return None, None
 
     df_treatment = pd.read_csv(treatment_file)
     print(f"✓ Loaded {len(df_treatment)} treatments")
     print(f"✓ Columns: {list(df_treatment.columns)}")
+    lines.append(f"read {treatment_file}")
 
     # Load cell line info
     print("\n[2/2] Loading PRISM cell line info...")
-    cellline_file = f'{prism_base}prism-repurposing-20q2-primary-screen-cell-line-info.csv'
+    cellline_file = prism_base / "prism-repurposing-20q2-primary-screen-cell-line-info.csv"
 
-    if not Path(cellline_file).exists():
+    if not cellline_file.exists():
         print(f"❌ Error: {cellline_file} not found!")
+        lines.append(f"missing {cellline_file}")
+        ctx.merge_step_sources("6.2_prism", lines)
         return df_treatment, None
 
     df_cellline = pd.read_csv(cellline_file)
     print(f"✓ Loaded {len(df_cellline)} cell lines")
+    lines.append(f"read {cellline_file}")
 
-    # Filter lung cancer cell lines
-    if 'lineage' in df_cellline.columns:
-        lung_lines = df_cellline[df_cellline['lineage'].str.contains('lung', case=False, na=False)]
-        print(f"✓ Lung cancer cell lines: {len(lung_lines)}/{len(df_cellline)}")
+    # Filter cell lines by configured lineage substrings
+    if "lineage" in df_cellline.columns:
+        filt = _lineage_mask(df_cellline["lineage"], ctx.prism_lineage_contains)
+        lineage_lines = df_cellline[filt]
+        print(
+            f"✓ Lineage-filtered cell lines ({ctx.prism_lineage_contains}): "
+            f"{len(lineage_lines)}/{len(df_cellline)}"
+        )
     else:
-        print("⚠️  'lineage' column not found, cannot filter lung cell lines")
-        lung_lines = df_cellline
+        print("⚠️  'lineage' column not found, cannot filter cell lines")
+        lineage_lines = df_cellline
 
-    return df_treatment, lung_lines
+    ctx.merge_step_sources("6.2_prism", lines)
+    return df_treatment, lineage_lines
 
 def match_gdsc_to_prism(gdsc_drugs, prism_treatments):
     """Match GDSC drugs to PRISM treatments."""
@@ -225,26 +262,39 @@ def calculate_validation_metrics(top30_2b, top30_2c, matched_drugs, prism_respon
 
     return results
 
-def main():
+def main(argv=None):
+    ctx = Step6ValidationContext.load(argv)
+    for p in (ctx.top30_2b, ctx.top30_2c, ctx.top30_unified):
+        if not p.exists():
+            raise FileNotFoundError(f"Required input missing: {p}")
+
     # Load PRISM data
-    prism_treatments, lung_celllines = load_prism_data()
+    prism_treatments, lineage_celllines = load_prism_data(ctx)
 
     if prism_treatments is None:
-        print("\n❌ Cannot proceed without PRISM data!")
-        return None
+        print("\n⚠️  No PRISM treatment table — writing empty results")
+        results = {
+            "prism_matched_drugs": 0,
+            "prism_match_rate": 0.0,
+            "note": "prism_skipped_or_missing",
+        }
+        ctx.results_json("prism_validation_results").parent.mkdir(parents=True, exist_ok=True)
+        with open(ctx.results_json("prism_validation_results"), "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2)
+        return results
 
     # Load Top 30 with names
     print(f"\n{'─'*80}")
     print("LOADING TOP 30 DRUGS")
     print(f"{'─'*80}")
 
-    top30_2b = pd.read_csv('results/lung_top30_phase2b_catboost_with_names.csv')
-    top30_2c = pd.read_csv('results/lung_top30_phase2c_catboost_with_names.csv')
-    unified = pd.read_csv('results/lung_top30_unified_2b_and_2c_with_names.csv')
+    top30_2b = pd.read_csv(ctx.top30_2b)
+    top30_2c = pd.read_csv(ctx.top30_2c)
+    unified = pd.read_csv(ctx.top30_unified)
 
-    print(f"✓ Phase 2B: {len(top30_2b)} drugs")
-    print(f"✓ Phase 2C: {len(top30_2c)} drugs")
-    print(f"✓ Unified: {len(unified)} drugs")
+    print(f"✓ Phase 2B: {len(top30_2b)} drugs ({ctx.top30_2b})")
+    print(f"✓ Phase 2C: {len(top30_2c)} drugs ({ctx.top30_2c})")
+    print(f"✓ Unified: {len(unified)} drugs ({ctx.top30_unified})")
 
     # Match GDSC to PRISM
     matched_drugs = match_gdsc_to_prism(unified, prism_treatments)
@@ -261,38 +311,38 @@ def main():
             'note': 'No GDSC-PRISM matches found due to different drug naming conventions'
         }
 
-        with open('results/lung_prism_validation_results.json', 'w') as f:
-            import json
+        with open(ctx.results_json("prism_validation_results"), "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
 
-        print(f"\n✓ Saved: results/lung_prism_validation_results.json")
+        print(f"\n✓ Saved: {ctx.results_json('prism_validation_results')}")
         return results
 
     # Save matched drugs
-    matched_drugs.to_csv('results/lung_prism_matched_drugs.csv', index=False)
-    print(f"\n✓ Saved: results/lung_prism_matched_drugs.csv")
+    out_csv = ctx.results_csv("prism_matched_drugs")
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    matched_drugs.to_csv(out_csv, index=False)
+    print(f"\n✓ Saved: {out_csv}")
 
     # Load PRISM responses (optional - very large file)
-    # prism_responses = load_prism_responses(matched_drugs, lung_celllines)
+    # prism_responses = load_prism_responses(matched_drugs, lineage_celllines)
 
     # Calculate validation metrics
     metrics = calculate_validation_metrics(top30_2b, top30_2c, matched_drugs, None)
 
     if metrics:
         # Save metrics
-        import json
         metrics['prism_matched_drugs'] = len(matched_drugs)
         metrics['prism_match_rate'] = len(matched_drugs) / len(unified)
 
-        with open('results/lung_prism_validation_results.json', 'w') as f:
+        with open(ctx.results_json("prism_validation_results"), "w", encoding="utf-8") as f:
             json.dump(metrics, f, indent=2)
 
         print(f"\n{'='*80}")
         print("PRISM VALIDATION COMPLETE")
         print(f"{'='*80}")
-        print(f"✓ Saved: results/lung_prism_validation_results.json")
+        print(f"✓ Saved: {ctx.results_json('prism_validation_results')}")
 
     return metrics
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

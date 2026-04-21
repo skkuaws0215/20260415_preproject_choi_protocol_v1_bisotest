@@ -40,6 +40,14 @@ python3 "$ROOT/scripts/export_stad_gdsc_for_prepare.py" \
   --gdsc-parquet "$ROOT/curated_data/processed/gdsc/GDSC2-dataset.parquet" \
   --output "$ROOT/data/GDSC2-dataset.parquet"
 
+python3 "$ROOT/scripts/filter_stad_depmap_to_labels.py" \
+  --labels-uri "$ROOT/data/labels.parquet" \
+  --depmap-long-uri "$ROOT/curated_data/processed/depmap/depmap_crispr_long_stad.parquet" \
+  --depmap-model-uri "$ROOT/curated_data/processed/depmap/Model.parquet" \
+  --output-depmap-long "$ROOT/data/depmap/depmap_crispr_long_stad.parquet" \
+  --output-gdsc-fe "$ROOT/data/GDSC2-dataset.parquet" \
+  --output-report "$ROOT/reports/step2_stad_depmap_refilter.json"
+
 python3 "$ROOT/nextflow/scripts/build_drug_catalog.py" \
   --gdsc-annotation-uri "$ROOT/curated_data/processed/gdsc/Compounds-annotation.parquet" \
   --gdsc-ic50-uri "$ROOT/curated_data/processed/gdsc/GDSC2-dataset.parquet" \

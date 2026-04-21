@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-21T15:06:13.987516",
+  "timestamp": "2026-04-21T19:23:30.995482",
   "input": {
     "catalog_uri": "/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260421_new_pre_project_biso_STAD/curated_data/processed/drug_catalog_stad.parquet",
     "catalog_shape": [

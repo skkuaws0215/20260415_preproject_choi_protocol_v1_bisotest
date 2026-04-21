@@ -1,18 +1,7 @@
 {
-  "timestamp": "2026-04-21T15:11:27.277519",
+  "timestamp": "2026-04-21T19:24:49.646310",
   "cells": [
-    "AGS",
-    "HS746T",
-    "KATOIII",
-    "MKN45",
-    "MKN7",
-    "MKN74",
-    "NCI_N87",
-    "NUGC3",
-    "OCUM1",
-    "SNU16",
-    "SNU216",
-    "SNU5"
+    "AGS"
   ],
   "output_shape": [
     362,

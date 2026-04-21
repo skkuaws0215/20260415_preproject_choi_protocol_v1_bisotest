@@ -6,11 +6,12 @@
 ## 현재 상태
 
 
-| Stage    | Status                              |
-| -------- | ----------------------------------- |
-| Step 0-1 | `Stad_raw` 기반 raw 수집/동기화 스크립트 구성 완료 |
-| Step 2   | 전처리 실행 완료 (`run_step2_stad.sh`)     |
-| Step 6   | STAD config 기반 외부검증 실행 경로 구성 완료     |
+| Stage    | Status                                                               |
+| -------- | -------------------------------------------------------------------- |
+| Step 0-1 | Stad_raw 기반 raw 수집/동기화 스크립트 구성 완료                     |
+| Step 2   | 전처리 완료 + depmap 재필터링 (filter_stad_depmap_to_labels.py 포함) |
+| Step 3   | FE 완료 (AWS Batch), features_rows=5118, sample join 83.3%          |
+| Step 6   | STAD config 기반 외부검증 실행 경로 구성 완료 (Top30 대기)          |
 
 
 ## 핵심 제약
@@ -20,6 +21,18 @@
 - LINCS는 `configs/lincs_source.json` 기준으로 `GSE92742`를 사용합니다.
 - 현재 `GSE92742` 기준 usable STAD cell은 `AGS` 1개입니다.  
 이후 분석/해석 문서에 **coverage limitation(AGS-only)** 를 명시해야 합니다.
+
+### ⚠️ STAD 고유 주의사항 (Colon/Lung과 다른 점)
+
+STAD는 labels sample_id와 DepMap cell_line_name의 표기가 다릅니다.
+- labels: `HGC27`, `KATOIII` (stripped)
+- DepMap: `HGC-27`, `KATO III` (원본)
+
+이 때문에 **반드시** `filter_stad_depmap_to_labels.py` 단계가 필요합니다.
+이 단계 없이 FE로 가면 sample join이 ~60% 수준으로 떨어지고 37% row loss 발생합니다.
+
+이 단계는 `run_step2_stad.sh`에 이미 통합되어 있습니다. Step 2 QC에서
+`labels_cells_in_depmap == 20` 확인만 하시면 됩니다.
 
 ## 주요 참고 문서
 
@@ -79,7 +92,17 @@ SYNC_S3=1 ./scripts/run_step6_stad.sh
 
 ## 현재 확인된 사실 (LINCS coverage)
 
-- `GSE92742` `cell_info`에서 stomach/gastric annotation을 가진 cell_id는 `AGS`만 확인됨
-- `sig_info`(`pert_type == trt_cp`)에서도 `AGS`만 usable (`362 signatures`)
-- 따라서 STAD 분석 시 LINCS 기반 evidence는 AGS 중심으로 해석해야 하며, 일반화 한계를 명시해야 함
+LINCS evidence in STAD is AGS-only under GSE92742 (362 trt_cp signatures).  
+This limitation has been triple-verified (2026-04-21):  
+(a) GSE92742 primary_site/subtype strict: AGS only  
+(b) GSE70138 phase II plate: AGS present but 0 trt_cp; merge/replace yields no gain  
+(c) Deep alias/normalize/substring check: no missed stomach cells  
+Downstream interpretation relies more heavily on DepMap/GDSC/PRISM axes  
+for drug repurposing evidence, with LINCS used as supporting signal for AGS only.
+
+근거 문서:
+
+- `reports/lincs/stad_lincs_cell_id_qc.json` (1차 검증)
+- `reports/lincs/stad_lincs_gse70138_verification.json` (2차 검증)
+- `reports/lincs/stad_lincs_alias_deep_check.json` (3차 검증)
 

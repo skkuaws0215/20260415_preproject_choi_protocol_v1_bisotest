@@ -11,10 +11,26 @@
 
 ## 현재 운영 상태 (2026-04-21 갱신)
 
-- **Step 2 전처리:** `run_step2_stad.sh` 기준 주요 산출물 생성 완료 (`labels`, `drug_features`, `depmap_crispr_long_stad`, LINCS 파생 테이블 포함)
+- **Step 2 전처리 + depmap 재필터링:** `run_step2_stad.sh` + `filter_stad_depmap_to_labels.py` 기준 주요 산출물 생성 완료 (`labels`, `drug_features`, `data/depmap/depmap_crispr_long_stad`, LINCS 파생 테이블 포함)
+- **Step 3 FE:** AWS Batch 실행 완료 (2026-04-21), `features_rows=5118`, sample join `83.3%` 확인. `nextflow run` 시 `-work-dir` 옵션 필수
 - **Step 6 실행 경로:** STAD config 기반 wrapper (`scripts/run_step6_stad.sh`) 구성 완료
 - **LINCS (GSE92742):** `rebuild_stad_lincs_cell_ids_gse92742.py` 재검증 결과 usable cell은 `AGS`만 확인
 - **해석/보고 제약:** STAD 분석에서 LINCS evidence는 AGS-only coverage limitation을 명시해야 함
+
+### LINCS AGS-only 확정 해석 (2026-04-21)
+
+LINCS evidence in STAD is AGS-only under GSE92742 (362 trt_cp signatures).  
+This limitation has been triple-verified (2026-04-21):  
+(a) GSE92742 primary_site/subtype strict: AGS only  
+(b) GSE70138 phase II plate: AGS present but 0 trt_cp; merge/replace yields no gain  
+(c) Deep alias/normalize/substring check: no missed stomach cells  
+Downstream interpretation relies more heavily on DepMap/GDSC/PRISM axes  
+for drug repurposing evidence, with LINCS used as supporting signal for AGS only.
+
+근거 문서:
+- `reports/lincs/stad_lincs_cell_id_qc.json` (1차 검증)
+- `reports/lincs/stad_lincs_gse70138_verification.json` (2차 검증)
+- `reports/lincs/stad_lincs_alias_deep_check.json` (3차 검증)
 
 ## 경로
 
@@ -78,6 +94,8 @@
 2. `Stad_raw/` 직접 수정 금지  
 3. Proxy 데이터 사용 시 사용자 확인  
 4. 오류 시 중단·보고  
+5. **❌ Step 2 QC 경고를 타암종과 "비슷한 패턴"으로 넘기지 말 것.** 지표 이름/수치를 숫자로 직접 비교해 확인할 것. (2026-04-21 시간 소요 이슈; 상세는 `STAD_reproduction_protocol.md` §7.1)  
+6. **❌ Nextflow awsbatch executor는 `-work-dir <s3://경로>` 옵션 필수.** 항상 커맨드라인에 명시할 것.  
 
 ## 코딩 선호
 

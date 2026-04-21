@@ -562,3 +562,178 @@ When Lung re-runs (NSCLC-only + Survival), it should match Colon's validation st
 - All resolved by simple retry (no code or env fix needed)
 - Root cause: OS-level transient issue
 - Pattern: first execution after heavy memory use sometimes fails
+
+
+---
+
+## Step 3 Execution Record (Feature Engineering)
+
+### Completed: 2026-04-21 13:19
+
+### Environment
+- Nextflow version 25.10.4
+- AWS Batch on team4-fe-queue-cpu
+- Docker image: `666803869796.dkr.ecr.ap-northeast-2.amazonaws.com/fe-v2-nextflow:v2-pip-awscli`
+- run_id: `20260420_colon_fe_v2` (v1 실패 후 재실행)
+
+### Input
+- S3: `s3://say2-4team/20260408_new_pre_project_biso/20260420_new_pre_project_biso_Colon/data/`
+- 핵심 파일: `labels.parquet`, `GDSC2-dataset.parquet`, `depmap/depmap_crispr_long_colon.parquet`, `drug_features.parquet`, `drug_target_mapping.parquet`, `lincs_colon_drug_level_with_crispr_prefix.parquet`
+
+### Processing (4 Nextflow processes)
+1. `prepare_fe_inputs`: labels + GDSC2 + DepMap 매칭 및 중간 산출
+2. `build_features`: CRISPR gene features + drug SMILES 메타
+3. `build_pair_features`: Morgan FP + LINCS + target + drug_desc
+4. `upload_results`: S3 업로드
+
+### Output
+- S3: `s3://say2-4team/20260408_new_pre_project_biso/20260420_new_pre_project_biso_Colon/fe_output/20260420_colon_fe_v2/`
+- 로컬: `fe_qc/20260420_colon_fe_v2/`
+- `features/features.parquet`: (9692, 17925)
+- `features/labels.parquet`: (9692, 8)
+- `pair_features/pair_features_newfe_v2.parquet`: (9692, 2075)
+- 소요 시간: 7분 20초
+
+### Key Stats
+- Cell lines: 35 (COAD/READ, DepMap 매칭)
+- Drugs: 295
+- Drug-cell pairs: 9,692
+- Features: 17,925 (CRISPR gene 중심)
+- Pair features: 2,075 (morgan 2048 + lincs 5 + target 10 + drug_desc 9 + etc)
+- 결측치: 0
+- 클래스 불균형: 2.33:1 (label_binary 0: 6784, 1: 2908)
+
+### Issues Encountered and Resolved
+
+#### Issue 1: v1 실행 결과가 Colon이 아님 (489 cells 전 암종 혼재)
+- **증상**: FE v1 후 features.parquet 확인 결과 sample_id가 A549, A2780, AGS 등 전 암종 포함
+- **원인 추적**:
+  - Step 2 `filter_colon_cell_lines.py`는 GDSC `TCGA_DESC == 'COREAD'` 필터 수행 (46 cells)
+  - 하지만 DepMap CRISPR 입력(`depmap_crispr_long_colon.parquet`)은 **파일명과 달리 1,150 cells 전체**
+  - Step 2-3의 `convert_depmap_wide_to_long.py`가 필터링 없이 변환만 수행했음
+- **해결**: 3개 입력 파일(labels, GDSC2, depmap)을 모두 진짜 Colon 35 cells로 재필터링
+
+#### Issue 2: GDSC2-dataset.parquet 스키마 불일치
+- **증상**: `prepare_fe_inputs.py`가 `cell_line_name`, `ln_IC50` 컬럼 못 찾음 (KeyError)
+- **원인**: Colon 로컬 GDSC2는 원본 대문자 스키마 (`CELL_LINE_NAME`, `LN_IC50`), Lung S3는 소문자로 rename된 버전
+- **해결**: Lung S3 GDSC2 → Colon S3로 복사 (S3-to-S3), 이후 Colon 35 cells만 필터링 + cell_line_name rename
+
+#### Issue 3: Cell line naming 정규화 이슈 (핵심)
+- **증상**: GDSC2 Colon 46 cells와 DepMap 1,150 cells의 raw 매칭은 15개뿐 (32.6%)
+- **원인**: 표기법 차이
+  - `HCT116` (GDSC) vs `HCT-116` (DepMap)
+  - `HT29` vs `HT-29`
+  - `LOVO` vs `LoVo`
+  - `SW 620` (DepMap) vs `SW620`
+  - `NCIH716` vs `NCI-H716`
+- **해결**: Lung 방식 정규화 함수 적용
+```python
+  def normalize_name(name):
+      return str(name).lower().replace('-', '').replace('/', '').replace(' ', '').replace('_', '')
+```
+- **결과**: 15개 → **35개 매칭** (76.1%), Lung(59.8%)보다도 높음
+
+#### Issue 4: Nextflow 실행 환경 (Cursor 샌드박스 프록시)
+- **증상**:
+  - `curl: (22) 403`
+  - `UnknownFormatConversionException: Conversion = '4'`
+  - `Pulling nextflow-io/nextflow ... Cannot find`
+- **원인 추적**:
+  - `.nextflow.log` 확인 결과 Nextflow가 plugin metadata fetch 시 프록시 경유 (`127.0.0.1:53116`)
+  - 로컬 시스템 프록시 설정 없음, GitHub rate limit(54/60) 여유 있음
+  - Cursor Agent 샌드박스 환경이 동적 프록시 주입
+- **해결**: macOS Terminal.app에서 직접 실행 (Cursor 우회) → 정상 7분 20초 완료
+- **교훈**: 장시간 실행 명령은 Cursor Agent 대신 사용자 터미널 직접 사용
+
+### Lessons Learned
+- 파일명(`_colon` 접미사)만 믿지 말고 **실제 내용 확인 필수**
+- 3개 입력 파일의 cell line 통일이 FE 정상 동작의 핵심
+- Nextflow plugin fetch 실패 시 `.nextflow.log` 확인이 진단 시작점
+- Cursor Agent는 장시간 + 프록시 민감 작업에 부적합
+
+---
+
+## Step 3.5 Execution Record (Feature Selection)
+
+### Completed: 2026-04-21 14:00
+
+### Script
+- `scripts/feature_selection.py` (신규 작성, 330 lines)
+- Lung 로직 100% 재현 (Lung 자체는 ad-hoc 실행이라 스크립트 없었음 → 산출물 역추적)
+
+### Input
+- `fe_qc/20260420_colon_fe_v2/features/features.parquet` (9692, 17925)
+- `fe_qc/20260420_colon_fe_v2/pair_features/pair_features_newfe_v2.parquet` (9692, 2075)
+
+### Processing
+1. **Merge**: features + pair_features on `[sample_id, canonical_drug_id]` → (9692, 19998)
+2. **Categorize**: 접두사 기반 (sample__crispr__, drug_morgan_, lincs_, target_, drug_desc_, drug__)
+3. **Filter**:
+   - gene (CRISPR): variance > 0.01 → Pearson |r| > 0.95
+   - morgan: variance > 0.01 → Pearson |r| > 0.95
+   - lincs/target/drug_desc/drug_other: keep_all
+
+### Output
+- `features_slim.parquet`: (9692, 5662) — 모델 학습 입력
+- `feature_selection_log.json`: 단계별 제거 수 (Lung 포맷 호환)
+- `feature_categories.json`, `final_columns.json`, `selection_log_init.json`
+- S3 업로드: `fe_output/20260420_colon_fe_v2/` 아래
+
+### Key Stats
+| 단계 | Before → After | 제거 |
+|------|:---:|:---:|
+| gene low_variance(0.01) | 17,919 → 4,637 | 13,282 |
+| gene high_correlation(0.95) | 4,637 → 4,564 | 73 |
+| morgan low_variance(0.01) | 2,048 → 1,075 | 973 |
+| morgan high_correlation(0.95) | 1,075 → 1,067 | 8 |
+| keep_all (lincs+target+drug_desc+drug_other) | 29 → 29 | 0 |
+| **Total** | **19,998 → 5,662** | **14,336** |
+
+### Cross-Validation with Lung
+| 카테고리 | Lung 최종 | Colon 최종 |
+|---------|:---:|:---:|
+| gene (CRISPR) | 4,703 | 4,564 |
+| morgan | 1,032 | 1,067 |
+| lincs+target+drug_desc+drug_other | 29 | 29 |
+| **Total** | **5,766** | **5,662** |
+
+### Notable Difference
+- Colon gene high_correlation에서 73개 제거 (Lung은 0개)
+- 원인: 샘플 수 차이 (35 vs 578) → 작은 샘플에서 우연 상관 높음
+- 품질 이슈 아님, 자연스러운 통계적 현상
+
+### Lessons Learned
+- Lung FS 로직이 ad-hoc이었기 때문에 재현에 산출물 역추적 필요
+- `feature_categories.json` + `selection_log_init.json`으로 2단계 분류 로직 파악
+- 향후 다른 질병에도 동일 스크립트 재사용 가능 (범용화 완료)
+
+---
+
+## Day 2 Summary (2026-04-21)
+
+### Completed Steps
+- Step 3 (Feature Engineering): Nextflow AWS Batch, 7분 20초
+- Step 3.5 (Feature Selection): 로컬 Python, ~2분
+
+### Total Output
+- 35 Colon cells × 295 drugs = 9,692 drug-cell pairs
+- 5,662 final features (from 19,998 raw)
+- All outputs in S3 + local `fe_qc/20260420_colon_fe_v2/`
+
+### Scripts Added (Colon-specific)
+- `scripts/preprocess_lincs_crispr_prefix.py` (어제 작성, LINCS Entrez→Symbol+prefix)
+- `scripts/gene_symbol_to_entrez.json` (매핑 테이블)
+- `scripts/feature_selection.py` (오늘 신규 작성, Lung 100% 재현)
+
+### Environment Lessons (추가)
+- Cursor Agent 샌드박스는 장시간(10분 이상) + 네트워크 민감 작업 회피
+- Nextflow pipeline은 macOS Terminal.app 직접 실행 권장
+- 데이터 정합성은 **파일명 아닌 내용 기준** 검증 필수
+
+### Next Step: Step 4 (Model Training)
+- Protocol: v3.0 Section 8
+- Inputs: `features_slim.parquet` (9692, 5662) + `labels.parquet`
+- Phases: 2A (numeric), 2B (+SMILES), 2C (+context)
+- Models: 15 (ML 6 + DL 8 + Graph 2) per phase
+- Evaluations: Holdout, 5-Fold CV, GroupCV (drug-based)
+- Status: Ready to start

@@ -3,6 +3,8 @@
 - **질병:** 대장암 (Colorectal Cancer, COAD+READ)
 - **옵션:** B (중간 확장)
 - **작업 시작일:** 2026-04-20
+- **최종 업데이트:** 2026-04-21
+- **문서 버전:** v1.0
 
 ## 경로 (수정 반영)
 
@@ -82,16 +84,84 @@
 `curated_data/{gdsc,depmap,lincs,drugbank,chembl,admet,cbioportal,geo,validation,processed}`  
 `curated_data/validation/{cosmic,prism,clinicaltrials}`
 
-## 실행 상태 (2026-04-20 기준)
+## 실행 상태 (2026-04-21 기준)
 
-- **Step 2 (전처리) 완료**
+- **Step 2 (전처리) 완료** ✅
   - 7개 data/ 산출물 생성 완료
   - 통합 QC ALL PASSED (이슈 0건)
-  - 상세 실행 기록: `differences.md` 참조
-- **Step 3+ (FE 이후) 미시작**
-  - v2.3 프로토콜 적용 예정 (수정 불필요)
-  - Nextflow on AWS Batch 환경
+- **Step 3 (Feature Engineering) 완료** ✅
+  - Nextflow on AWS Batch (run_id: `20260420_colon_fe_v2`)
+  - 소요 시간: 7분 20초
+  - 결과: 35 cells × 295 drugs = 9,692 pairs, 17,925 features
+- **Step 3.5 (Feature Selection) 완료** ✅
+  - `scripts/feature_selection.py` 독립 스크립트 (Lung 로직 100% 재현)
+  - 결과: 19,998 → 5,662 features (71.7% 감축)
+- **Step 4+ (모델 학습 이후) 대기** ⏸️
+  - v3.0 마스터 프로토콜 Section 8 기준
+
+## Step 3 Feature Engineering 결과
+
+### 산출물 (S3 + 로컬)
+- S3: `s3://say2-4team/20260408_new_pre_project_biso/20260420_new_pre_project_biso_Colon/fe_output/20260420_colon_fe_v2/`
+- 로컬: `fe_qc/20260420_colon_fe_v2/`
+- 주요 파일: `features/features.parquet`, `features/labels.parquet`, `pair_features/pair_features_newfe_v2.parquet`
+
+### 데이터 규모
+| 항목 | 값 |
+|------|-----|
+| Cell lines | 35 (COAD/READ, DepMap CRISPR 매칭) |
+| Drugs | 295 |
+| Drug-cell pairs | 9,692 |
+| features.parquet 컬럼 | 17,925 |
+| pair_features 컬럼 | 2,075 |
+| LINCS features | 5개 (cosine, pearson, spearman, top50, top100) |
+| 결측치 | 0 |
+| 클래스 불균형 | 2.33:1 (label_binary 0:6784, 1:2908) |
+
+## Step 3.5 Feature Selection 결과
+
+### 산출물
+- `fe_qc/20260420_colon_fe_v2/features_slim.parquet` — 모델 학습 입력
+- `fe_qc/20260420_colon_fe_v2/feature_selection_log.json` — 단계별 로그
+- `fe_qc/20260420_colon_fe_v2/feature_categories.json`
+- `fe_qc/20260420_colon_fe_v2/final_columns.json`
+
+### Selection 로직 (Lung 100% 재현)
+| 단계 | 기준 | 대상 | Before → After | 제거 |
+|------|------|------|:---:|:---:|
+| 1 | variance > 0.01 | gene (CRISPR) | 17,919 → 4,637 | 13,282 |
+| 2 | Pearson \|r\| > 0.95 | gene (CRISPR) | 4,637 → 4,564 | 73 |
+| 3 | variance > 0.01 | morgan FP | 2,048 → 1,075 | 973 |
+| 4 | Pearson \|r\| > 0.95 | morgan FP | 1,075 → 1,067 | 8 |
+| - | keep_all | lincs/target/drug_desc/drug_other | 29 → 29 | 0 |
+| **총** | | | **19,998 → 5,662** | **14,336** |
+
+## 주요 이슈 및 해결 (2026-04-21)
+
+### 1. DepMap CRISPR이 파일명(`_colon`)과 달리 Colon 필터 안 됨
+- 증상: FE v1 결과에 489 cells (전 암종 혼재) 발견
+- 원인: `depmap_crispr_long_colon.parquet`이 실제로는 1,150 cells (전체)
+- 해결: `labels.parquet`의 35 cells 기준으로 재필터링 후 S3 재업로드
+
+### 2. GDSC2-dataset.parquet 스키마 불일치
+- 증상: `cell_line_name`, `ln_IC50` 컬럼 찾을 수 없음 (대문자만 있음)
+- 원인: Colon 로컬은 원본 대문자 스키마, Lung S3는 소문자로 rename된 버전
+- 해결: Lung S3 버전으로 교체 후 Colon 35 cells 필터링
+
+### 3. Cell line naming 불일치 (핵심 발견)
+- 증상: GDSC2의 46개 Colon cells 중 DepMap 매칭은 15개뿐 (32.6%)
+- 원인: 표기법 차이 (`HCT116` vs `HCT-116`, `LOVO` vs `LoVo`, `SW 620` vs `SW620` 등)
+- 해결: Lung 방식 정규화 (lower + 하이픈/공백/슬래시 제거) → 35개로 증가 (76.1%)
+
+### 4. Nextflow 실행 환경 (Cursor 샌드박스 프록시)
+- 증상: `curl 403`, `UnknownFormatConversionException`, 풀링 실패
+- 원인: Cursor Agent 샌드박스가 동적 프록시 경유 (127.0.0.1:53116)
+- 해결: macOS Terminal.app에서 직접 실행 → 정상 7분 20초 완료
+
+### 5. Feature Selection 스크립트 부재
+- 증상: Lung에 FS 결과물(`features_slim.parquet`)만 있고 스크립트 없음 (ad-hoc 실행)
+- 해결: Lung 산출물(`feature_selection_log.json`, `final_columns.json`) 역추적 + `scripts/feature_selection.py` 신규 작성
 
 ---
 
-*문서명: `20260420_colon_protocol.md` (작성일 기준).*
+*문서명: `20260420_colon_protocol.md` (v1.0, 최종 업데이트 2026-04-21).*

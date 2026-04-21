@@ -126,6 +126,32 @@ nextflow run main.nf -profile awsbatch \
 
 최초 실행 이력: 2026-04-21
 
+## 3-2. Feature Selection (Step 3.5)
+
+**스크립트**: `scripts/feature_selection.py` (Colon에서 복사, Lung 로직 100% 재현)
+
+**실행**:
+
+```bash
+python3 scripts/feature_selection.py \
+  --features fe_qc/20260421_stad_fe_v1/features/features.parquet \
+  --pair-features fe_qc/20260421_stad_fe_v1/pair_features/pair_features_newfe_v2.parquet \
+  --output-dir fe_qc/20260421_stad_fe_v1 \
+  --low-var-threshold 0.01 \
+  --high-corr-threshold 0.95
+```
+
+**산출물**: `fe_qc/20260421_stad_fe_v1/` 하위
+- `features_slim.parquet` (모델 학습 입력)
+- `feature_selection_log.json` (단계별 로그)
+- `feature_categories.json`, `final_columns.json`, `selection_log_init.json`
+
+**실적** (2026-04-21):
+- initial: 19998 cols → final: 5008 cols (감축률 75.0%)
+- rows: 5118 유지
+
+**Step 4 입력 경로**: `fe_qc/20260421_stad_fe_v1/features_slim.parquet`
+
 ## §3.5 학습 / 앙상블 (Step 3.5~5) — 대장암 완료 후 이식 예정
 
 **프로토콜 기반:** v2.4 (2026-04-21, Scaffold Split 공식화)

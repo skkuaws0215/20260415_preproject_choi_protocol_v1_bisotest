@@ -3,7 +3,7 @@
 
 > 작성일: 2026-04-17
 > 최종 수정일: 2026-04-21
-> 버전: v3.0
+> 버전: v3.1
 > 목적: BRCA v3.1 파이프라인을 타 질병에 동일하게 적용하여 약물 재창출 랭킹을 생성하는 재현 프로토콜
 > 원칙: 프로토콜(코드) = 원본 그대로 사용 / 데이터 = 해당 질병의 실제 데이터만 사용
 
@@ -15,7 +15,7 @@
 |:----:|------|:----:|:----:|:------:|------|
 | 1 | 유방암 (BRCA) | 암종 | ✅ 완료 | - | 기준 파이프라인 |
 | 2 | 폐암 (Lung) | 암종 | ⚠️ 완료 (재시도 필수) | 2026-04-20 | Step 1~8 완료. SCLC 26개(20.8%) 포함 상태로 진행됨. NSCLC-only 재실험 필수 (Section 5-2-2 참조) |
-| 3 | 대장암 (Colorectal) | 암종 | ✅ Step 3.5 완료 | 2026-04-21 | FE(9,692×17,925) + FS(5,662) 완료, Lung 방식 재현 |
+| 3 | 대장암 (Colorectal) | 암종 | 🔄 Step 4 진행 중 | 2026-04-21 | FE(9,692×17,925) + FS(5,662) 완료. Step 4 학습 진행 중 + **Scaffold Split 전체 적용** (Lung 미진행 #21 달성 시도). |
 | 4 | IPF (특발성 폐섬유증) | 비암종 | 예정 | - | |
 | 5 | RA (류마티스 관절염) | 비암종 | 예정 | - | |
 
@@ -448,15 +448,27 @@ feature_selection_log.json     → 단계별 제거 수 기록
 | Graph | GraphSAGE | drug-split 필수 |
 | Graph | GAT | drug-split 필수 |
 
-> **주의:** GraphSAGE, GAT는 반드시 drug-based split 적용. Random split 사용 시 약물 정보 누출로 성능 과대평가.
+> **주의 1:** GraphSAGE, GAT는 반드시 drug-based split 적용. Random split 사용 시 약물 정보 누출로 성능 과대평가.
+>
+> **주의 2 (v3.1 추가):** Graph 모델에 Scaffold split 적용 시, KNN graph의 edge가 scaffold 경계를 넘을 수 있음 (transductive 특성). 이로 인해 완전히 엄격한 scaffold 검증은 불가능하나, **상대적 비교**는 유효. 결과 해석 시 이를 명시할 것.
 
-### 8-3. 평가 방식 3종
+### 8-3. 평가 방식
 
-| 방식 | 설명 | 목적 |
-|------|------|------|
-| Holdout | train:test = 8:2 | 빠른 확인 |
-| 5-Fold CV | 일반 KFold | 안정적 평가 |
-| GroupCV | canonical_drug_id 기준 3-fold | unseen drug 일반화 |
+| 방식 | 설명 | 목적 | 적용 범위 |
+|------|------|------|----------|
+| Holdout | train:test = 8:2 | 빠른 확인 | ML/DL |
+| 5-Fold CV | 일반 KFold | 안정적 평가 | ML/DL |
+| GroupCV (drug split) | canonical_drug_id 기준 3-fold | unseen drug 일반화 | ML/DL/Graph |
+| **ScaffoldCV** | **Murcko scaffold 기준 3-fold** | **unseen chemotype 일반화 (지표 #21)** | **ML/DL/Graph (v3.1 추가)** |
+
+> **v3.1 추가 (Scaffold split):**
+> - 약물의 Murcko scaffold(분자 골격) 기준 GroupKFold 3-fold 분할
+> - Drug split(canonical_drug_id)이 "같은 약물 중복 방지"라면, Scaffold split은 "같은 chemotype 중복 방지"로 더 엄격한 일반화 평가
+> - 프로토콜 v2.3 Section 13 지표 #21 달성을 위해 **Colon부터 도입**
+> - 구현: `compute_scaffolds.py` (RDKit MurckoScaffoldSmiles) + `run_{ml,dl,graph}_scaffold_all.py`
+> - eval_mode='scaffoldcv', 결과 파일 접미사 `_scaffoldcv.json`
+> - GroupKFold 구조는 drug split과 동일, `groups` 파라미터만 scaffold_id로 교체
+> - Lung은 샘플 수(125,427) 큰 관계로 미진행, Colon(9,692)부터 전체 15 모델 × 3 Phase 적용
 
 ### 8-4. 평가 지표
 
@@ -967,16 +979,16 @@ Neo4j Knowledge Graph에서 조회한 데이터를 기반으로 답변합니다.
 | Error Overlap | ✅ | 0.6~0.8 |
 | Consensus Score | ✅ | 확인 완료 |
 
-**일반화 (2/6) 🔄**
+**일반화 (2/6 Lung, 3/6 Colon 목표) 🔄**
 
-| 지표 | 상태 | 비고 |
-|------|:----:|------|
-| Holdout | ✅ | 전 모델 완료 |
-| GroupCV (unseen drug) | ✅ | 전 모델 완료 |
-| 5-Fold CV | ✅ | 전 모델 완료 |
-| Scaffold split | ❌ | 미진행 |
-| Multi-seed stability | ❌ | 미진행 |
-| Cross-dataset | ❌ | 미진행 |
+| 지표 | Lung | Colon | 비고 |
+|------|:----:|:-----:|------|
+| Holdout | ✅ | 🔄 | Colon Step 4 진행 중 |
+| GroupCV (unseen drug) | ✅ | 🔄 | Colon Step 4 진행 중 |
+| 5-Fold CV | ✅ | 🔄 | Colon Step 4 진행 중 |
+| Scaffold split (#21) | ❌ | 🔄 | **v3.1 추가. Colon 전체 15 모델 × 3 Phase 적용** |
+| Multi-seed stability | ❌ | ❌ | 미진행 |
+| Cross-dataset | ❌ | ❌ | 미진행 (Step 6 PRISM으로 부분 충족) |
 
 **약물 랭킹 (6/9) 🔄**
 
@@ -1289,3 +1301,4 @@ Step 5. 분자 그래프 GNN 추가 (Branch C) — 선택
 | 2026-04-20 | v2.2 | SCLC 세포주 포함 현황 기재, NSCLC-only 재실험 방안 추가 |
 | 2026-04-20 | v2.3 | Step 9 LLM 연동 섹션 추가 (Ollama 로컬 → 향후 Bedrock 전환) |
 | 2026-04-21 | v3.0 | Colon (COAD+READ) Step 3 FE + Step 3.5 Feature Selection 완료. Cell line naming 정규화 로직 확립 (raw 15 → normalized 35), `scripts/feature_selection.py` 독립 스크립트화 (Lung 로직 100% 재현) |
+| 2026-04-21 | **v3.1** | **Scaffold Split 공식 도입** (Section 8-3). Colon Step 4 진행 중 (Section 1). Graph + Scaffold 제약 명시 (Section 8-2 주의 2). 지표 #21 Lung ❌ / Colon 🔄 분리 집계 (Section 13). 구현 파일: `compute_scaffolds.py`, `run_ml_scaffold_all.py`, `run_dl_scaffold_all.py`, `run_graph_scaffold_all.py`. |

@@ -59,3 +59,15 @@ work/
 *.gctx
 *.gctx.gz
 *.h5
+
+# Feature engineering & selection output (대용량 parquet)
+fe_qc/
+
+# Backup files
+*.bak
+
+# Strict data/ ignore (모든 하위 폴더 + 모든 parquet 파생)
+data/**/*.parquet
+data/**/*.parquet.*
+data/**/*.csv
+data/**/*.json

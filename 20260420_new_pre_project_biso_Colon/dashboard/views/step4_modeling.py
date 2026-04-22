@@ -40,6 +40,21 @@ from dashboard.utils import (
 def _section_summary_metrics(df: pd.DataFrame) -> None:
     """상단 요약 카드 6개 (2행 × 3열)."""
     st.subheader("📊 Summary")
+    variants = df["variant"].unique()
+    if len(variants) > 1:
+        st.caption(
+            f"💡 실험 버전: {', '.join(sorted(variants))} — 필터에서 버전별 비교 가능"
+        )
+    sources = df["experiment_source"].unique()
+    if (
+        "baseline_backup_20260422" in sources
+        or "baseline_20260422_rerun" in sources
+    ):
+        st.caption(
+            "⚠️ Baseline 이 여러 source 에 존재합니다. "
+            "Advanced filters 에서 'original' 또는 "
+            "'baseline_20260422_rerun' 중 하나만 선택하면 깨끗한 비교 가능."
+        )
 
     stats = get_summary_stats(df)
 
@@ -140,8 +155,8 @@ def _section_filters(df: pd.DataFrame) -> pd.DataFrame:
     available_phases = [p for p in PHASE_ORDER if p in df["phase"].unique()]
     available_categories = [c for c in CATEGORY_ORDER if c in df["category"].unique()]
 
-    # 4열 레이아웃
-    c1, c2, c3, c4 = st.columns([2, 2, 2, 3])
+    # 5열 레이아웃
+    c1, c2, c3, c4, c5 = st.columns([2, 2, 2, 2, 3])
 
     with c1:
         selected_splits = st.multiselect(
@@ -170,11 +185,31 @@ def _section_filters(df: pd.DataFrame) -> pd.DataFrame:
         )
 
     with c4:
+        available_variants = sorted(df["variant"].unique().tolist())
+        selected_variants = st.multiselect(
+            "Variant",
+            options=available_variants,
+            default=available_variants,
+            help="baseline vs tuning experiments",
+        )
+
+    with c5:
         model_search = st.text_input(
             "Model (contains)",
             value="",
             placeholder="e.g. CatBoost, MLP, GAT",
             help="대소문자 무시, 부분 일치",
+        )
+
+    with st.expander("Advanced filters", expanded=False):
+        available_sources = sorted(df["experiment_source"].unique().tolist())
+        # 기본값: backup 제외
+        default_sources = [s for s in available_sources if "backup" not in s]
+        selected_sources = st.multiselect(
+            "Experiment Source",
+            options=available_sources,
+            default=default_sources,
+            help="어느 디렉토리의 결과를 포함할지 선택",
         )
 
     # 필터 적용
@@ -191,6 +226,12 @@ def _section_filters(df: pd.DataFrame) -> pd.DataFrame:
 
     if selected_categories:
         filtered = filtered[filtered["category"].isin(selected_categories)]
+
+    if selected_variants:
+        filtered = filtered[filtered["variant"].isin(selected_variants)]
+
+    if selected_sources:
+        filtered = filtered[filtered["experiment_source"].isin(selected_sources)]
 
     if model_search.strip():
         pattern = model_search.strip()
@@ -257,6 +298,8 @@ def _build_display_table(filtered: pd.DataFrame) -> pd.DataFrame:
         {
             "#": filtered["rank"].apply(_format_rank),
             "Split": filtered["split"],
+            "Variant": filtered["variant"],
+            "Source": filtered["experiment_source"],
             "Phase": filtered["phase"],
             "Category": filtered["category"],
             "Model": filtered["model"],
@@ -316,6 +359,12 @@ def _section_ranking_table(filtered: pd.DataFrame) -> None:
         column_config={
             "#": st.column_config.TextColumn("#", width="small"),
             "Split": st.column_config.TextColumn("Split", width="medium"),
+            "Variant": st.column_config.TextColumn(
+                "Variant",
+                width="small",
+                help="baseline = no FS, fsimp_top1000 = fold-internal importance FS",
+            ),
+            "Source": st.column_config.TextColumn("Source", width="medium"),
             "Phase": st.column_config.TextColumn("Phase", width="small"),
             "Category": st.column_config.TextColumn("Cat", width="small"),
             "Model": st.column_config.TextColumn("Model", width="medium"),

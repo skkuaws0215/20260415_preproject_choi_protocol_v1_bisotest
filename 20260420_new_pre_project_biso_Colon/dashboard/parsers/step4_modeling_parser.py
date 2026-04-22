@@ -42,10 +42,13 @@ from dashboard.utils.constants import (  # noqa: E402
     get_model_category,
 )
 
-# Pattern: colon_{phase}_{category}_v1_{split}.json
+# Pattern: colon_{phase}_{category}_v1{variant_suffix}_{split}.json
 # phase can include underscores (numeric_smiles, numeric_context_smiles)
+# variant_suffix: baseline("") or _fsimp_top\d+
 FILENAME_RE = re.compile(
-    r"^colon_(?P<phase>.+?)_(?P<category>ml|dl|graph)_v1_(?P<split>\w+)\.json$"
+    r"^colon_(?P<phase>.+?)_(?P<category>ml|dl|graph)_v1"
+    r"(?P<variant_suffix>_fsimp_top\d+)?"
+    r"_(?P<split>groupcv|scaffoldcv|5foldcv|holdout)\.json$"
 )
 
 
@@ -66,6 +69,7 @@ def parse_filename(filename: str) -> Optional[Dict[str, str]]:
     phase_key = match.group("phase")
     category_key = match.group("category")
     split_key = match.group("split")
+    variant_suffix = match.group("variant_suffix") or ""
 
     if phase_key not in PHASE_MAP:
         return None
@@ -74,10 +78,18 @@ def parse_filename(filename: str) -> Optional[Dict[str, str]]:
     if split_key not in SPLIT_MAP:
         return None
 
+    if variant_suffix == "":
+        variant = "baseline"
+    else:
+        # "_fsimp_top1000" -> "fsimp_top1000"
+        variant = variant_suffix.lstrip("_")
+
     return {
         "phase_key": phase_key,
         "category_key": category_key,
         "split_key": split_key,
+        "variant": variant,
+        "variant_suffix": variant_suffix,
     }
 
 
@@ -150,7 +162,13 @@ def parse_model_result(
 
     phase_short = phase_name.replace("Phase ", "")
     split_short = split_name.replace(" ", "")
-    experiment_id = f"{phase_short}_{category_final}_{model_name}_{split_short}"
+    if file_meta["variant"] == "baseline":
+        experiment_id = f"{phase_short}_{category_final}_{model_name}_{split_short}"
+    else:
+        variant_short = file_meta["variant"].replace("fsimp_top", "FS")
+        experiment_id = (
+            f"{phase_short}_{category_final}_{model_name}_{split_short}_{variant_short}"
+        )
 
     return {
         "experiment_id": experiment_id,
@@ -171,6 +189,7 @@ def parse_model_result(
         "overfitting_flag": overfitting_flag,
         "stability_flag": stability_flag,
         "source_file": str(source_file.name),
+        "variant": file_meta["variant"],
         "fold_details": fold_details,
     }
 
@@ -223,7 +242,7 @@ def load_step4_results(
         print(f"WARNING: RESULTS_DIR does not exist: {target_dir}")
         return pd.DataFrame()
 
-    json_files = sorted(target_dir.glob("colon_*_v1_*.json"))
+    json_files = sorted(target_dir.rglob("colon_*_v1_*.json"))
     all_rows: List[Dict[str, Any]] = []
 
     for json_file in json_files:
@@ -233,7 +252,16 @@ def load_step4_results(
         if splits is not None and meta["split_key"] not in splits:
             continue
 
-        all_rows.extend(parse_json_file(json_file))
+        rows = parse_json_file(json_file)
+        # 어느 디렉토리에서 왔는지 기록
+        parent_name = json_file.parent.name
+        if parent_name == "results":
+            experiment_source = "original"
+        else:
+            experiment_source = parent_name
+        for row in rows:
+            row["experiment_source"] = experiment_source
+        all_rows.extend(rows)
 
     df = pd.DataFrame(all_rows)
 

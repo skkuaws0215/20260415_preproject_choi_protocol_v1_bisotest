@@ -84,6 +84,19 @@ Integrated QC: ALL PASSED (0 issues). Ready for Step 3 FE.
 
 See `differences.md` for detailed execution records.
 
+## 대시보드 (Dashboard)
+
+- **경로:** `dashboard/`
+- **기술 스택:** Streamlit + Plotly + Pandas
+- **실행:** `cd <프로젝트 루트> && streamlit run dashboard/app.py`
+- **구조:**
+  - `dashboard/app.py` — 메인 Streamlit 앱 (탭 7개)
+  - `dashboard/parsers/` — Step별 결과 파서
+  - `dashboard/views/` — 각 탭 뷰 구현
+  - `dashboard/utils/` — 상수, 스타일
+- **참고:** `lung_pipeline_dashboard.html` (Lung 대시보드, 정적 HTML)
+- **미완료 작업:** `dashboard/TODO.md` 참조 (통합 재진행 시 반영)
+
 ## References
 - Protocol: drug_repurposing_pipeline_protocol.md v2.3
 - Source pipelines: BRCA myprotocol, Lung pipeline

@@ -1,11 +1,11 @@
 # Colon 고급 검증 계획 (Advanced Validation Plan)
 
 > **작성일**: 2026-04-21
-> **최종 수정**: 2026-04-21 (v1.2: Task 2 위치 확정 = Step 7.5 + Step 8 통합 구조)
+> **최종 수정**: 2026-04-22 (v1.3)
 > **대상**: Colon Drug Repurposing Pipeline
 > **범위**: 프로토콜 v2.4 미진행 지표 확장 + 분자 수준 검증
 > **상태**:
->   - **Task 1 (Scaffold Split)**: 구현 완료, **Step 4 ML 완료 직후 실행 예정**
+>   - **Task 1 (Scaffold Split)**: ✅ 완료 (2026-04-22)
 >   - **Task 2 (AlphaFold + Docking)**: 위치 확정 (**Step 7.5 검증 + Step 8 KG 적재, D-3 구조**), 계획만 문서화, 구현은 **Colon Step 4~7 완료 후**
 
 ---
@@ -251,6 +251,67 @@ Drug Split vs Scaffold Split 비교 (기존 GroupCV vs 신규 ScaffoldCV)
 2. **프로토콜 업데이트**: `drug_repurposing_pipeline_protocol.md` Section 13 지표 #21 달성 기록
 3. **문서 업데이트**: `COLON_STEP4_EXECUTION_GUIDE.md`의 32개 지표 맵에 #21 추가 (28/32 → 29/32)
 4. **Git 커밋**: Task 1 완료 + 결과 파일들
+
+### ✅ Task 1 실행 결과 (2026-04-22)
+
+#### 1. 핵심 성과
+- **지표 #21 (Scaffold Split)**: Lung ❌ → **Colon ✅ 최초 달성** 🎯
+- **Scaffold Split 최고 성능**: LightGBM Phase 2B = **0.4041 ± 0.1169**
+- **Drug Split 최고 성능 (비교)**: CatBoost Phase 2B = 0.4881 ± 0.0539
+- **Lung 최고 대비**: -0.0149 (Lung 0.5030 vs Colon 0.4881)
+
+#### 2. 실험 규모
+- 총 30 JSON files, 129 experiments
+  - Drug Split (GroupCV 3-fold): 45 experiments
+  - Scaffold Split (ScaffoldCV 3-fold): 45 experiments
+  - 5-Fold CV: 39 experiments (참고용, leakage 의심)
+
+#### 3. 주요 발견 (Next Step 과제)
+
+**3.1. Graph 모델의 Scaffold Drop 큼**
+- GAT Phase 2A: -33.4%
+- GAT Phase 2C: -32.5%
+- GraphSAGE Phase 2C: -29.5%
+- 원인 가설: KNN edge (k=7) 가 scaffold 경계 넘음 → 정보 누출
+- **액션**: k=4 등 낮은 값으로 Graph 재실험 검토 (Step 4.5)
+
+**3.2. ML/DL 모델 69% Overfitting (89/129)**
+- Train Spearman: 0.94~1.0 vs Val Spearman: 0.3~0.5
+- Gap: 0.5~0.6 (threshold 0.15 초과)
+- 원인 가설: Feature 5,657 vs Sample 9,692 → overparametrized
+- **액션**: FS 공격적 축소 (5,657 → 1,000), Regularization 강화 (Step 4.5)
+
+**3.3. 5-Fold CV Leakage 확인**
+- CatBoost Phase 2C = 0.8955 ± 0.0097 (std 매우 작음)
+- Drug Split (CatBoost 2B = 0.4881 ± 0.0539) 대비 약 +0.4 높음
+- 원인: 약물 정보가 train/val 양쪽에 → leakage
+- **액션**: 5-Fold CV 결과는 "참고용" 으로 명확 표기, 주요 지표는 Drug/Scaffold Split 만
+
+**3.4. 51% Unstable (66/129, std ≥ 0.05)**
+- 원인 가설: 3-fold 분할로 fold 간 분산 큼
+- **액션**: Repeated GroupKFold 또는 5-fold GroupKFold 검토
+
+#### 4. 대시보드 구축 완료
+- Streamlit 기반 인터랙티브 대시보드 완성
+- 경로: `dashboard/app.py`
+- 실행: `streamlit run dashboard/app.py`
+- 구성:
+  - Tab 1: Overview (파이프라인 전체)
+  - Tab 4: Step 4 Modeling (메인)
+    - Section 1: Summary (6 지표 카드)
+    - Section 2: 인터랙티브 필터
+    - Section 3: 전체 Ranking Table (CSV 다운로드)
+    - Section 4: 4개 시각화 (Bar/Heatmap/Box/**Overfit Scatter**)
+    - Section 5: 드릴다운 (Fold별 상세)
+  - Tab 2, 3, 5, 6, 7: placeholder (향후 확장)
+- 미완료 작업: `dashboard/TODO.md` 참조 (Holdout 파서, prefix 일반화 등)
+
+#### 5. 관련 커밋 (2026-04-22)
+- `f45cb27` feat(colon): Add pipeline dashboard MVP (Streamlit)
+- `eb918c8` chore(colon): Add phase2_utils.py (copied from Lung)
+- `e97dc37` feat(colon): Add Step 4 Modeling tab — full implementation (Phase 3)
+
+GitHub: https://github.com/skkuaws0215/20260415_preproject_choi_protocol_v1_bisotest
 
 ---
 
@@ -694,6 +755,7 @@ Step 7.5. AlphaFold + Docking 검증 (v2.5 신규)
 
 | 날짜 | 버전 | 변경 | 작성자 |
 |------|:---:|------|:---:|
+| **2026-04-22** | **v1.3** | **Task 1 (Scaffold Split) 실행 완료 반영. 지표 #21 (Scaffold Split) Colon 최초 달성 기록. Task 1 실행 결과 서브섹션 신설 (핵심 성과 / 실험 규모 / 주요 발견 / 대시보드 / 커밋). 주요 발견 4가지 및 각 액션 아이템 명시 (Step 4.5 로 연결). 대시보드 (Streamlit MVP) 구축 결과 반영.** | **Claude + 사용자** |
 | 2026-04-21 | v1.0 | 초안 작성 (Task 1 + Task 2) | Claude + 사용자 |
 | 2026-04-21 | v1.1 | Task 1 구현 완료 반영, 실행 시점 변경 (Step 5 후 → Step 4 ML 후), 옵션 B 채택, 체크리스트 업데이트 | Claude + 사용자 |
 | **2026-04-21** | **v1.2** | **Task 2 위치 확정 = D-3 구조 (Step 7.5 검증 + Step 8 KG 적재)**. Section 2-0 신설 (위치 결정 근거), Section 2-3-5 신설 (Neo4j 통합 코드), Section 2-7 신설 (프로토콜 v2.5 반영 제안), Section 2-8 상세 체크리스트 추가. 구현은 Colon Step 4~7 완료 후. | **Claude + 사용자** |

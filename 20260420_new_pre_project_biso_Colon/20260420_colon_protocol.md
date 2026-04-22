@@ -3,8 +3,8 @@
 - **질병:** 대장암 (Colorectal Cancer, COAD+READ)
 - **옵션:** B (중간 확장)
 - **작업 시작일:** 2026-04-20
-- **최종 업데이트:** 2026-04-21
-- **문서 버전:** v1.0
+- **최종 업데이트:** 2026-04-22
+- **문서 버전:** v1.1
 
 ## 경로 (수정 반영)
 
@@ -84,6 +84,10 @@
 `curated_data/{gdsc,depmap,lincs,drugbank,chembl,admet,cbioportal,geo,validation,processed}`  
 `curated_data/validation/{cosmic,prism,clinicaltrials}`
 
+- **대시보드:** `dashboard/` (Streamlit, Colon 파이프라인 전체 현황 시각화)
+  - 실행: `streamlit run dashboard/app.py`
+  - 상세: `dashboard/README.md` 및 `dashboard/TODO.md`
+
 ## 실행 상태 (2026-04-21 기준)
 
 - **Step 2 (전처리) 완료** ✅
@@ -96,8 +100,8 @@
 - **Step 3.5 (Feature Selection) 완료** ✅
   - `scripts/feature_selection.py` 독립 스크립트 (Lung 로직 100% 재현)
   - 결과: 19,998 → 5,662 features (71.7% 감축)
-- **Step 4+ (모델 학습 이후) 대기** ⏸️
-  - v3.0 마스터 프로토콜 Section 8 기준
+- **Step 4: ✅ ML/DL/Graph 전체 완료 (Drug Split + Scaffold Split, 2026-04-22)**
+- **Step 4.5+ (튜닝/앙상블): 대기 — 대시보드 `dashboard/` 참조**
 
 ## Step 3 Feature Engineering 결과
 
@@ -164,4 +168,17 @@
 
 ---
 
-*문서명: `20260420_colon_protocol.md` (v1.0, 최종 업데이트 2026-04-21).*
+*문서명: `20260420_colon_protocol.md` (v1.1, 최종 업데이트 2026-04-22).*
+
+---
+
+## 📝 변경 이력
+
+- **v1.1 (2026-04-22)**:
+  - Step 4 상태 업데이트 (ML/DL/Graph 전체 완료)
+  - 지표 #21 (Scaffold Split) Colon 달성 반영
+  - 대시보드 (Streamlit) 경로/실행법 추가
+  - 상세: `COLON_ADVANCED_VALIDATION_PLAN.md v1.3` 참조
+
+- **v1.0 (2026-04-21)**:
+  - 초기 버전 (Colon 프로젝트 컨텍스트, 경로, Step 2-3 반영)

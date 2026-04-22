@@ -20,6 +20,7 @@ import json
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import lightgbm as lgb
 from sklearn.model_selection import GroupKFold
 from sklearn.neighbors import NearestNeighbors
 
@@ -126,7 +127,15 @@ def evaluate_graph_model(model, data, mask):
     return pred, true
 
 
-def train_evaluate_gat(X, y, groups, output_stem, oof_dir=None, k_neighbors=7):
+def train_evaluate_gat(
+    X,
+    y,
+    groups,
+    output_stem,
+    oof_dir=None,
+    k_neighbors=7,
+    fs_top_k=None,
+):
     """
     GAT 모델 학습 및 평가 (GroupCV only, MPS with CPU fallback)
     Colon: k_neighbors=7 (Lung k=10에서 축소)
@@ -138,7 +147,23 @@ def train_evaluate_gat(X, y, groups, output_stem, oof_dir=None, k_neighbors=7):
     print(f"{'='*120}")
 
     try:
-        # Build KNN graph
+        # --- Global Importance-based FS (Graph 특수: fold 밖에서 전체 X 로 계산) ---
+        if fs_top_k is not None and fs_top_k < X.shape[1]:
+            fs_model = lgb.LGBMRegressor(
+                n_estimators=100,
+                learning_rate=0.1,
+                random_state=42,
+                verbose=-1,
+                num_threads=-1,
+            )
+            fs_model.fit(X, y)
+            importance = fs_model.feature_importances_
+            top_indices = np.argsort(importance)[-fs_top_k:]
+            X = X[:, top_indices]
+            print(f"  FS applied: -> {X.shape[1]} features (top {fs_top_k})")
+        # ---------------------------------------------------------
+
+        # Build KNN graph (축소된 X 로 재구성)
         edge_index = build_knn_graph(X, k=k_neighbors)
 
         # Prepare data
@@ -218,7 +243,9 @@ def train_evaluate_gat(X, y, groups, output_stem, oof_dir=None, k_neighbors=7):
             print(f"Restarting GAT on CPU...")
 
             # Retry on CPU
-            return train_evaluate_gat(X, y, groups, output_stem, oof_dir, k_neighbors)
+            return train_evaluate_gat(
+                X, y, groups, output_stem, oof_dir, k_neighbors, fs_top_k=fs_top_k
+            )
         else:
             raise e
 
@@ -245,18 +272,32 @@ def train_evaluate_gat(X, y, groups, output_stem, oof_dir=None, k_neighbors=7):
 
 
 if __name__ == "__main__":
-    # Colon 경로 - scripts/의 상위 (프로젝트 루트)
+    # ============================================================
+    # Experiment configuration
+    # ============================================================
+    # fs_top_k = None
+    fs_top_k = 1000
+    out_suffix = f"_fsimp_top{fs_top_k}" if fs_top_k is not None else ""
+    if fs_top_k is None:
+        experiment_dir = "graph_baseline_20260422_rerun"
+    else:
+        experiment_dir = f"graph_fsimp_top{fs_top_k}_20260422"
+
+    print(
+        f"Experiment: fs_top_k={fs_top_k}, out_suffix='{out_suffix}', "
+        f"experiment_dir='{experiment_dir}'"
+    )
+    # ============================================================
+
     base_dir = Path(__file__).parent.parent
     data_dir = base_dir / "data"
-    results_dir = base_dir / "results"
-    results_dir.mkdir(exist_ok=True)
+    if experiment_dir:
+        results_dir = base_dir / "results" / experiment_dir
+    else:
+        results_dir = base_dir / "results"
+    results_dir.mkdir(parents=True, exist_ok=True)
 
-    # Colon OOF dir
-    oof_dir = results_dir / "colon_numeric_graph_v1_oof"
-    oof_dir.mkdir(exist_ok=True)
-
-    # Load data
-    X = np.load(data_dir / "X_numeric.npy")
+    # Load shared labels
     y = np.load(data_dir / "y_train.npy")
 
     # Load groups - Colon features_slim.parquet
@@ -264,16 +305,22 @@ if __name__ == "__main__":
     df_meta = pd.read_parquet(features_path, columns=['canonical_drug_id'])
     groups = df_meta['canonical_drug_id'].values
 
-    print(f"\nData: X_numeric.npy")
+    # ─── Phase 2A ───
+    print("\n" + "=" * 120)
+    print("Phase 2A: numeric-only")
+    print("=" * 120)
+
+    X = np.load(data_dir / "X_numeric.npy")
     print(f"X shape: {X.shape}")
-    print(f"y shape: {y.shape}")
-    print(f"Unique drugs: {len(np.unique(groups))}")
 
-    # Run GAT with Colon k=7
-    results = train_evaluate_gat(X, y, groups, "colon_numeric_graph_v1", oof_dir, k_neighbors=7)
+    oof_dir = results_dir / f"colon_numeric_graph_v1{out_suffix}_oof"
+    oof_dir.mkdir(exist_ok=True)
 
-    # Load existing results and merge (GraphSAGE may have written first)
-    results_file = results_dir / "colon_numeric_graph_v1_groupcv.json"
+    results = train_evaluate_gat(
+        X, y, groups, "colon_numeric_graph_v1", oof_dir, k_neighbors=7, fs_top_k=fs_top_k
+    )
+
+    results_file = results_dir / f"colon_numeric_graph_v1{out_suffix}_groupcv.json"
     if results_file.exists():
         with open(results_file, 'r') as f:
             all_results = json.load(f)
@@ -281,8 +328,55 @@ if __name__ == "__main__":
     else:
         all_results = {'GAT': results}
 
+    from phase2_utils import save_results
     save_results(all_results, results_file)
 
+    # ─── Phase 2B ───
     print("\n" + "="*120)
-    print("GAT Colon 완료!")
+    print("Phase 2B: numeric + SMILES")
     print("="*120)
+
+    X_2b = np.load(data_dir / "X_numeric_smiles.npy")
+    print(f"X shape: {X_2b.shape}")
+
+    oof_dir_2b = results_dir / f"colon_numeric_smiles_graph_v1{out_suffix}_oof"
+    oof_dir_2b.mkdir(exist_ok=True)
+
+    results_2b = train_evaluate_gat(
+        X_2b, y, groups, "colon_numeric_smiles_graph_v1", oof_dir_2b, k_neighbors=7, fs_top_k=fs_top_k
+    )
+
+    results_file_2b = results_dir / f"colon_numeric_smiles_graph_v1{out_suffix}_groupcv.json"
+    if results_file_2b.exists():
+        with open(results_file_2b, 'r') as f:
+            all_results_2b = json.load(f)
+        all_results_2b['GAT'] = results_2b
+    else:
+        all_results_2b = {'GAT': results_2b}
+    save_results(all_results_2b, results_file_2b)
+
+    # ─── Phase 2C ───
+    print("\n" + "="*120)
+    print("Phase 2C: numeric + context + SMILES")
+    print("="*120)
+
+    X_2c = np.load(data_dir / "X_numeric_context_smiles.npy")
+    print(f"X shape: {X_2c.shape}")
+
+    oof_dir_2c = results_dir / f"colon_numeric_context_smiles_graph_v1{out_suffix}_oof"
+    oof_dir_2c.mkdir(exist_ok=True)
+
+    results_2c = train_evaluate_gat(
+        X_2c, y, groups, "colon_numeric_context_smiles_graph_v1", oof_dir_2c, k_neighbors=7, fs_top_k=fs_top_k
+    )
+
+    results_file_2c = results_dir / f"colon_numeric_context_smiles_graph_v1{out_suffix}_groupcv.json"
+    if results_file_2c.exists():
+        with open(results_file_2c, 'r') as f:
+            all_results_2c = json.load(f)
+        all_results_2c['GAT'] = results_2c
+    else:
+        all_results_2c = {'GAT': results_2c}
+    save_results(all_results_2c, results_file_2c)
+
+    print(f"\n✅ GAT 전체 완료! (Phase 2A/2B/2C)")

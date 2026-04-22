@@ -14,6 +14,7 @@ import pandas as pd
 from pathlib import Path
 import sys
 import json
+import lightgbm as lgb
 from sklearn.model_selection import train_test_split, KFold, GroupKFold
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -26,7 +27,18 @@ from xgboost import XGBRegressor
 from catboost import CatBoostRegressor
 from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor
 
-def train_evaluate_ml(X, y, groups, model_name, model_class, eval_mode, output_stem, oof_dir=None):
+def train_evaluate_ml(
+    X,
+    y,
+    groups,
+    model_name,
+    model_class,
+    eval_mode,
+    output_stem,
+    oof_dir=None,
+    fs_top_k=None,
+    out_suffix="",
+):
     """
     ML 모델 학습 및 평가
 
@@ -75,6 +87,23 @@ def train_evaluate_ml(X, y, groups, model_name, model_class, eval_mode, output_s
             X_train, X_val = X[train_idx], X[val_idx]
             y_train, y_val = y[train_idx], y[val_idx]
 
+            # --- Fold-internal Importance-based FS ---
+            # If fs_top_k is set, compute importances on fold-train only
+            # then apply same train-derived feature indices to fold-val.
+            if fs_top_k is not None and fs_top_k < X_train.shape[1]:
+                fs_model = lgb.LGBMRegressor(
+                    n_estimators=100,
+                    learning_rate=0.1,
+                    random_state=42,
+                    verbose=-1,
+                    num_threads=-1,
+                )
+                fs_model.fit(X_train, y_train)
+                importance = fs_model.feature_importances_
+                top_indices = np.argsort(importance)[-fs_top_k:]
+                X_train = X_train[:, top_indices]
+                X_val = X_val[:, top_indices]
+
             model = model_class()
             model.fit(X_train, y_train)
 
@@ -113,6 +142,23 @@ def train_evaluate_ml(X, y, groups, model_name, model_class, eval_mode, output_s
         for fold_idx, (train_idx, val_idx) in enumerate(gkf.split(X, y, groups=groups), 1):
             X_train, X_val = X[train_idx], X[val_idx]
             y_train, y_val = y[train_idx], y[val_idx]
+
+            # --- Fold-internal Importance-based FS ---
+            # If fs_top_k is set, compute importances on fold-train only
+            # then apply same train-derived feature indices to fold-val.
+            if fs_top_k is not None and fs_top_k < X_train.shape[1]:
+                fs_model = lgb.LGBMRegressor(
+                    n_estimators=100,
+                    learning_rate=0.1,
+                    random_state=42,
+                    verbose=-1,
+                    num_threads=-1,
+                )
+                fs_model.fit(X_train, y_train)
+                importance = fs_model.feature_importances_
+                top_indices = np.argsort(importance)[-fs_top_k:]
+                X_train = X_train[:, top_indices]
+                X_val = X_val[:, top_indices]
 
             model = model_class()
             model.fit(X_train, y_train)
@@ -153,7 +199,14 @@ def train_evaluate_ml(X, y, groups, model_name, model_class, eval_mode, output_s
     return results
 
 
-def run_phase_ml(input_file, output_stem, phase_name):
+def run_phase_ml(
+    input_file,
+    output_stem,
+    phase_name,
+    fs_top_k=None,
+    out_suffix="",
+    experiment_dir=None,
+):
     """
     하나의 입력셋에 대해 ML 모델 전체 실행
     """
@@ -164,11 +217,14 @@ def run_phase_ml(input_file, output_stem, phase_name):
     # 경로 설정 - Colon: scripts/의 상위(프로젝트 루트)를 base로
     base_dir = Path(__file__).parent.parent   # 20260420_new_pre_project_biso_Colon/
     data_dir = base_dir / "data"              # Colon/data/
-    results_dir = base_dir / "results"        # Colon/results/
-    results_dir.mkdir(exist_ok=True)
+    if experiment_dir:
+        results_dir = base_dir / "results" / experiment_dir
+    else:
+        results_dir = base_dir / "results"  # backward compat
+    results_dir.mkdir(parents=True, exist_ok=True)
 
     # OOF 디렉토리
-    oof_dir = results_dir / f"{output_stem}_oof"
+    oof_dir = results_dir / f"{output_stem}{out_suffix}_oof"
     oof_dir.mkdir(exist_ok=True)
 
     # 데이터 로드
@@ -207,14 +263,16 @@ def run_phase_ml(input_file, output_stem, phase_name):
                 X, y, groups,
                 model_name, model_class,
                 eval_mode, output_stem,
-                oof_dir=oof_dir_arg
+                oof_dir=oof_dir_arg,
+                fs_top_k=fs_top_k,
+                out_suffix=out_suffix,
             )
 
             all_results[eval_mode][model_name] = results
 
     # 결과 저장 (평가 방식별로 분리)
     for eval_mode in eval_modes:
-        output_file = results_dir / f"{output_stem}_{eval_mode}.json"
+        output_file = results_dir / f"{output_stem}{out_suffix}_{eval_mode}.json"
         save_results(all_results[eval_mode], output_file)
 
     # 중간 요약
@@ -245,6 +303,26 @@ def run_phase_ml(input_file, output_stem, phase_name):
 
 
 if __name__ == "__main__":
+    # ============================================================
+    # Experiment configuration
+    # ============================================================
+    # fs_top_k = None            # Baseline (OOF 복구 실행)
+    fs_top_k = 1000          # Fold-internal importance FS, Top 1000
+
+    out_suffix = f"_fsimp_top{fs_top_k}" if fs_top_k is not None else ""
+
+    if fs_top_k is None:
+        experiment_dir = "baseline_20260422_rerun"
+    else:
+        experiment_dir = f"fsimp_top{fs_top_k}_20260422"
+
+    print(
+        f"Experiment: fs_top_k={fs_top_k}, "
+        f"out_suffix='{out_suffix}', "
+        f"experiment_dir='{experiment_dir}'"
+    )
+    # ============================================================
+
     # Phase 2A: numeric-only
     print("\n" + "="*120)
     print("Phase 2A: numeric-only")
@@ -253,7 +331,10 @@ if __name__ == "__main__":
     results_2a = run_phase_ml(
         input_file="X_numeric.npy",
         output_stem="colon_numeric_ml_v1",
-        phase_name="Phase 2A"
+        phase_name="Phase 2A",
+        fs_top_k=fs_top_k,
+        out_suffix=out_suffix,
+        experiment_dir=experiment_dir,
     )
 
     # Phase 2B: numeric + SMILES
@@ -264,7 +345,10 @@ if __name__ == "__main__":
     results_2b = run_phase_ml(
         input_file="X_numeric_smiles.npy",
         output_stem="colon_numeric_smiles_ml_v1",
-        phase_name="Phase 2B"
+        phase_name="Phase 2B",
+        fs_top_k=fs_top_k,
+        out_suffix=out_suffix,
+        experiment_dir=experiment_dir,
     )
 
     # Phase 2C: numeric + context + SMILES
@@ -275,7 +359,10 @@ if __name__ == "__main__":
     results_2c = run_phase_ml(
         input_file="X_numeric_context_smiles.npy",
         output_stem="colon_numeric_context_smiles_ml_v1",
-        phase_name="Phase 2C"
+        phase_name="Phase 2C",
+        fs_top_k=fs_top_k,
+        out_suffix=out_suffix,
+        experiment_dir=experiment_dir,
     )
 
     print("\n" + "="*120)

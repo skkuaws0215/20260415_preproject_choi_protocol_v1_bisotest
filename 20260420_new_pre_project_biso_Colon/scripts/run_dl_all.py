@@ -21,6 +21,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 from sklearn.model_selection import train_test_split, KFold, GroupKFold
+import lightgbm as lgb
 
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -225,7 +226,18 @@ def train_dl_model(model, train_loader, val_loader, train_loader_no_shuffle, epo
     return np.array(train_preds), np.array(val_preds)
 
 
-def train_evaluate_dl(X, y, groups, model_name, model_class, eval_mode, output_stem, oof_dir=None):
+def train_evaluate_dl(
+    X,
+    y,
+    groups,
+    model_name,
+    model_class,
+    eval_mode,
+    output_stem,
+    oof_dir=None,
+    fs_top_k=None,
+    out_suffix="",
+):
     """DL 모델 학습 및 평가"""
     print(f"\n{'='*120}")
     print(f"{model_name} - {eval_mode.upper()}")
@@ -274,6 +286,22 @@ def train_evaluate_dl(X, y, groups, model_name, model_class, eval_mode, output_s
             X_train, X_val = X[train_idx], X[val_idx]
             y_train, y_val = y[train_idx], y[val_idx]
 
+            # --- Fold-internal Importance-based FS ---
+            if fs_top_k is not None and fs_top_k < X_train.shape[1]:
+                fs_model = lgb.LGBMRegressor(
+                    n_estimators=100,
+                    learning_rate=0.1,
+                    random_state=42,
+                    verbose=-1,
+                    num_threads=-1,
+                )
+                fs_model.fit(X_train, y_train)
+                importance = fs_model.feature_importances_
+                top_indices = np.argsort(importance)[-fs_top_k:]
+                X_train = X_train[:, top_indices]
+                X_val = X_val[:, top_indices]
+            # -----------------------------------------
+
             train_dataset = TensorDataset(torch.FloatTensor(X_train), torch.FloatTensor(y_train))
             val_dataset = TensorDataset(torch.FloatTensor(X_val), torch.FloatTensor(y_val))
 
@@ -282,6 +310,7 @@ def train_evaluate_dl(X, y, groups, model_name, model_class, eval_mode, output_s
             val_loader = DataLoader(val_dataset, batch_size=128)
 
             # Colon: epochs=50
+            input_dim = X_train.shape[1]  # FS 후 feature 수 반영
             model = model_class(input_dim).to(device)
             train_pred, val_pred = train_dl_model(model, train_loader, val_loader, train_loader_no_shuffle, epochs=50)
 
@@ -318,6 +347,22 @@ def train_evaluate_dl(X, y, groups, model_name, model_class, eval_mode, output_s
             X_train, X_val = X[train_idx], X[val_idx]
             y_train, y_val = y[train_idx], y[val_idx]
 
+            # --- Fold-internal Importance-based FS ---
+            if fs_top_k is not None and fs_top_k < X_train.shape[1]:
+                fs_model = lgb.LGBMRegressor(
+                    n_estimators=100,
+                    learning_rate=0.1,
+                    random_state=42,
+                    verbose=-1,
+                    num_threads=-1,
+                )
+                fs_model.fit(X_train, y_train)
+                importance = fs_model.feature_importances_
+                top_indices = np.argsort(importance)[-fs_top_k:]
+                X_train = X_train[:, top_indices]
+                X_val = X_val[:, top_indices]
+            # -----------------------------------------
+
             train_dataset = TensorDataset(torch.FloatTensor(X_train), torch.FloatTensor(y_train))
             val_dataset = TensorDataset(torch.FloatTensor(X_val), torch.FloatTensor(y_val))
 
@@ -326,6 +371,7 @@ def train_evaluate_dl(X, y, groups, model_name, model_class, eval_mode, output_s
             val_loader = DataLoader(val_dataset, batch_size=128)
 
             # Colon: epochs=50
+            input_dim = X_train.shape[1]  # FS 후 feature 수 반영
             model = model_class(input_dim).to(device)
             train_pred, val_pred = train_dl_model(model, train_loader, val_loader, train_loader_no_shuffle, epochs=50)
 
@@ -359,7 +405,14 @@ def train_evaluate_dl(X, y, groups, model_name, model_class, eval_mode, output_s
     return results
 
 
-def run_phase_dl(input_file, output_stem, phase_name):
+def run_phase_dl(
+    input_file,
+    output_stem,
+    phase_name,
+    fs_top_k=None,
+    out_suffix="",
+    experiment_dir=None,
+):
     """하나의 입력셋에 대해 DL 모델 전체 실행"""
     print("\n" + "="*120)
     print(f"{phase_name}: DL Models")
@@ -368,10 +421,13 @@ def run_phase_dl(input_file, output_stem, phase_name):
     # Colon 경로
     base_dir = Path(__file__).parent.parent   # 20260420_new_pre_project_biso_Colon/
     data_dir = base_dir / "data"
-    results_dir = base_dir / "results"
-    results_dir.mkdir(exist_ok=True)
+    if experiment_dir:
+        results_dir = base_dir / "results" / experiment_dir
+    else:
+        results_dir = base_dir / "results"
+    results_dir.mkdir(parents=True, exist_ok=True)
 
-    oof_dir = results_dir / f"{output_stem}_oof"
+    oof_dir = results_dir / f"{output_stem}{out_suffix}_oof"
     oof_dir.mkdir(exist_ok=True)
 
     X = np.load(data_dir / input_file)
@@ -415,13 +471,15 @@ def run_phase_dl(input_file, output_stem, phase_name):
                 X, y, groups,
                 model_name, model_class,
                 eval_mode, output_stem,
-                oof_dir=oof_dir_arg
+                oof_dir=oof_dir_arg,
+                fs_top_k=fs_top_k,
+                out_suffix=out_suffix,
             )
 
             all_results[eval_mode][model_name] = results
 
     for eval_mode in eval_modes:
-        output_file = results_dir / f"{output_stem}_{eval_mode}.json"
+        output_file = results_dir / f"{output_stem}{out_suffix}_{eval_mode}.json"
         save_results(all_results[eval_mode], output_file)
 
     print("\n" + "="*120)
@@ -432,13 +490,42 @@ def run_phase_dl(input_file, output_stem, phase_name):
 
 
 if __name__ == "__main__":
+    # ============================================================
+    # Experiment configuration
+    # ============================================================
+    # fs_top_k = None            # Baseline (기존과 동일)
+    fs_top_k = 1000              # Fold-internal importance FS, Top 1000
+
+    out_suffix = f"_fsimp_top{fs_top_k}" if fs_top_k is not None else ""
+
+    if fs_top_k is None:
+        experiment_dir = "dl_baseline_20260422_rerun"
+    else:
+        experiment_dir = f"dl_fsimp_top{fs_top_k}_20260422"
+
+    print(
+        f"Experiment: fs_top_k={fs_top_k}, "
+        f"out_suffix='{out_suffix}', "
+        f"experiment_dir='{experiment_dir}'"
+    )
+    # ============================================================
+
     # Phase 2A
-    run_phase_dl("X_numeric.npy", "colon_numeric_dl_v1", "Phase 2A")
+    run_phase_dl(
+        "X_numeric.npy", "colon_numeric_dl_v1", "Phase 2A",
+        fs_top_k=fs_top_k, out_suffix=out_suffix, experiment_dir=experiment_dir,
+    )
 
     # Phase 2B
-    run_phase_dl("X_numeric_smiles.npy", "colon_numeric_smiles_dl_v1", "Phase 2B")
+    run_phase_dl(
+        "X_numeric_smiles.npy", "colon_numeric_smiles_dl_v1", "Phase 2B",
+        fs_top_k=fs_top_k, out_suffix=out_suffix, experiment_dir=experiment_dir,
+    )
 
     # Phase 2C
-    run_phase_dl("X_numeric_context_smiles.npy", "colon_numeric_context_smiles_dl_v1", "Phase 2C")
+    run_phase_dl(
+        "X_numeric_context_smiles.npy", "colon_numeric_context_smiles_dl_v1", "Phase 2C",
+        fs_top_k=fs_top_k, out_suffix=out_suffix, experiment_dir=experiment_dir,
+    )
 
     print("\n전체 DL 학습 완료!")

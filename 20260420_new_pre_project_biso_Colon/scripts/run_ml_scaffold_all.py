@@ -43,7 +43,14 @@ from catboost import CatBoostRegressor
 from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor
 
 
-def run_scaffold_phase(input_file, output_stem, phase_name):
+def run_scaffold_phase(
+    input_file,
+    output_stem,
+    phase_name,
+    fs_top_k=None,
+    out_suffix="",
+    experiment_dir=None,
+):
     """
     하나의 입력셋에 대해 Scaffold split으로 ML 6개 모델 실행
     """
@@ -54,11 +61,14 @@ def run_scaffold_phase(input_file, output_stem, phase_name):
     # 경로 설정
     base_dir = Path(__file__).parent.parent
     data_dir = base_dir / "data"
-    results_dir = base_dir / "results"
-    results_dir.mkdir(exist_ok=True)
+    if experiment_dir:
+        results_dir = base_dir / "results" / experiment_dir
+    else:
+        results_dir = base_dir / "results"
+    results_dir.mkdir(parents=True, exist_ok=True)
 
     # Scaffold OOF 디렉토리 (기존 drug split과 구분)
-    oof_dir = results_dir / f"{output_stem}_scaffold_oof"
+    oof_dir = results_dir / f"{output_stem}{out_suffix}_scaffold_oof"
     oof_dir.mkdir(exist_ok=True)
 
     # 데이터 로드
@@ -99,12 +109,14 @@ def run_scaffold_phase(input_file, output_stem, phase_name):
             model_name, model_class,
             eval_mode='groupcv',        # GroupKFold 3-fold, groups=scaffold
             output_stem=f"{output_stem}_scaffold",
-            oof_dir=oof_dir
+            oof_dir=oof_dir,
+            fs_top_k=fs_top_k,
+            out_suffix=out_suffix,
         )
         all_results[model_name] = results
 
     # 결과 저장 (파일명에 'scaffoldcv' 표기)
-    output_file = results_dir / f"{output_stem}_scaffoldcv.json"
+    output_file = results_dir / f"{output_stem}{out_suffix}_scaffoldcv.json"
     save_results(all_results, output_file)
     print(f"\n✓ Saved: {output_file}")
 
@@ -168,49 +180,54 @@ def compare_with_drug_split(output_stem):
 
 
 if __name__ == "__main__":
+    # ============================================================
+    # Experiment configuration
+    # ============================================================
+    # fs_top_k = None            # Baseline
+    fs_top_k = 1000              # Fold-internal importance FS, Top 1000
+
+    out_suffix = f"_fsimp_top{fs_top_k}" if fs_top_k is not None else ""
+
+    if fs_top_k is None:
+        experiment_dir = "ml_scaffold_baseline_20260422_rerun"
+    else:
+        experiment_dir = f"ml_scaffold_fsimp_top{fs_top_k}_20260422"
+
+    print(
+        f"Experiment: fs_top_k={fs_top_k}, "
+        f"out_suffix='{out_suffix}', "
+        f"experiment_dir='{experiment_dir}'"
+    )
+    # ============================================================
+
     print("\n" + "=" * 120)
     print("Task 1: Scaffold Split 기반 ML 실험")
-    print("프로토콜 v2.3 Section 13 지표 #21 충족 시도")
     print("=" * 120)
 
     # Phase 2A: numeric-only
     results_2a = run_scaffold_phase(
         input_file="X_numeric.npy",
         output_stem="colon_numeric_ml_v1",
-        phase_name="Phase 2A"
+        phase_name="Phase 2A",
+        fs_top_k=fs_top_k, out_suffix=out_suffix, experiment_dir=experiment_dir,
     )
 
     # Phase 2B: numeric + SMILES
     results_2b = run_scaffold_phase(
         input_file="X_numeric_smiles.npy",
         output_stem="colon_numeric_smiles_ml_v1",
-        phase_name="Phase 2B"
+        phase_name="Phase 2B",
+        fs_top_k=fs_top_k, out_suffix=out_suffix, experiment_dir=experiment_dir,
     )
 
     # Phase 2C: numeric + context + SMILES
     results_2c = run_scaffold_phase(
         input_file="X_numeric_context_smiles.npy",
         output_stem="colon_numeric_context_smiles_ml_v1",
-        phase_name="Phase 2C"
+        phase_name="Phase 2C",
+        fs_top_k=fs_top_k, out_suffix=out_suffix, experiment_dir=experiment_dir,
     )
-
-    # Drug split vs Scaffold split 비교
-    print("\n" + "=" * 120)
-    print("Drug Split vs Scaffold Split 비교 (기존 GroupCV vs 신규 ScaffoldCV)")
-    print("=" * 120)
-
-    for phase_name, stem in [
-        ('Phase 2A', 'colon_numeric_ml_v1'),
-        ('Phase 2B', 'colon_numeric_smiles_ml_v1'),
-        ('Phase 2C', 'colon_numeric_context_smiles_ml_v1'),
-    ]:
-        print(f"\n[{phase_name}]")
-        compare_with_drug_split(stem)
 
     print("\n" + "=" * 120)
     print("✅ Scaffold Split 완료!")
     print("=" * 120)
-    print("\n판정 기준:")
-    print("  🟢 Drop < 0.05:    scaffold 독립적, 일반화 능력 우수")
-    print("  🟡 Drop 0.05~0.15: 중간 의존, 업계 평균 수준")
-    print("  🔴 Drop > 0.15:    scaffold 암기 심함, 새 chemotype 예측 어려움")

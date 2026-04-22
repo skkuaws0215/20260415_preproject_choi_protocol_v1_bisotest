@@ -52,7 +52,15 @@ from run_graph_gat_mps import train_evaluate_gat
 from phase2_utils import save_results
 
 
-def run_graph_scaffold_phase(input_file, output_stem, phase_name, k_neighbors=7):
+def run_graph_scaffold_phase(
+    input_file,
+    output_stem,
+    phase_name,
+    k_neighbors=7,
+    fs_top_k=None,
+    out_suffix="",
+    experiment_dir=None,
+):
     """
     하나의 입력셋(Phase)에 대해 Scaffold split으로 GraphSAGE + GAT 실행
     """
@@ -63,11 +71,14 @@ def run_graph_scaffold_phase(input_file, output_stem, phase_name, k_neighbors=7)
     # 경로 설정
     base_dir = Path(__file__).parent.parent
     data_dir = base_dir / "data"
-    results_dir = base_dir / "results"
-    results_dir.mkdir(exist_ok=True)
+    if experiment_dir:
+        results_dir = base_dir / "results" / experiment_dir
+    else:
+        results_dir = base_dir / "results"
+    results_dir.mkdir(parents=True, exist_ok=True)
 
     # Scaffold OOF 디렉토리 (기존 drug split과 구분)
-    oof_dir = results_dir / f"{output_stem}_scaffold_oof"
+    oof_dir = results_dir / f"{output_stem}{out_suffix}_scaffold_oof"
     oof_dir.mkdir(exist_ok=True)
 
     # 데이터 로드
@@ -104,7 +115,8 @@ def run_graph_scaffold_phase(input_file, output_stem, phase_name, k_neighbors=7)
         sage_results = train_evaluate_graphsage(
             X, y, scaffold_groups,        # ← scaffold로 교체
             f"{output_stem}_scaffold", oof_dir,
-            k_neighbors=k_neighbors
+            k_neighbors=k_neighbors,
+            fs_top_k=fs_top_k,
         )
         all_results['GraphSAGE'] = sage_results
 
@@ -120,12 +132,13 @@ def run_graph_scaffold_phase(input_file, output_stem, phase_name, k_neighbors=7)
         gat_results = train_evaluate_gat(
             X, y, scaffold_groups,         # ← scaffold로 교체
             f"{output_stem}_scaffold", oof_dir,
-            k_neighbors=k_neighbors
+            k_neighbors=k_neighbors,
+            fs_top_k=fs_top_k,
         )
         all_results['GAT'] = gat_results
 
     # 결과 저장 (scaffoldcv 표기)
-    results_file = results_dir / f"{output_stem}_scaffoldcv.json"
+    results_file = results_dir / f"{output_stem}{out_suffix}_scaffoldcv.json"
     if results_file.exists():
         with open(results_file, 'r') as f:
             existing = json.load(f)
@@ -199,54 +212,42 @@ def compare_graph_drug_vs_scaffold(output_stem):
 
 
 if __name__ == "__main__":
+    # ============================================================
+    # Experiment configuration
+    # ============================================================
+    # fs_top_k = None
+    fs_top_k = 1000
+    out_suffix = f"_fsimp_top{fs_top_k}" if fs_top_k is not None else ""
+    if fs_top_k is None:
+        experiment_dir = "graph_scaffold_baseline_20260422_rerun"
+    else:
+        experiment_dir = f"graph_scaffold_fsimp_top{fs_top_k}_20260422"
+
+    print(
+        f"Experiment: fs_top_k={fs_top_k}, out_suffix='{out_suffix}', "
+        f"experiment_dir='{experiment_dir}'"
+    )
+    # ============================================================
+
     print("\n" + "=" * 120)
-    print("Task 1: Graph Scaffold Split (프로토콜 v2.3 Section 13 #21)")
-    print("Colon: 9,692 samples, k=7 (Graph 2개 × 3 Phase = 6 실험)")
+    print("Task 1: Graph Scaffold Split")
     print("=" * 120)
 
     # Phase 2A: numeric-only
     results_2a = run_graph_scaffold_phase(
-        input_file="X_numeric.npy",
-        output_stem="colon_numeric_graph_v1",
-        phase_name="Phase 2A",
-        k_neighbors=7
+        "X_numeric.npy", "colon_numeric_graph_v1", "Phase 2A",
+        k_neighbors=7, fs_top_k=fs_top_k, out_suffix=out_suffix, experiment_dir=experiment_dir,
     )
 
     # Phase 2B: numeric + SMILES
     results_2b = run_graph_scaffold_phase(
-        input_file="X_numeric_smiles.npy",
-        output_stem="colon_numeric_smiles_graph_v1",
-        phase_name="Phase 2B",
-        k_neighbors=7
+        "X_numeric_smiles.npy", "colon_numeric_smiles_graph_v1", "Phase 2B",
+        k_neighbors=7, fs_top_k=fs_top_k, out_suffix=out_suffix, experiment_dir=experiment_dir,
     )
 
     # Phase 2C: numeric + context + SMILES
     results_2c = run_graph_scaffold_phase(
-        input_file="X_numeric_context_smiles.npy",
-        output_stem="colon_numeric_context_smiles_graph_v1",
-        phase_name="Phase 2C",
-        k_neighbors=7
+        "X_numeric_context_smiles.npy", "colon_numeric_context_smiles_graph_v1", "Phase 2C",
+        k_neighbors=7, fs_top_k=fs_top_k, out_suffix=out_suffix, experiment_dir=experiment_dir,
     )
-
-    # Drug vs Scaffold 비교
-    print("\n" + "=" * 120)
-    print("Graph Drug Split vs Scaffold Split 비교")
-    print("=" * 120)
-
-    for phase_name, stem in [
-        ('Phase 2A', 'colon_numeric_graph_v1'),
-        ('Phase 2B', 'colon_numeric_smiles_graph_v1'),
-        ('Phase 2C', 'colon_numeric_context_smiles_graph_v1'),
-    ]:
-        print(f"\n[{phase_name}]")
-        compare_graph_drug_vs_scaffold(stem)
-
-    print("\n" + "=" * 120)
-    print("✅ Graph Scaffold Split 완료!")
-    print("=" * 120)
-    print("\n판정 기준:")
-    print("  🟢 Drop < 0.05:    scaffold 독립적, 일반화 우수")
-    print("  🟡 Drop 0.05~0.15: 중간 의존")
-    print("  🔴 Drop > 0.15:    scaffold 암기 심함")
-    print("\n참고: Graph 모델은 transductive 특성상 KNN edge가 scaffold 경계를 넘을 수 있음.")
-    print("      따라서 순수 scaffold split보다 약간 관대한 평가일 수 있음.")
+    print("\n✅ Graph Scaffold Split 완료!")

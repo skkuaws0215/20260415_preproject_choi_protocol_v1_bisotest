@@ -4,7 +4,7 @@
 - **옵션:** B (중간 확장)
 - **작업 시작일:** 2026-04-20
 - **최종 업데이트:** 2026-04-22
-- **문서 버전:** v1.1
+- **문서 버전:** v1.2
 
 ## 경로 (수정 반영)
 
@@ -101,7 +101,28 @@
   - `scripts/feature_selection.py` 독립 스크립트 (Lung 로직 100% 재현)
   - 결과: 19,998 → 5,662 features (71.7% 감축)
 - **Step 4: ✅ ML/DL/Graph 전체 완료 (Drug Split + Scaffold Split, 2026-04-22)**
+- **Step 4.5 (Feature Selection, 옵션): ✅ 완료 (FSimp Top 1000 결과 반영)**
 - **Step 4.5+ (튜닝/앙상블): 대기 — 대시보드 `dashboard/` 참조**
+
+## Step 4.5 Feature Selection (옵션)
+
+### 트리거 조건
+
+Step 4 완료 후 다음 중 하나 이상 해당 시 실행:
+- Overfitting Ratio > 50%
+- Graph Scaffold Drop > 15%
+- Val Spearman 이 기대치 대비 현저히 낮음
+
+### Colon 결과 요약
+
+| 구분 | Drug Split | Scaffold Split | Overfit |
+|------|------------|----------------|---------|
+| ML | +0.0037 (소폭 개선) | -0.0030 (변화 없음) |  |
+| DL | -0.0393 (악화) | +0.0094 (소폭 개선) |  |
+| Graph | +0.1352 (대폭 개선) | +0.1101 (대폭 개선) |  |
+| 전체 |  |  | 69.0% → 71.3% (미해결) |
+
+상세 보고서: `COLON_STEP4_5_FS_EXPERIMENT_20260422.md`
 
 ## Step 3 Feature Engineering 결과
 
@@ -168,11 +189,16 @@
 
 ---
 
-*문서명: `20260420_colon_protocol.md` (v1.1, 최종 업데이트 2026-04-22).*
+*문서명: `20260420_colon_protocol.md` (v1.2, 최종 업데이트 2026-04-22).*
 
 ---
 
 ## 📝 변경 이력
+
+- **v1.2 (2026-04-22)**:
+  - Step 4.5 Feature Selection (옵션) 섹션 추가
+  - FSimp Top 1000 결과 요약 반영 (ML/DL/Graph, Drug/Scaffold)
+  - 상세 보고서 링크 추가 (`COLON_STEP4_5_FS_EXPERIMENT_20260422.md`)
 
 - **v1.1 (2026-04-22)**:
   - Step 4 상태 업데이트 (ML/DL/Graph 전체 완료)

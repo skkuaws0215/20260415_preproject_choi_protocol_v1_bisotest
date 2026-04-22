@@ -2,8 +2,8 @@
 ## 적응증 확장 재현 가이드
 
 > 작성일: 2026-04-17
-> 최종 수정일: 2026-04-21
-> 버전: v3.1
+> 최종 수정일: 2026-04-22
+> 버전: v3.2
 > 목적: BRCA v3.1 파이프라인을 타 질병에 동일하게 적용하여 약물 재창출 랭킹을 생성하는 재현 프로토콜
 > 원칙: 프로토콜(코드) = 원본 그대로 사용 / 데이터 = 해당 질병의 실제 데이터만 사용
 
@@ -484,6 +484,61 @@ feature_selection_log.json     → 단계별 제거 수 기록
 | 1 | CatBoost | 2A | 0.8624 |
 | 2 | LightGBM | 2A | 0.8575 |
 | 3 | ResidualMLP | 2C | 0.5493 |
+
+### 8-A-3. 질병별 측정 결과
+
+| 질병 | Best Drug | Best Scaffold | Drop | Overfit | Unstable | Leakage | Graph Drop |
+|------|-----------|-------------|------|---------|----------|---------|------------|
+| BRCA | 0.5030 | - | - | - | - | - | - |
+| Lung | 0.5030 | ❌ 미달성 | - | - | - | - | - |
+| **Colon** | **0.4881** | **0.4041** ✅ | 17.2% 🟡 | 69% 🔴 | 51% 🔴 | ⚠️ | -33% 🔴 |
+| STAD | - | - | - | - | - | - | - |
+
+## 8-B. Step 4.5 Feature Selection [옵션]
+
+### 8-B-1. 트리거 조건
+
+Step 4 완료 후 측정 지표 (Section 8-A) 에서 다음 중 하나 이상 해당 시 진행:
+- Overfitting Ratio > 50%
+- Graph Scaffold Drop > 15%
+- Val Spearman 이 기대치 대비 현저히 낮음
+
+**FS 는 필수가 아닌 옵션 단계.**
+
+### 8-B-2. 방법론
+
+| 항목 | ML/DL | Graph |
+|------|-------|-------|
+| FS 방식 | Fold-internal (train-only) | Global (전체 X) |
+| FS 모델 | LightGBM (n_estimators=100) | LightGBM (n_estimators=100) |
+| Top K | 1000 (기본, 조정 가능) | 1000 (기본, 조정 가능) |
+| Leakage 방지 | ✅ fold 별 train 에서만 importance 계산 | ⚠️ 전체 X 사용 (Graph 구조상 불가피) |
+| 삽입 위치 | X_train/X_val 생성 후, 모델 학습 전 | build_knn_graph() 호출 전 |
+
+### 8-B-3. 모델별 FS 효과 (Colon 실험 기반)
+
+| 모델 유형 | FS 효과 | 권장 |
+|-----------|--------|------|
+| Graph (GAT, GraphSAGE) | 🟢🟢 대폭 개선 (+30%) | FS 필수 |
+| ML (XGBoost, RF) | 🟢 소폭 개선 | FS 선택적 |
+| ML (CatBoost, LightGBM) | 🟡 변화 없음 | FS 불필요 |
+| DL (전체) | 🔴 역효과 (-8%) | FS 비추천 |
+
+### 8-B-4. 실행 가이드
+
+1. 스크립트 패치: 각 training 스크립트에 fs_top_k 파라미터 추가
+2. 결과 경로 격리: experiment_dir 로 별도 디렉토리 사용 (덮어쓰기 방지)
+3. Baseline 백업 필수: 기존 results/ JSON + OOF 백업 후 실행
+4. 체크포인트: 실행 10초 후 로그 + 디렉토리 생성 확인
+
+상세 패치 방법: 각 암종 폴더의 FS 실험 보고서 참조
+- Colon: `COLON_STEP4_5_FS_EXPERIMENT_20260422.md`
+
+### 8-B-5. 주의사항
+
+- DL 모델에 FS 적용 시 input_dim 을 FS 후 X_train.shape[1] 로 재설정 필수 (PyTorch)
+- OOF 경로에 out_suffix 반영 필수 (미반영 시 baseline OOF 덮어쓰기 사고)
+- Graph 의 Global FS 는 leakage 가능성 있으나 Graph 구조상 불가피, 문서에 명시
 
 ---
 

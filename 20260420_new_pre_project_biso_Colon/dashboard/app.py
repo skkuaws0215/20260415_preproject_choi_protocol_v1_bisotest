@@ -121,15 +121,10 @@ with tab_modeling:
     render_step4()
 
 
-# ── Tab 5: Step 5 Ensemble (placeholder) ────────────────────────────────────
+# ── Tab 5: Step 5 Ensemble ──────────────────────────────────────────────────
 with tab_ensemble:
-    st.subheader("🎯 Step 5: Ensemble Analysis")
-    st.info(
-        "⏸️ **Pending** — Step 4 완료 후 착수 예정.\n\n"
-        "**참고**: Lung 파이프라인의 `phase3_ensemble_analysis.py` 구조 재사용.\n"
-        "**Lung 결과**: 양수 Gain 4/24 combinations\n\n"
-        "자세한 계획은 `dashboard/TODO.md` 참조."
-    )
+    from dashboard.views.step5_ensemble import render_step5_ensemble
+    render_step5_ensemble()
 
 
 # ── Tab 6: Step 6 External Validation (placeholder) ────────────────────────

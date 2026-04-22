@@ -4,7 +4,7 @@
 - **옵션:** B (중간 확장)
 - **작업 시작일:** 2026-04-20
 - **최종 업데이트:** 2026-04-22
-- **문서 버전:** v1.2
+- **문서 버전:** v1.3
 
 ## 경로 (수정 반영)
 
@@ -102,7 +102,13 @@
   - 결과: 19,998 → 5,662 features (71.7% 감축)
 - **Step 4: ✅ ML/DL/Graph 전체 완료 (Drug Split + Scaffold Split, 2026-04-22)**
 - **Step 4.5 (Feature Selection, 옵션): ✅ 완료 (FSimp Top 1000 결과 반영)**
-- **Step 4.5+ (튜닝/앙상블): 대기 — 대시보드 `dashboard/` 참조**
+- **Step 5: ✅ 앙상블 완료 (2026-04-22)**
+  - Best: Tier1_2B_fsimp = **0.6010** (ML + DL + Graph cross-category weighted average)
+  - 단일 Best: GraphSAGE FSimp 2B = 0.5869
+  - 앙상블 Gain: +0.0096 (단일 대비), +0.1129 (baseline 대비 +23.1%)
+  - 결과: `results/ensemble_20260422/ensemble_results.json`
+  - 대시보드: Tab 5 참조
+- **Step 6+ (외부 검증): 대기**
 
 ## Step 4.5 Feature Selection (옵션)
 
@@ -189,11 +195,15 @@ Step 4 완료 후 다음 중 하나 이상 해당 시 실행:
 
 ---
 
-*문서명: `20260420_colon_protocol.md` (v1.2, 최종 업데이트 2026-04-22).*
+*문서명: `20260420_colon_protocol.md` (v1.3, 최종 업데이트 2026-04-22).*
 
 ---
 
 ## 📝 변경 이력
+
+- **v1.3 (2026-04-22)**:
+  - Step 5 앙상블 완료 반영 (Best 0.6010)
+  - Step 4.5 → Step 5 진행 경과 기록
 
 - **v1.2 (2026-04-22)**:
   - Step 4.5 Feature Selection (옵션) 섹션 추가

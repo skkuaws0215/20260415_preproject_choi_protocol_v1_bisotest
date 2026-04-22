@@ -146,9 +146,12 @@ Colon Step 4 Baseline 에서 발견된 **69% overfitting 문제** 해결 시도.
    - ML: max_depth 제한, reg_alpha/lambda 증가
    - Step 4.6 으로 별도 계획
 
-4. **앙상블 (Step 5) 에서 FS 결과 활용**
-   - Graph FSimp + ML baseline 조합 → diversity 높은 앙상블
-   - OOF 확보 완료 (격리 디렉토리)
+4. **앙상블 (Step 5) ✅ 완료**
+   - 🏆 Best: Tier1_2B_fsimp = **0.6010** (ML CatBoost + DL + GraphSAGE cross-category)
+   - Baseline 0.4881 → FS 0.5869 → 앙상블 0.6010 (+23.1%)
+   - 12 조합 테스트, 90 OOF 파일 활용
+   - 결과: `results/ensemble_20260422/ensemble_results.json`
+   - 대시보드: Tab 5 (Step 5 Ensemble) 에서 시각화
 
 ---
 
@@ -164,6 +167,9 @@ Colon Step 4 Baseline 에서 발견된 **69% overfitting 문제** 해결 시도.
 - XX:XX  전체 FSimp 실험 완료 — 총 7개 실험, 39 JSON
 - XX:XX  대시보드 파서 확장 (rglob + experiment_source)
 - XX:XX  결과 분석 + 문서 v1.0 업데이트
+- XX:XX  Step 5 앙상블 실행 완료 (12 combinations, 90 OOF)
+- XX:XX  앙상블 Best: Tier1_2B_fsimp = 0.6010 (ML+DL+Graph cross-category)
+- XX:XX  Baseline 0.4881 → FS 0.5869 → 앙상블 0.6010 (+23.1% 전체 개선)
 
 ---
 

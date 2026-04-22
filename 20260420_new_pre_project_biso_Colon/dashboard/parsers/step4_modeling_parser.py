@@ -246,6 +246,155 @@ def load_step4_results(
     return df
 
 
+def get_best_by_split(df: pd.DataFrame, split_name: str) -> Optional[pd.Series]:
+    """
+    특정 Split 의 최고 성능 모델 반환.
+
+    Args:
+        df: load_step4_results() 결과
+        split_name: "Drug Split" | "Scaffold Split" | ...
+
+    Returns:
+        pandas Series (best row) 또는 None
+    """
+    sub = df[df["split"] == split_name]
+    if len(sub) == 0:
+        return None
+    # val_spearman_mean 기준 (이미 정렬되어 있음)
+    return sub.iloc[0]
+
+
+def compute_drug_vs_scaffold_drop(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    모델/Phase 조합별로 Drug Split 과 Scaffold Split 성능 비교.
+
+    Returns:
+        DataFrame with columns:
+          model, phase, category,
+          drug_spearman, scaffold_spearman,
+          drop (절대값), drop_pct (%)
+    """
+    drug_df = df[df["split"] == "Drug Split"][
+        ["model", "phase", "category", "val_spearman_mean"]
+    ].rename(columns={"val_spearman_mean": "drug_spearman"})
+
+    scaf_df = df[df["split"] == "Scaffold Split"][
+        ["model", "phase", "val_spearman_mean"]
+    ].rename(columns={"val_spearman_mean": "scaffold_spearman"})
+
+    merged = drug_df.merge(scaf_df, on=["model", "phase"], how="inner")
+
+    if len(merged) == 0:
+        return merged
+
+    merged["drop"] = merged["scaffold_spearman"] - merged["drug_spearman"]
+    merged["drop_pct"] = (merged["drop"] / merged["drug_spearman"]) * 100
+
+    # drop 이 큰 순 (성능 많이 떨어진 순 = 가장 음수)
+    merged = merged.sort_values("drop_pct", ascending=True).reset_index(drop=True)
+
+    return merged
+
+
+def get_phase_pivot(
+    df: pd.DataFrame, split_name: str, metric: str = "val_spearman_mean"
+) -> pd.DataFrame:
+    """
+    Heatmap 용 피벗: Model(행) × Phase(열).
+
+    Args:
+        df: load_step4_results() 결과
+        split_name: 필터할 split
+        metric: 값으로 쓸 컬럼 (기본 val_spearman_mean)
+
+    Returns:
+        DataFrame (index=model, columns=phase, values=metric)
+    """
+    sub = df[df["split"] == split_name]
+    if len(sub) == 0:
+        return pd.DataFrame()
+
+    pivot = sub.pivot_table(
+        index="model",
+        columns="phase",
+        values=metric,
+        aggfunc="mean",  # 혹시 중복 있을 경우 평균
+    )
+
+    # Phase 순서 고정
+    from dashboard.utils.constants import PHASE_ORDER
+
+    existing_phases = [p for p in PHASE_ORDER if p in pivot.columns]
+    pivot = pivot[existing_phases]
+
+    # 모델은 Val Spearman 평균 높은 순으로 정렬
+    pivot["_sort_key"] = pivot.mean(axis=1)
+    pivot = pivot.sort_values("_sort_key", ascending=False).drop(columns="_sort_key")
+
+    return pivot
+
+
+def get_summary_stats(df: pd.DataFrame) -> Dict[str, Any]:
+    """
+    Step 4 전체 요약 통계.
+
+    Returns:
+        dict with keys:
+          total_experiments, total_files, total_models,
+          splits (dict: split → count),
+          overfitting_count, overfitting_pct,
+          unstable_count, unstable_pct,
+          best_per_split (dict: split → best row)
+    """
+    stats: Dict[str, Any] = {
+        "total_experiments": len(df),
+        "total_files": df["source_file"].nunique() if len(df) > 0 else 0,
+        "total_models": df["model"].nunique() if len(df) > 0 else 0,
+    }
+
+    if len(df) == 0:
+        return stats
+
+    # Split 별 카운트
+    stats["splits"] = df["split"].value_counts().to_dict()
+
+    # Overfitting / Stability (ML/DL 만 통계에 포함; Graph 는 None)
+    has_flag = df[df["overfitting_flag"].notna()]
+    if len(has_flag) > 0:
+        stats["overfitting_count"] = int(has_flag["overfitting_flag"].sum())
+        stats["overfitting_pct"] = stats["overfitting_count"] / len(has_flag) * 100
+    else:
+        stats["overfitting_count"] = 0
+        stats["overfitting_pct"] = 0.0
+
+    has_stability = df[df["stability_flag"].notna()]
+    if len(has_stability) > 0:
+        # stability_flag=True 는 "안정" 이므로 unstable 은 False 카운트
+        stats["unstable_count"] = int((~has_stability["stability_flag"]).sum())
+        stats["unstable_pct"] = stats["unstable_count"] / len(has_stability) * 100
+    else:
+        stats["unstable_count"] = 0
+        stats["unstable_pct"] = 0.0
+
+    # Split 별 최고
+    stats["best_per_split"] = {}
+    for split in df["split"].unique():
+        best = get_best_by_split(df, split)
+        if best is not None:
+            stats["best_per_split"][split] = {
+                "model": best["model"],
+                "phase": best["phase"],
+                "val_spearman_mean": float(best["val_spearman_mean"]),
+                "val_spearman_std": (
+                    float(best["val_spearman_std"])
+                    if pd.notna(best["val_spearman_std"])
+                    else None
+                ),
+            }
+
+    return stats
+
+
 def _print_summary(df: pd.DataFrame) -> None:
     """Print compact parser summary for CLI quick check."""
     if len(df) == 0:

@@ -33,7 +33,7 @@ from dashboard.utils import (
     inject_global_css,
     render_header,
 )
-from dashboard.views import render_overview
+from dashboard.views import render_overview, render_step4
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -116,26 +116,9 @@ with tab_fe:
     )
 
 
-# ── Tab 4: Step 4 Modeling (placeholder, 다음 단계에서 구현) ────────────────
+# ── Tab 4: Step 4 Modeling ───────────────────────────────────────────────────
 with tab_modeling:
-    st.subheader("🤖 Step 4: Modeling (핵심 탭)")
-    st.info(
-        "🚧 **Under active development** — 다음 구현 대상 (Phase 3).\n\n"
-        "**포함될 섹션**:\n"
-        "1. 전체 Ranking 테이블 (필터/정렬)\n"
-        "2. 시각화 3종 (Bar / Heatmap / Box)\n"
-        "3. Drug vs Scaffold Drop 분석\n"
-        "4. 모델 드릴다운 (Fold별 상세)\n\n"
-        "**데이터 준비 완료**: 129 experiments in 30 JSON files (Drug + Scaffold + 5-Fold)\n"
-        "**Primary view**: Drug + Scaffold (90 experiments)"
-    )
-    st.markdown("---")
-    st.markdown("**임시 요약** (Overview 탭 참조):")
-    st.markdown(
-        "- 🏆 **Best Drug Split**: CatBoost Phase 2B = 0.4881\n"
-        "- 🏆 **Best Scaffold Split**: LightGBM Phase 2B = 0.4041\n"
-        "- 💾 CSV: `reports/step4_parser_summary.csv`"
-    )
+    render_step4()
 
 
 # ── Tab 5: Step 5 Ensemble (placeholder) ────────────────────────────────────

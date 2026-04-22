@@ -12,6 +12,10 @@ dashboard.parsers — Step별 결과 파서.
 """
 
 from dashboard.parsers.step4_modeling_parser import (
+    compute_drug_vs_scaffold_drop,
+    get_best_by_split,
+    get_phase_pivot,
+    get_summary_stats,
     load_step4_results,
     parse_json_file,
     parse_filename,
@@ -23,4 +27,8 @@ __all__ = [
     "parse_json_file",
     "parse_filename",
     "parse_model_result",
+    "get_best_by_split",
+    "compute_drug_vs_scaffold_drop",
+    "get_phase_pivot",
+    "get_summary_stats",
 ]

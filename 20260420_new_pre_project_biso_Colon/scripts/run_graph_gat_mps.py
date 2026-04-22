@@ -131,11 +131,11 @@ def train_evaluate_gat(X, y, groups, output_stem, oof_dir=None, k_neighbors=7):
     GAT 모델 학습 및 평가 (GroupCV only, MPS with CPU fallback)
     Colon: k_neighbors=7 (Lung k=10에서 축소)
     """
+    global device
+
     print(f"\n{'='*120}")
     print(f"GAT - GROUPCV (Drug-based split, device={device})")
     print(f"{'='*120}")
-
-    global device
 
     try:
         # Build KNN graph

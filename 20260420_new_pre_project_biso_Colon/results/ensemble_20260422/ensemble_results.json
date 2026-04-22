@@ -1,0 +1,391 @@
+{
+  "experiment": "Step 5 Ensemble",
+  "date": "2026-04-22",
+  "y_shape": [
+    9692
+  ],
+  "n_oof_files": 90,
+  "single_model_scores": {
+    "DL_baseline_2A_CrossAttention": 0.43220020159477657,
+    "DL_baseline_2A_FTTransformer": 0.45741159012192434,
+    "DL_baseline_2A_FlatMLP": 0.4663819714286788,
+    "DL_baseline_2A_ResidualMLP": 0.48433780797667864,
+    "DL_baseline_2A_TabNet": 0.4078587751094831,
+    "DL_baseline_2A_TabTransformer": 0.4785474111436868,
+    "DL_baseline_2A_WideDeep": 0.4478744149258967,
+    "DL_baseline_2B_CrossAttention": 0.3935546693576731,
+    "DL_baseline_2B_FTTransformer": 0.46983695786823243,
+    "DL_baseline_2B_FlatMLP": 0.45424067494847237,
+    "DL_baseline_2B_ResidualMLP": 0.4627293290854329,
+    "DL_baseline_2B_TabNet": 0.4218203797680474,
+    "DL_baseline_2B_TabTransformer": 0.44900402089643493,
+    "DL_baseline_2B_WideDeep": 0.4614949952709531,
+    "DL_baseline_2C_CrossAttention": 0.388350881291636,
+    "DL_baseline_2C_FTTransformer": 0.40920650070885956,
+    "DL_baseline_2C_FlatMLP": 0.3844717414278204,
+    "DL_baseline_2C_ResidualMLP": 0.4461629993459193,
+    "DL_baseline_2C_TabNet": 0.3680282546205413,
+    "DL_baseline_2C_TabTransformer": 0.43582411692941514,
+    "DL_baseline_2C_WideDeep": 0.38681129099466066,
+    "DL_fsimp_2A_CrossAttention": 0.37837755450160293,
+    "DL_fsimp_2A_FTTransformer": 0.39320599289970926,
+    "DL_fsimp_2A_FlatMLP": 0.4072606679230127,
+    "DL_fsimp_2A_ResidualMLP": 0.43387951856609347,
+    "DL_fsimp_2A_TabNet": 0.3962620237665592,
+    "DL_fsimp_2A_TabTransformer": 0.40128321015111745,
+    "DL_fsimp_2A_WideDeep": 0.44179444252081734,
+    "DL_fsimp_2B_CrossAttention": 0.3980069127941823,
+    "DL_fsimp_2B_FTTransformer": 0.41441562074995286,
+    "DL_fsimp_2B_FlatMLP": 0.4061030631349886,
+    "DL_fsimp_2B_ResidualMLP": 0.4317648314858756,
+    "DL_fsimp_2B_TabNet": 0.34983898104826644,
+    "DL_fsimp_2B_TabTransformer": 0.417785858132649,
+    "DL_fsimp_2B_WideDeep": 0.4137224983840235,
+    "DL_fsimp_2C_CrossAttention": 0.2705403431420232,
+    "DL_fsimp_2C_FTTransformer": 0.30955777220257336,
+    "DL_fsimp_2C_FlatMLP": 0.2918611623111919,
+    "DL_fsimp_2C_ResidualMLP": 0.3320078720803396,
+    "DL_fsimp_2C_TabNet": 0.27464293677475726,
+    "DL_fsimp_2C_TabTransformer": 0.3079663371621572,
+    "DL_fsimp_2C_WideDeep": 0.31951974097623675,
+    "Graph_baseline_2A_GAT": 0.4353032816933387,
+    "Graph_baseline_2A_GraphSAGE": 0.3719114661693829,
+    "Graph_baseline_2B_GAT": 0.3752823857860374,
+    "Graph_baseline_2B_GraphSAGE": 0.45833110463288185,
+    "Graph_baseline_2C_GAT": 0.4177868725495413,
+    "Graph_baseline_2C_GraphSAGE": 0.45591395459216216,
+    "Graph_fsimp_2A_GAT": 0.5280951743372847,
+    "Graph_fsimp_2A_GraphSAGE": 0.5539481132251186,
+    "Graph_fsimp_2B_GAT": 0.5485143271203413,
+    "Graph_fsimp_2B_GraphSAGE": 0.5913729614408002,
+    "Graph_fsimp_2C_GAT": 0.5256420846161352,
+    "Graph_fsimp_2C_GraphSAGE": 0.549218063137795,
+    "ML_baseline_2A_CatBoost": 0.4805452176056595,
+    "ML_baseline_2A_ExtraTrees": 0.40369242686116946,
+    "ML_baseline_2A_LightGBM": 0.48225727682890224,
+    "ML_baseline_2A_LightGBM_DART": 0.47734325839593494,
+    "ML_baseline_2A_RandomForest": 0.44892080424847014,
+    "ML_baseline_2A_XGBoost": 0.4295628057064474,
+    "ML_baseline_2B_CatBoost": 0.4842569798746398,
+    "ML_baseline_2B_ExtraTrees": 0.38198083739255817,
+    "ML_baseline_2B_LightGBM": 0.4523639886672354,
+    "ML_baseline_2B_LightGBM_DART": 0.4550092864621862,
+    "ML_baseline_2B_RandomForest": 0.4226716824404551,
+    "ML_baseline_2B_XGBoost": 0.3871619760233395,
+    "ML_baseline_2C_CatBoost": 0.42320046624226976,
+    "ML_baseline_2C_ExtraTrees": 0.3572735452607325,
+    "ML_baseline_2C_LightGBM": 0.39297036751378006,
+    "ML_baseline_2C_LightGBM_DART": 0.3973825470298695,
+    "ML_baseline_2C_RandomForest": 0.3860301454053977,
+    "ML_baseline_2C_XGBoost": 0.391326794097322,
+    "ML_fsimp_2A_CatBoost": 0.48185892684788434,
+    "ML_fsimp_2A_ExtraTrees": 0.4005747620227382,
+    "ML_fsimp_2A_LightGBM": 0.47985512656486706,
+    "ML_fsimp_2A_LightGBM_DART": 0.4711378227010072,
+    "ML_fsimp_2A_RandomForest": 0.45602584208294505,
+    "ML_fsimp_2A_XGBoost": 0.4646614748466413,
+    "ML_fsimp_2B_CatBoost": 0.4877557834847591,
+    "ML_fsimp_2B_ExtraTrees": 0.41573757547524576,
+    "ML_fsimp_2B_LightGBM": 0.4499109863457274,
+    "ML_fsimp_2B_LightGBM_DART": 0.45368837129423323,
+    "ML_fsimp_2B_RandomForest": 0.41635593950490096,
+    "ML_fsimp_2B_XGBoost": 0.439734645669818,
+    "ML_fsimp_2C_CatBoost": 0.4136703580989124,
+    "ML_fsimp_2C_ExtraTrees": 0.35976358561974114,
+    "ML_fsimp_2C_LightGBM": 0.3974246273034991,
+    "ML_fsimp_2C_LightGBM_DART": 0.40362952461245377,
+    "ML_fsimp_2C_RandomForest": 0.3765530697716999,
+    "ML_fsimp_2C_XGBoost": 0.36715830152217455
+  },
+  "tier1_cross_category": [
+    {
+      "tier": "Tier1_CrossCategory",
+      "phase": "2A",
+      "variant": "baseline",
+      "models": [
+        "ML_baseline_2A_LightGBM",
+        "DL_baseline_2A_ResidualMLP",
+        "Graph_baseline_2A_GAT"
+      ],
+      "weights": [
+        0.3,
+        0.35,
+        0.35
+      ],
+      "ensemble_spearman": 0.5208,
+      "individual_scores": [
+        0.4823,
+        0.4843,
+        0.4353
+      ]
+    },
+    {
+      "tier": "Tier1_CrossCategory",
+      "phase": "2A",
+      "variant": "fsimp",
+      "models": [
+        "ML_fsimp_2A_CatBoost",
+        "DL_fsimp_2A_WideDeep",
+        "Graph_fsimp_2A_GraphSAGE"
+      ],
+      "weights": [
+        0.3,
+        0.0,
+        0.7
+      ],
+      "ensemble_spearman": 0.5713,
+      "individual_scores": [
+        0.4819,
+        0.4418,
+        0.5539
+      ]
+    },
+    {
+      "tier": "Tier1_CrossCategory",
+      "phase": "2B",
+      "variant": "baseline",
+      "models": [
+        "ML_baseline_2B_CatBoost",
+        "DL_baseline_2B_FTTransformer",
+        "Graph_baseline_2B_GraphSAGE"
+      ],
+      "weights": [
+        0.5,
+        0.2,
+        0.3
+      ],
+      "ensemble_spearman": 0.5148,
+      "individual_scores": [
+        0.4843,
+        0.4698,
+        0.4583
+      ]
+    },
+    {
+      "tier": "Tier1_CrossCategory",
+      "phase": "2B",
+      "variant": "fsimp",
+      "models": [
+        "ML_fsimp_2B_CatBoost",
+        "DL_fsimp_2B_ResidualMLP",
+        "Graph_fsimp_2B_GraphSAGE"
+      ],
+      "weights": [
+        0.2,
+        0.0,
+        0.8
+      ],
+      "ensemble_spearman": 0.601,
+      "individual_scores": [
+        0.4878,
+        0.4318,
+        0.5914
+      ]
+    },
+    {
+      "tier": "Tier1_CrossCategory",
+      "phase": "2C",
+      "variant": "baseline",
+      "models": [
+        "ML_baseline_2C_CatBoost",
+        "DL_baseline_2C_ResidualMLP",
+        "Graph_baseline_2C_GraphSAGE"
+      ],
+      "weights": [
+        0.2,
+        0.32,
+        0.48
+      ],
+      "ensemble_spearman": 0.4911,
+      "individual_scores": [
+        0.4232,
+        0.4462,
+        0.4559
+      ]
+    },
+    {
+      "tier": "Tier1_CrossCategory",
+      "phase": "2C",
+      "variant": "fsimp",
+      "models": [
+        "ML_fsimp_2C_CatBoost",
+        "DL_fsimp_2C_ResidualMLP",
+        "Graph_fsimp_2C_GraphSAGE"
+      ],
+      "weights": [
+        0.2,
+        0.0,
+        0.8
+      ],
+      "ensemble_spearman": 0.5547,
+      "individual_scores": [
+        0.4137,
+        0.332,
+        0.5492
+      ]
+    }
+  ],
+  "tier1b_mixed_variant": [
+    {
+      "tier": "Tier1B_MixedVariant",
+      "phase": "2A",
+      "variant": "mixed",
+      "models": [
+        "ML_baseline_2A_LightGBM",
+        "DL_baseline_2A_ResidualMLP",
+        "Graph_fsimp_2A_GraphSAGE"
+      ],
+      "weights": [
+        0.3,
+        0.0,
+        0.7
+      ],
+      "ensemble_spearman": 0.5702,
+      "individual_scores": [
+        0.4823,
+        0.4843,
+        0.5539
+      ]
+    },
+    {
+      "tier": "Tier1B_MixedVariant",
+      "phase": "2B",
+      "variant": "mixed",
+      "models": [
+        "ML_baseline_2B_CatBoost",
+        "DL_baseline_2B_FTTransformer",
+        "Graph_fsimp_2B_GraphSAGE"
+      ],
+      "weights": [
+        0.2,
+        0.0,
+        0.8
+      ],
+      "ensemble_spearman": 0.5991,
+      "individual_scores": [
+        0.4843,
+        0.4698,
+        0.5914
+      ]
+    },
+    {
+      "tier": "Tier1B_MixedVariant",
+      "phase": "2C",
+      "variant": "mixed",
+      "models": [
+        "ML_baseline_2C_CatBoost",
+        "DL_baseline_2C_ResidualMLP",
+        "Graph_fsimp_2C_GraphSAGE"
+      ],
+      "weights": [
+        0.2,
+        0.0,
+        0.8
+      ],
+      "ensemble_spearman": 0.553,
+      "individual_scores": [
+        0.4232,
+        0.4462,
+        0.5492
+      ]
+    }
+  ],
+  "tier2_phase_wise": [
+    {
+      "tier": "Tier2_PhaseWise",
+      "variant": "baseline",
+      "models": [
+        "DL_baseline_2A_ResidualMLP",
+        "ML_baseline_2B_CatBoost",
+        "Graph_baseline_2C_GraphSAGE"
+      ],
+      "weights": [
+        0.3,
+        0.35,
+        0.35
+      ],
+      "ensemble_spearman": 0.5187
+    },
+    {
+      "tier": "Tier2_PhaseWise",
+      "variant": "fsimp",
+      "models": [
+        "Graph_fsimp_2A_GraphSAGE",
+        "Graph_fsimp_2B_GraphSAGE",
+        "Graph_fsimp_2C_GraphSAGE"
+      ],
+      "weights": [
+        0.1,
+        0.72,
+        0.18
+      ],
+      "ensemble_spearman": 0.5961
+    }
+  ],
+  "tier3_single_best": {
+    "model": "Graph_fsimp_2B_GraphSAGE",
+    "score": 0.5913729614408002
+  },
+  "final_ranking": [
+    {
+      "rank": 1,
+      "name": "Tier1_2B_fsimp",
+      "score": 0.601
+    },
+    {
+      "rank": 2,
+      "name": "Tier1B_2B_mixed",
+      "score": 0.5991
+    },
+    {
+      "rank": 3,
+      "name": "Tier2_fsimp",
+      "score": 0.5961
+    },
+    {
+      "rank": 4,
+      "name": "Tier3_single_Graph_fsimp_2B_GraphSAGE",
+      "score": 0.5913729614408002
+    },
+    {
+      "rank": 5,
+      "name": "Tier1_2A_fsimp",
+      "score": 0.5713
+    },
+    {
+      "rank": 6,
+      "name": "Tier1B_2A_mixed",
+      "score": 0.5702
+    },
+    {
+      "rank": 7,
+      "name": "Tier1_2C_fsimp",
+      "score": 0.5547
+    },
+    {
+      "rank": 8,
+      "name": "Tier1B_2C_mixed",
+      "score": 0.553
+    },
+    {
+      "rank": 9,
+      "name": "Tier1_2A_baseline",
+      "score": 0.5208
+    },
+    {
+      "rank": 10,
+      "name": "Tier2_baseline",
+      "score": 0.5187
+    },
+    {
+      "rank": 11,
+      "name": "Tier1_2B_baseline",
+      "score": 0.5148
+    },
+    {
+      "rank": 12,
+      "name": "Tier1_2C_baseline",
+      "score": 0.4911
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "total_candidates": 30,
+  "admet_pass_warning": 28,
+  "top_15_selected": 15,
+  "category_distribution": {
+    "RESEARCH_PHASE": 7,
+    "CLINICAL_TRIAL": 3,
+    "REPURPOSING_CANDIDATE": 3,
+    "FDA_APPROVED_CRC": 2
+  },
+  "top_5_recommendations": [
+    {
+      "recommendation_rank": 1,
+      "drug_name": "Topotecan",
+      "usage_category": "FDA_APPROVED_CRC",
+      "safety_score": 7.5,
+      "n_clinical_trials": 2,
+      "verdict": "PASS"
+    },
+    {
+      "recommendation_rank": 2,
+      "drug_name": "Irinotecan",
+      "usage_category": "FDA_APPROVED_CRC",
+      "safety_score": 6.4,
+      "n_clinical_trials": 163,
+      "verdict": "PASS"
+    },
+    {
+      "recommendation_rank": 3,
+      "drug_name": "Camptothecin",
+      "usage_category": "RESEARCH_PHASE",
+      "safety_score": 6.25,
+      "n_clinical_trials": 1,
+      "verdict": "PASS"
+    },
+    {
+      "recommendation_rank": 4,
+      "drug_name": "Temsirolimus",
+      "usage_category": "RESEARCH_PHASE",
+      "safety_score": 5.5,
+      "n_clinical_trials": 5,
+      "verdict": "WARNING"
+    },
+    {
+      "recommendation_rank": 5,
+      "drug_name": "Rapamycin",
+      "usage_category": "RESEARCH_PHASE",
+      "safety_score": 5.5,
+      "n_clinical_trials": 1,
+      "verdict": "WARNING"
+    }
+  ]
+}

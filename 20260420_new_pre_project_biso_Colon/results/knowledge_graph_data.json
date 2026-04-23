@@ -1,0 +1,1562 @@
+{
+  "nodes": [
+    {
+      "id": "disease_Breast Cancer",
+      "label": "Breast Cancer",
+      "type": "disease"
+    },
+    {
+      "id": "disease_Lung Cancer",
+      "label": "Lung Cancer",
+      "type": "disease"
+    },
+    {
+      "id": "disease_Colorectal Cancer",
+      "label": "Colorectal Cancer",
+      "type": "disease"
+    },
+    {
+      "id": "drug_Dactinomycin",
+      "label": "Dactinomycin",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Docetaxel",
+      "label": "Docetaxel",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Vinblastine",
+      "label": "Vinblastine",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Staurosporine",
+      "label": "Staurosporine",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Bortezomib",
+      "label": "Bortezomib",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Vinorelbine",
+      "label": "Vinorelbine",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_SN-38",
+      "label": "SN-38",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Dinaciclib",
+      "label": "Dinaciclib",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Paclitaxel",
+      "label": "Paclitaxel",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Rapamycin",
+      "label": "Rapamycin",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Camptothecin",
+      "label": "Camptothecin",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Luminespib",
+      "label": "Luminespib",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Epirubicin",
+      "label": "Epirubicin",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Romidepsin",
+      "label": "Romidepsin",
+      "type": "drug",
+      "category": null,
+      "safety_score": null
+    },
+    {
+      "id": "drug_Topotecan",
+      "label": "Topotecan",
+      "type": "drug",
+      "category": "FDA_APPROVED_LUNG",
+      "safety_score": null
+    },
+    {
+      "id": "drug_Cediranib",
+      "label": "Cediranib",
+      "type": "drug",
+      "category": "RESEARCH_PHASE",
+      "safety_score": null
+    },
+    {
+      "id": "drug_Alisertib",
+      "label": "Alisertib",
+      "type": "drug",
+      "category": "RESEARCH_PHASE",
+      "safety_score": null
+    },
+    {
+      "id": "drug_Temsirolimus",
+      "label": "Temsirolimus",
+      "type": "drug",
+      "category": "RESEARCH_PHASE",
+      "safety_score": null
+    },
+    {
+      "id": "drug_Palbociclib",
+      "label": "Palbociclib",
+      "type": "drug",
+      "category": "RESEARCH_PHASE",
+      "safety_score": null
+    },
+    {
+      "id": "drug_Entinostat",
+      "label": "Entinostat",
+      "type": "drug",
+      "category": "RESEARCH_PHASE",
+      "safety_score": null
+    },
+    {
+      "id": "drug_OTX015",
+      "label": "OTX015",
+      "type": "drug",
+      "category": "RESEARCH_PHASE",
+      "safety_score": null
+    },
+    {
+      "id": "drug_LGK974",
+      "label": "LGK974",
+      "type": "drug",
+      "category": "CLINICAL_TRIAL",
+      "safety_score": null
+    },
+    {
+      "id": "drug_SL0101",
+      "label": "SL0101",
+      "type": "drug",
+      "category": "REPURPOSING_CANDIDATE",
+      "safety_score": null
+    },
+    {
+      "id": "drug_Irinotecan",
+      "label": "Irinotecan",
+      "type": "drug",
+      "category": "",
+      "safety_score": 6.4
+    },
+    {
+      "id": "drug_Tanespimycin",
+      "label": "Tanespimycin",
+      "type": "drug",
+      "category": "",
+      "safety_score": 5.0
+    },
+    {
+      "id": "drug_Refametinib",
+      "label": "Refametinib",
+      "type": "drug",
+      "category": "",
+      "safety_score": 5.0
+    },
+    {
+      "id": "drug_Lestaurtinib",
+      "label": "Lestaurtinib",
+      "type": "drug",
+      "category": "",
+      "safety_score": 5.0
+    },
+    {
+      "id": "drug_Trametinib",
+      "label": "Trametinib",
+      "type": "drug",
+      "category": "",
+      "safety_score": 5.15
+    },
+    {
+      "id": "drug_Teniposide",
+      "label": "Teniposide",
+      "type": "drug"
+    },
+    {
+      "id": "drug_Navitoclax",
+      "label": "Navitoclax",
+      "type": "drug"
+    },
+    {
+      "id": "target_None",
+      "label": null,
+      "type": "target",
+      "uniprot": "P00374",
+      "plddt": null,
+      "pocket": null
+    },
+    {
+      "id": "target_HDAC1",
+      "label": "HDAC1",
+      "type": "target",
+      "uniprot": "Q13547",
+      "plddt": 86.41,
+      "pocket": 8
+    },
+    {
+      "id": "target_HDAC3",
+      "label": "HDAC3",
+      "type": "target",
+      "uniprot": "O15379",
+      "plddt": 90.73,
+      "pocket": 7
+    },
+    {
+      "id": "target_MTOR",
+      "label": "MTOR",
+      "type": "target",
+      "uniprot": "P42345",
+      "plddt": 78.57,
+      "pocket": 9
+    },
+    {
+      "id": "target_MTORC1",
+      "label": "MTORC1",
+      "type": "target",
+      "uniprot": "P42345",
+      "plddt": 78.57,
+      "pocket": 9
+    },
+    {
+      "id": "target_TOP1",
+      "label": "TOP1",
+      "type": "target",
+      "uniprot": "P11387",
+      "plddt": 80.25,
+      "pocket": 5
+    },
+    {
+      "id": "target_FLT3",
+      "label": "FLT3",
+      "type": "target",
+      "uniprot": "P36888",
+      "plddt": 76.19,
+      "pocket": 9
+    },
+    {
+      "id": "target_HSP90",
+      "label": "HSP90",
+      "type": "target",
+      "uniprot": "P07900",
+      "plddt": 85.55,
+      "pocket": 6
+    },
+    {
+      "id": "target_JAK2",
+      "label": "JAK2",
+      "type": "target",
+      "uniprot": "O60674",
+      "plddt": 87.46,
+      "pocket": 8
+    },
+    {
+      "id": "target_MEK1",
+      "label": "MEK1",
+      "type": "target",
+      "uniprot": "Q02750",
+      "plddt": 84.05,
+      "pocket": 5
+    },
+    {
+      "id": "target_MEK2",
+      "label": "MEK2",
+      "type": "target",
+      "uniprot": "P36507",
+      "plddt": 82.54,
+      "pocket": 5
+    },
+    {
+      "id": "target_NTRK1",
+      "label": "NTRK1",
+      "type": "target",
+      "uniprot": "P04629",
+      "plddt": 78.92,
+      "pocket": 8
+    },
+    {
+      "id": "target_NTRK2",
+      "label": "NTRK2",
+      "type": "target",
+      "uniprot": "Q16620",
+      "plddt": 77.53,
+      "pocket": 6
+    },
+    {
+      "id": "target_NTRK3",
+      "label": "NTRK3",
+      "type": "target",
+      "uniprot": "Q16288",
+      "plddt": 77.36,
+      "pocket": 8
+    }
+  ],
+  "edges": [
+    {
+      "source": "drug_Dactinomycin",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 7
+    },
+    {
+      "source": "drug_Docetaxel",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 5
+    },
+    {
+      "source": "drug_Vinblastine",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 11
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 3
+    },
+    {
+      "source": "drug_Bortezomib",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 6
+    },
+    {
+      "source": "drug_Vinorelbine",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 8
+    },
+    {
+      "source": "drug_SN-38",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 4
+    },
+    {
+      "source": "drug_Dinaciclib",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 9
+    },
+    {
+      "source": "drug_Paclitaxel",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 10
+    },
+    {
+      "source": "drug_Rapamycin",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 13
+    },
+    {
+      "source": "drug_Camptothecin",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 12
+    },
+    {
+      "source": "drug_Luminespib",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 14
+    },
+    {
+      "source": "drug_Epirubicin",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 15
+    },
+    {
+      "source": "drug_Romidepsin",
+      "target": "disease_Breast Cancer",
+      "type": "treats",
+      "rank": 1
+    },
+    {
+      "source": "drug_Dactinomycin",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 14
+    },
+    {
+      "source": "drug_Docetaxel",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 3
+    },
+    {
+      "source": "drug_Vinorelbine",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 4
+    },
+    {
+      "source": "drug_Paclitaxel",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 1
+    },
+    {
+      "source": "drug_Rapamycin",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 12
+    },
+    {
+      "source": "drug_Topotecan",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 2
+    },
+    {
+      "source": "drug_Cediranib",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 10
+    },
+    {
+      "source": "drug_Alisertib",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 8
+    },
+    {
+      "source": "drug_Romidepsin",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 9
+    },
+    {
+      "source": "drug_Temsirolimus",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 6
+    },
+    {
+      "source": "drug_Palbociclib",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 5
+    },
+    {
+      "source": "drug_Entinostat",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 7
+    },
+    {
+      "source": "drug_OTX015",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 11
+    },
+    {
+      "source": "drug_LGK974",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 13
+    },
+    {
+      "source": "drug_SL0101",
+      "target": "disease_Lung Cancer",
+      "type": "treats",
+      "rank": 15
+    },
+    {
+      "source": "drug_Vinblastine",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 3
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 14
+    },
+    {
+      "source": "drug_Vinorelbine",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 4
+    },
+    {
+      "source": "drug_Rapamycin",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 8
+    },
+    {
+      "source": "drug_Camptothecin",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 11
+    },
+    {
+      "source": "drug_Irinotecan",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 24
+    },
+    {
+      "source": "drug_Topotecan",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 27
+    },
+    {
+      "source": "drug_Tanespimycin",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 13
+    },
+    {
+      "source": "drug_Temsirolimus",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 7
+    },
+    {
+      "source": "drug_Refametinib",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 10
+    },
+    {
+      "source": "drug_Lestaurtinib",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 9
+    },
+    {
+      "source": "drug_Trametinib",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 16
+    },
+    {
+      "source": "drug_Entinostat",
+      "target": "disease_Colorectal Cancer",
+      "type": "treats",
+      "rank": 15
+    },
+    {
+      "source": "drug_Dactinomycin",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Unvalidated"
+    },
+    {
+      "source": "drug_Docetaxel",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Low"
+    },
+    {
+      "source": "drug_Vinblastine",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very Low"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very Low"
+    },
+    {
+      "source": "drug_Bortezomib",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Low"
+    },
+    {
+      "source": "drug_Vinorelbine",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Low"
+    },
+    {
+      "source": "drug_Paclitaxel",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Low"
+    },
+    {
+      "source": "drug_Rapamycin",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very Low"
+    },
+    {
+      "source": "drug_Camptothecin",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very High"
+    },
+    {
+      "source": "drug_Epirubicin",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very Low"
+    },
+    {
+      "source": "drug_Teniposide",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very Low"
+    },
+    {
+      "source": "drug_Irinotecan",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very High"
+    },
+    {
+      "source": "drug_Topotecan",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very High"
+    },
+    {
+      "source": "drug_Tanespimycin",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Low"
+    },
+    {
+      "source": "drug_Temsirolimus",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very High"
+    },
+    {
+      "source": "drug_Refametinib",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Very Low"
+    },
+    {
+      "source": "drug_Lestaurtinib",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "High"
+    },
+    {
+      "source": "drug_Trametinib",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Low"
+    },
+    {
+      "source": "drug_Entinostat",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "High"
+    },
+    {
+      "source": "drug_Navitoclax",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "High"
+    },
+    {
+      "source": "drug_SL0101",
+      "target": "disease_Colorectal Cancer",
+      "type": "predicted_for",
+      "confidence": "Medium"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Breast Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_HDAC1",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_HDAC3",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_MTOR",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_MTORC1",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_TOP1",
+      "target": "disease_Lung Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_None",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_FLT3",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_HDAC1",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_HDAC3",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_HSP90",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_JAK2",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_MEK1",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_MEK2",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_MTOR",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_MTORC1",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_NTRK1",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_NTRK2",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_NTRK3",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "target_TOP1",
+      "target": "disease_Colorectal Cancer",
+      "type": "associated_with"
+    },
+    {
+      "source": "drug_Dactinomycin",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Docetaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Docetaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Docetaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Docetaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Docetaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Vinblastine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Vinblastine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Vinblastine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Vinblastine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Staurosporine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Bortezomib",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Vinorelbine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Vinorelbine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Vinorelbine",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Dinaciclib",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Dinaciclib",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Paclitaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Paclitaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Paclitaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Paclitaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Paclitaxel",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Rapamycin",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Rapamycin",
+      "target": "target_MTORC1",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Camptothecin",
+      "target": "target_TOP1",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Luminespib",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Epirubicin",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Epirubicin",
+      "target": "target_None",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Topotecan",
+      "target": "target_TOP1",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Temsirolimus",
+      "target": "target_MTOR",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Entinostat",
+      "target": "target_HDAC1",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Entinostat",
+      "target": "target_HDAC3",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Irinotecan",
+      "target": "target_TOP1",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Tanespimycin",
+      "target": "target_HSP90",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Refametinib",
+      "target": "target_MEK1",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Refametinib",
+      "target": "target_MEK2",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Lestaurtinib",
+      "target": "target_FLT3",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Lestaurtinib",
+      "target": "target_JAK2",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Lestaurtinib",
+      "target": "target_NTRK1",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Lestaurtinib",
+      "target": "target_NTRK2",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Lestaurtinib",
+      "target": "target_NTRK3",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Trametinib",
+      "target": "target_MEK1",
+      "type": "targets"
+    },
+    {
+      "source": "drug_Trametinib",
+      "target": "target_MEK2",
+      "type": "targets"
+    }
+  ]
+}

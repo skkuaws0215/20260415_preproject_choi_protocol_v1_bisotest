@@ -1,13 +1,35 @@
 {
-  "step": "Step 8 Neo4j Knowledge Graph",
+  "step": "Step 8 Neo4j Enhancement",
+  "date": "2026-04-24",
   "target": "neo4j+s://108928fe.databases.neo4j.io",
-  "disease": "Colorectal Cancer (COAD+READ)",
-  "loaded": {
-    "disease_node": 1,
-    "cell_lines": 35,
-    "drug_disease_relations": 30,
-    "top15_admet": 15,
-    "alphafold_targets": 14,
-    "coad_read_recommendations": "loaded"
-  }
+  "enhancements": {
+    "crc_treats_added": 13,
+    "crc_target_associated_with": 44,
+    "lung_target_associated_with": 14,
+    "cross_disease_shared_drugs": [
+      "Vinorelbine",
+      "Rapamycin",
+      "Topotecan",
+      "Temsirolimus",
+      "Entinostat"
+    ]
+  },
+  "final_state": {
+    "Breast Cancer": {
+      "TREATS": 14,
+      "ASSOCIATED_WITH": 53
+    },
+    "Lung Cancer": {
+      "TREATS": 15,
+      "ASSOCIATED_WITH": 14
+    },
+    "Colorectal Cancer": {
+      "TREATS": 13,
+      "PREDICTED_FOR": 21,
+      "ASSOCIATED_WITH": 44,
+      "CELL_LINE_OF": 35
+    }
+  },
+  "total_nodes": 30589,
+  "total_relationships": "113615+"
 }

@@ -139,11 +139,13 @@ def render():
                     })
                 st.dataframe(pd.DataFrame(rows), use_container_width=True)
 
-            # 3D 뷰어 링크
+            # 3D 뷰어 임베드
             viewer_path = results_dir / "alphafold_validation" / "alphafold_3d_viewer.html"
             if viewer_path.exists():
-                st.markdown(f"🔗 [Open 3D Viewer]({viewer_path})")
-                st.info("3D 뷰어를 브라우저에서 열어 타겟 단백질 구조와 binding pocket을 확인하세요.")
+                st.markdown("#### 🔬 Interactive 3D Protein Viewer")
+                with open(viewer_path, "r") as f:
+                    html_content = f.read()
+                st.components.v1.html(html_content, height=700, scrolling=True)
         else:
             st.warning("AlphaFold validation results not found")
 

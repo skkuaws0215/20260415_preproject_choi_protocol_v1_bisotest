@@ -86,34 +86,16 @@ with tab_overview:
     render_overview()
 
 
-# ── Tab 2: Step 1-2 Data & QC (placeholder) ──────────────────────────────────
+# ── Tab 2: Step 1-2 Data & QC ────────────────────────────────────────────────
 with tab_data_qc:
-    st.subheader("📥 Step 1-2: Data Acquisition & QC")
-    st.info(
-        "🚧 **Coming soon** — Step 2 QC 리포트 8개 통합 뷰.\n\n"
-        "**파싱 대상**:\n"
-        "- `reports/step2_1_qc_report.txt`\n"
-        "- `reports/step2_4_matching_report.json`\n"
-        "- `reports/step2_5_drug_catalog_qc.json`\n"
-        "- `reports/step2_5b_bridge_report.json`\n"
-        "- `reports/step2_6_lincs_extract_report.json`\n"
-        "- `reports/step2_7_lincs_aggregation_report.json`\n"
-        "- `reports/step2_8_subtype_report.json`\n"
-        "- `reports/step2_integrated_qc_report.json`\n\n"
-        "자세한 계획은 `dashboard/TODO.md` 참조."
-    )
+    from dashboard.views.step2_data_qc import render_step2_data_qc
+    render_step2_data_qc()
 
 
-# ── Tab 3: Step 3 Feature Engineering (placeholder) ─────────────────────────
+# ── Tab 3: Step 3 Feature Engineering ────────────────────────────────────────
 with tab_fe:
-    st.subheader("🧬 Step 3: Feature Engineering & Selection")
-    st.info(
-        "🚧 **Coming soon** — Step 3/3.5 FE 산출물 시각화.\n\n"
-        "**파싱 대상**:\n"
-        "- `fe_qc/20260420_colon_fe_v1/`\n"
-        "- `fe_qc/20260420_colon_fe_v2/`\n\n"
-        "자세한 계획은 `dashboard/TODO.md` 참조."
-    )
+    from dashboard.views.step3_fe import render_step3_fe
+    render_step3_fe()
 
 
 # ── Tab 4: Step 4 Modeling ───────────────────────────────────────────────────

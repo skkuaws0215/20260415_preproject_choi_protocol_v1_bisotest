@@ -1,0 +1,299 @@
+{
+  "step": "Step 7.6 COAD vs READ Analysis",
+  "disease": "colorectal cancer",
+  "tcga_samples": {
+    "coad": 377,
+    "read": 154
+  },
+  "genes_analyzed": 9,
+  "genes_significant": 1,
+  "expression_results": [
+    {
+      "gene": "FLT3",
+      "coad_mean": 6.3882,
+      "coad_median": 2.611,
+      "coad_std": 36.1202,
+      "coad_n": 377,
+      "read_mean": 5.0199,
+      "read_median": 2.9581,
+      "read_std": 10.1974,
+      "read_n": 154,
+      "t_statistic": 0.6717,
+      "p_value": 0.502094,
+      "cohens_d": 0.0516,
+      "direction": "No_difference",
+      "significant": "False"
+    },
+    {
+      "gene": "HDAC1",
+      "coad_mean": 5137.4913,
+      "coad_median": 4929.88,
+      "coad_std": 1359.7699,
+      "coad_n": 377,
+      "read_mean": 4941.4219,
+      "read_median": 4914.9359,
+      "read_std": 1453.4374,
+      "read_n": 154,
+      "t_statistic": 1.4329,
+      "p_value": 0.153065,
+      "cohens_d": 0.1393,
+      "direction": "No_difference",
+      "significant": "False"
+    },
+    {
+      "gene": "HDAC3",
+      "coad_mean": 1122.3986,
+      "coad_median": 1117.24,
+      "coad_std": 232.0241,
+      "coad_n": 377,
+      "read_mean": 1106.2052,
+      "read_median": 1081.6439,
+      "read_std": 270.4347,
+      "read_n": 154,
+      "t_statistic": 0.6497,
+      "p_value": 0.51647,
+      "cohens_d": 0.0643,
+      "direction": "No_difference",
+      "significant": "False"
+    },
+    {
+      "gene": "JAK2",
+      "coad_mean": 357.9047,
+      "coad_median": 283.961,
+      "coad_std": 277.298,
+      "coad_n": 377,
+      "read_mean": 302.2784,
+      "read_median": 268.6359,
+      "read_std": 188.0555,
+      "read_n": 154,
+      "t_statistic": 2.6651,
+      "p_value": 0.007999,
+      "cohens_d": 0.2348,
+      "direction": "COAD_higher",
+      "significant": "True"
+    },
+    {
+      "gene": "MTOR",
+      "coad_mean": 1216.1798,
+      "coad_median": 1192.6228,
+      "coad_std": 421.4998,
+      "coad_n": 377,
+      "read_mean": 1181.4176,
+      "read_median": 1116.0421,
+      "read_std": 416.7433,
+      "read_n": 154,
+      "t_statistic": 0.867,
+      "p_value": 0.386673,
+      "cohens_d": 0.0829,
+      "direction": "No_difference",
+      "significant": "False"
+    },
+    {
+      "gene": "NTRK1",
+      "coad_mean": 3.9945,
+      "coad_median": 2.1342,
+      "coad_std": 9.9982,
+      "coad_n": 377,
+      "read_mean": 4.0686,
+      "read_median": 2.7035,
+      "read_std": 5.343,
+      "read_n": 154,
+      "t_statistic": -0.1102,
+      "p_value": 0.91228,
+      "cohens_d": -0.0092,
+      "direction": "No_difference",
+      "significant": "False"
+    },
+    {
+      "gene": "NTRK2",
+      "coad_mean": 217.2021,
+      "coad_median": 32.9548,
+      "coad_std": 582.145,
+      "coad_n": 377,
+      "read_mean": 301.7833,
+      "read_median": 55.0902,
+      "read_std": 604.9517,
+      "read_n": 154,
+      "t_statistic": -1.4739,
+      "p_value": 0.141662,
+      "cohens_d": -0.1425,
+      "direction": "No_difference",
+      "significant": "False"
+    },
+    {
+      "gene": "NTRK3",
+      "coad_mean": 4.1025,
+      "coad_median": 1.3501,
+      "coad_std": 11.3899,
+      "coad_n": 377,
+      "read_mean": 4.0582,
+      "read_median": 2.0418,
+      "read_std": 6.6965,
+      "read_n": 154,
+      "t_statistic": 0.0554,
+      "p_value": 0.955834,
+      "cohens_d": 0.0047,
+      "direction": "No_difference",
+      "significant": "False"
+    },
+    {
+      "gene": "TOP1",
+      "coad_mean": 3616.4675,
+      "coad_median": 3499.5327,
+      "coad_std": 1249.9204,
+      "coad_n": 377,
+      "read_mean": 3595.0532,
+      "read_median": 3562.9661,
+      "read_std": 1333.0387,
+      "read_n": 154,
+      "t_statistic": 0.1705,
+      "p_value": 0.864724,
+      "cohens_d": 0.0166,
+      "direction": "No_difference",
+      "significant": "False"
+    }
+  ],
+  "drug_recommendations": [
+    {
+      "drug": "Topotecan",
+      "recommendation": "Both",
+      "detail": "No significant COAD/READ difference in target expression",
+      "n_targets_analyzed": 1,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Irinotecan",
+      "recommendation": "Both",
+      "detail": "No significant COAD/READ difference in target expression",
+      "n_targets_analyzed": 1,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Camptothecin",
+      "recommendation": "Both",
+      "detail": "No significant COAD/READ difference in target expression",
+      "n_targets_analyzed": 1,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Temsirolimus",
+      "recommendation": "Both",
+      "detail": "No significant COAD/READ difference in target expression",
+      "n_targets_analyzed": 1,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Rapamycin",
+      "recommendation": "Unknown",
+      "detail": "No target gene expression data",
+      "n_targets_analyzed": 0,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Trametinib",
+      "recommendation": "Unknown",
+      "detail": "No target gene expression data",
+      "n_targets_analyzed": 0,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Lestaurtinib",
+      "recommendation": "COAD_preferred",
+      "detail": "Target genes higher in COAD (effect=0.23 vs 0.00)",
+      "n_targets_analyzed": 5,
+      "n_significant": 1,
+      "coad_score": 0.2348,
+      "read_score": 0
+    },
+    {
+      "drug": "Refametinib",
+      "recommendation": "Unknown",
+      "detail": "No target gene expression data",
+      "n_targets_analyzed": 0,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Entinostat",
+      "recommendation": "Both",
+      "detail": "No significant COAD/READ difference in target expression",
+      "n_targets_analyzed": 2,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Vinorelbine",
+      "recommendation": "Unknown",
+      "detail": "No target gene expression data",
+      "n_targets_analyzed": 0,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Staurosporine",
+      "recommendation": "Unknown",
+      "detail": "No target gene expression data",
+      "n_targets_analyzed": 0,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Tanespimycin",
+      "recommendation": "Unknown",
+      "detail": "No target gene expression data",
+      "n_targets_analyzed": 0,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "Vinblastine",
+      "recommendation": "Unknown",
+      "detail": "No target gene expression data",
+      "n_targets_analyzed": 0,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "AZD6482",
+      "recommendation": "Unknown",
+      "detail": "No target gene expression data",
+      "n_targets_analyzed": 0,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    },
+    {
+      "drug": "LMP744",
+      "recommendation": "Both",
+      "detail": "No significant COAD/READ difference in target expression",
+      "n_targets_analyzed": 1,
+      "n_significant": 0,
+      "coad_score": 0,
+      "read_score": 0
+    }
+  ],
+  "summary": {
+    "coad_preferred": 1,
+    "read_preferred": 0,
+    "both": 6,
+    "unknown": 8
+  }
+}

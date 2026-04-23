@@ -1,0 +1,16 @@
+drug,recommendation,detail,n_targets_analyzed,n_significant,coad_score,read_score
+Topotecan,Both,No significant COAD/READ difference in target expression,1,0,0.0,0
+Irinotecan,Both,No significant COAD/READ difference in target expression,1,0,0.0,0
+Camptothecin,Both,No significant COAD/READ difference in target expression,1,0,0.0,0
+Temsirolimus,Both,No significant COAD/READ difference in target expression,1,0,0.0,0
+Rapamycin,Unknown,No target gene expression data,0,0,0.0,0
+Trametinib,Unknown,No target gene expression data,0,0,0.0,0
+Lestaurtinib,COAD_preferred,Target genes higher in COAD (effect=0.23 vs 0.00),5,1,0.2348,0
+Refametinib,Unknown,No target gene expression data,0,0,0.0,0
+Entinostat,Both,No significant COAD/READ difference in target expression,2,0,0.0,0
+Vinorelbine,Unknown,No target gene expression data,0,0,0.0,0
+Staurosporine,Unknown,No target gene expression data,0,0,0.0,0
+Tanespimycin,Unknown,No target gene expression data,0,0,0.0,0
+Vinblastine,Unknown,No target gene expression data,0,0,0.0,0
+AZD6482,Unknown,No target gene expression data,0,0,0.0,0
+LMP744,Both,No significant COAD/READ difference in target expression,1,0,0.0,0

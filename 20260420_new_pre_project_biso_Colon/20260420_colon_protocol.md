@@ -3,8 +3,8 @@
 - **질병:** 대장암 (Colorectal Cancer, COAD+READ)
 - **옵션:** B (중간 확장)
 - **작업 시작일:** 2026-04-20
-- **최종 업데이트:** 2026-04-22
-- **문서 버전:** v1.4
+- **최종 업데이트:** 2026-04-24
+- **문서 버전:** v1.5
 
 ## 경로 (수정 반영)
 
@@ -145,7 +145,7 @@ Ensemble:  Graph0.8+ML0.2      0.6010  (총 +23.1%)
 | MAE | 1.6211 | **1.6021** | -0.0190 |
 | R² | 0.4030 | **0.4111** | +0.0081 |
 
-- **Step 6+ (외부 검증): 대기**
+- **Step 6+ (외부 검증): ✅ 완료**
 
 ## Step 4.5 Feature Selection (옵션)
 
@@ -232,11 +232,256 @@ Step 4 완료 후 다음 중 하나 이상 해당 시 실행:
 
 ---
 
-*문서명: `20260420_colon_protocol.md` (v1.4, 최종 업데이트 2026-04-22).*
+*문서명: `20260420_colon_protocol.md` (v1.5, 최종 업데이트 2026-04-24).*
 
 ---
 
+## Step 6: 외부 검증 (5대 소스)
+
+### 6-1. 약물 랭킹
+- 스크립트: `scripts/step6_prepare_top_drugs.py`
+- 앙상블 OOF 예측 → drug별 평균 → Top 30 추출
+- 중복 제거: DRUG_NAME 기준 295→286 (9 duplicates)
+- 출력: `results/colon_top30_drugs_ensemble.csv`
+
+### 6-2. PRISM 검증
+- 스크립트: `scripts/step6_2_prism_validation.py`
+- 데이터: `curated_data/validation/prism/` (S3 → 로컬)
+- 결과: 22/30 (73.3%) — Lung 67.4% 대비 우수
+
+### 6-3. ClinicalTrials.gov 검증
+- 스크립트: `scripts/step6_3_clinical_trials_validation.py`
+- 데이터: `curated_data/validation/clinicaltrials/` (API v2 수집, 6,298 studies)
+- 결과: 14/30 (46.7%), Phase II+ 85.7%
+
+### 6-4. COSMIC 검증
+- 스크립트: `scripts/step6_4_cosmic_validation.py`
+- 데이터: `curated_data/validation/cosmic/*.tar`
+- 결과: 10/30 (33.3%) — Cancer Gene Census 타겟 매칭
+
+### 6-5. CPTAC 검증
+- 스크립트: `scripts/step6_5_cptac_validation.py`
+- 데이터: `curated_data/cbioportal/coad_cptac_2019/data_mrna_seq_v2_rsem.txt`
+- 결과: 14/30 (46.7%), 매칭 타겟 100% 발현
+
+### 6-6. GEO GSE39582 검증
+- 스크립트: `scripts/step6_geo_validation.py`
+- 데이터: `curated_data/geo/GSE39582/matrix/GSE39582_series_matrix.txt.gz`
+- Probe-Gene 매핑: `curated_data/geo/GSE39582/GPL570_probe_to_gene.json` (GPL570 SOFT → 45,782 probes → 22,878 genes)
+- 코호트: 585명 CRC 환자 (Marisa et al. 2013)
+- 결과: 14/30 (46.7%)
+
+### 6-7. 종합 스코어링
+- 스크립트: `scripts/step6_6_comprehensive_scoring.py`
+- 5대 소스 통합, 약물별 0~5 점수, 신뢰도 등급
+- Very High (5/5): Temsirolimus, Camptothecin, Irinotecan, Topotecan
+- 평균 검증 통과: 2.47/5
+- 출력: `results/colon_comprehensive_drug_scores.csv`
+
+---
+
+## Step 7: ADMET Gate (초이 프로토콜)
+
+### 7-1. ADMET 필터링
+- 스크립트: `scripts/step7_1_admet_filtering.py`
+- 방법: 초이 프로토콜 원본 방식
+  - 22개 TDC ADMET assay (Toxicity/Absorption/Distribution/Metabolism/Excretion/Properties)
+  - Morgan Fingerprint (radius=2, 2048 bits) + Tanimoto similarity ≥ 0.70
+  - Safety Score: 기본 5.0 + assay별 가중치 기반 가감
+  - 판정: PASS (≥6.0) / WARNING (≥4.0) / FAIL (<4.0)
+- RDKit: Lipinski, PAINS, MW, LogP, TPSA, RotatableBonds
+- 데이터: `curated_data/admet/tdc_admet_group/admet_group/` (22 폴더)
+- 결과: PASS 5, WARNING 23, FAIL 2, Avg Safety 5.13
+
+### 7-2. Top 15 선정
+- 스크립트: `scripts/step7_2_select_top15.py`
+- ADMET PASS + WARNING 중 예측 IC50 순 Top 15
+- 카테고리 분류:
+  - FDA_APPROVED_CRC: 2 (Topotecan, Irinotecan)
+  - REPURPOSING_CANDIDATE: 3 (Temsirolimus, Rapamycin, AZD6482)
+  - CLINICAL_TRIAL: 3
+  - RESEARCH_PHASE: 7
+- 출력: `results/colon_final_top15.csv`, `results/colon_final_top15_summary.json`
+
+### 22개 ADMET Assay 목록
+
+| Category | Assay | Weight | Good Value |
+|----------|-------|--------|------------|
+| Toxicity | Ames Mutagenicity | -2.0 | 0 |
+| Toxicity | DILI (Liver Injury) | -2.0 | 0 |
+| Toxicity | hERG Cardiotoxicity | -1.5 | 0 |
+| Toxicity | Acute Toxicity (LD50) | 1.0 | high |
+| Absorption | Oral Bioavailability | 1.0 | 1 |
+| Absorption | Caco-2 Permeability | 0.5 | high |
+| Absorption | HIA (Intestinal) | 0.5 | 1 |
+| Absorption | P-gp Inhibitor | -0.5 | 0 |
+| Distribution | BBB Penetration | 0.5 | neutral |
+| Distribution | Plasma Protein Binding | 0.3 | low |
+| Distribution | Volume of Distribution | 0.3 | neutral |
+| Metabolism | CYP2C9 Inhibitor | -0.5 | 0 |
+| Metabolism | CYP2D6 Inhibitor | -0.5 | 0 |
+| Metabolism | CYP3A4 Inhibitor | -0.5 | 0 |
+| Metabolism | CYP2C9 Substrate | 0.2 | neutral |
+| Metabolism | CYP2D6 Substrate | 0.2 | neutral |
+| Metabolism | CYP3A4 Substrate | 0.2 | neutral |
+| Excretion | Hepatocyte Clearance | 0.5 | neutral |
+| Excretion | Microsome Clearance | 0.5 | neutral |
+| Excretion | Half-Life | 0.5 | high |
+| Properties | Lipophilicity (logD) | 0.3 | neutral |
+| Properties | Aqueous Solubility | 0.5 | high |
+
+---
+
+## Step 7.5: AlphaFold 구조 검증
+
+- 스크립트: `scripts/step7_5_alphafold_validation.py`
+- 방법:
+  1. Top 15 약물의 타겟 유전자 → UniProt ID 매핑 (수동 + API)
+  2. AlphaFold DB API 에서 PDB 구조 다운로드
+  3. pLDDT (B-factor) 분석 → 구조 신뢰도 확인
+  4. Binding pocket 탐지 (BioPython NeighborSearch + scipy ConvexHull)
+  5. 3Dmol.js 기반 3D 뷰어 HTML 생성 (포켓 gold stick 표시)
+- 결과:
+  - 16 타겟 → 14 UniProt 매핑 → 14/14 구조 다운로드
+  - Avg pLDDT: 82.31, High confidence (≥70): 14/14
+  - Binding pocket: 14/14 탐지 성공
+  - 최대 포켓: MTOR 9 res / 192 ų, FLT3 9 res / 173 ų
+- 출력: `results/alphafold_validation/`
+
+---
+
+## Step 7.6: COAD vs READ 분리 분석
+
+- 스크립트: `scripts/step7_6_coad_read_analysis.py`
+- 방법:
+  - TCGA coadread_tcga_pan_can_atlas_2018 mRNA (592 samples)
+  - subtype metadata (COAD 378, READ 155) 로 환자 분류
+  - Top 15 타겟 유전자의 COAD vs READ 발현 비교 (Welch t-test)
+  - 효과 크기 (Cohen's d) + 약물별 추천
+- 결과:
+  - 9/16 타겟 유전자 분석 완료
+  - 유의 차이: JAK2 (COAD_higher, p=0.008)
+  - Lestaurtinib: COAD_preferred (JAK2 억제제)
+  - 나머지 6개 약물: Both (COAD/READ 모두 적용 가능)
+  - 8개 약물: Unknown (타겟 발현 데이터 없음)
+- 출력: `results/colon_coad_read_analysis.json`, `results/colon_coad_read_drug_recommendations.csv`
+
+---
+
+## Step 8: Neo4j Knowledge Graph
+
+- 스크립트: `scripts/step8_neo4j_load.py`, `scripts/step8_generate_kg_viewer.py`
+- 인프라:
+  - Neo4j Aura: `neo4j+s://108928fe.databases.neo4j.io` (biso-kg, AuraDB Free)
+  - PostgreSQL: `colon_drugdb` (로컬, 4 테이블)
+- 적재 내용:
+  - Disease 노드: Colorectal Cancer (COAD+READ) — 기존 BRCA, Lung 에 추가
+  - CellLine: 35개 → Disease 연결
+  - Drug → Disease: PREDICTED_FOR 21, TREATS 13 (Top 15)
+  - Target → Disease: ASSOCIATED_WITH 44
+  - AlphaFold 속성: pLDDT, pocket_size, pocket_volume
+  - COAD/READ 추천: 관계 속성에 반영
+- Cross-Disease 연결:
+  - 3개 질병 간 공유 약물: Vinorelbine, Rapamycin, Topotecan 등
+  - Lung Target ASSOCIATED_WITH: 14 추가
+- 인터랙티브 뷰어: `results/knowledge_graph_viewer.html` (순수 Canvas JS, force-directed)
+- 그래프 현황: 30,589 nodes, 113,615+ relationships
+
+---
+
+## Step 9: LLM 약물 재창출 근거 생성
+
+- 스크립트: `scripts/step9_llm_explanation.py`
+- LLM: Ollama llama3.1 (4.9GB, 로컬)
+- 방법:
+  1. Top 15 약물 각각에 대해 전체 파이프라인 근거 수집
+  2. 프롬프트 구성: 예측 모델 + 5대 검증 + ADMET + AlphaFold + COAD/READ + 카테고리
+  3. Ollama 로 한국어 Explanation 생성 (약물당 ~40초, 총 ~11분)
+- 포함 근거:
+  - 예측 IC50 + 앙상블 성능
+  - 외부 검증 5개 소스 통과 여부
+  - ADMET 22 assay Safety Score + verdict
+  - AlphaFold pLDDT + binding pocket
+  - COAD vs READ 적합성
+  - 카테고리 (FDA_APPROVED_CRC / REPURPOSING / CLINICAL_TRIAL / RESEARCH)
+- 출력: `results/colon_drug_explanations.json`, `results/colon_drug_explanations_report.md`
+
+---
+
+## 재현 실험 체크리스트
+
+### 환경
+
+| 항목 | 버전/설정 |
+|------|----------|
+| Python | 3.12.7 |
+| RDKit | ✅ (Lipinski, PAINS, Morgan FP, 3D) |
+| BioPython | ✅ (PDB 파싱, NeighborSearch) |
+| scipy | ✅ (ConvexHull) |
+| neo4j driver | 6.1.0 |
+| Ollama | 0.21.0 + llama3.1:latest |
+| Neo4j Aura | biso-kg (AuraDB Free) |
+| PostgreSQL | 16 (brew) |
+| Streamlit | 대시보드 |
+
+### 실행 순서
+
+```
+# Step 6: 외부 검증
+python3 scripts/step6_prepare_top_drugs.py
+python3 scripts/step6_2_prism_validation.py
+python3 scripts/step6_3_clinical_trials_validation.py
+python3 scripts/step6_4_cosmic_validation.py
+python3 scripts/step6_5_cptac_validation.py
+python3 scripts/step6_geo_validation.py
+python3 scripts/step6_6_comprehensive_scoring.py
+
+# Step 7: ADMET
+python3 scripts/step7_1_admet_filtering.py
+python3 scripts/step7_2_select_top15.py
+
+# Step 7.5: AlphaFold
+python3 scripts/step7_5_alphafold_validation.py
+
+# Step 7.6: COAD/READ
+python3 scripts/step7_6_coad_read_analysis.py
+
+# Step 8: Neo4j
+python3 scripts/step8_neo4j_load.py
+python3 scripts/step8_generate_kg_viewer.py
+
+# Step 9: LLM
+python3 scripts/step9_llm_explanation.py
+
+# 대시보드
+streamlit run dashboard/app.py
+```
+
+### 필수 데이터 (curated_data/)
+
+```
+curated_data/
+├── admet/tdc_admet_group/admet_group/  (22 assay 폴더)
+├── validation/prism/                    (PRISM dose-response)
+├── validation/clinicaltrials/           (ClinicalTrials API 결과)
+├── validation/cosmic/                   (COSMIC tar 파일)
+├── cbioportal/coad_cptac_2019/          (CPTAC mRNA + clinical)
+├── cbioportal/coadread_tcga_pan_can_atlas_2018/  (TCGA mRNA 592명)
+├── geo/GSE39582/                        (GEO matrix + GPL570 annotation)
+└── gdsc/Cell_Lines_Details.xlsx         (GDSC cell line 정보)
+```
+
 ## 📝 변경 이력
+
+- **v1.5 (2026-04-24)**:
+  - Step 6: 5대 외부 검증 완료 (PRISM, CT, COSMIC, CPTAC, GEO)
+  - Step 7: ADMET Gate (초이 22 assay + Tanimoto) + Top 15 선정
+  - Step 7.5: AlphaFold 구조 검증 + binding pocket 탐지
+  - Step 7.6: COAD vs READ 분리 분석 (TCGA 531명)
+  - Step 8: Neo4j Knowledge Graph 적재 + 인터랙티브 뷰어
+  - Step 9: LLM 약물 재창출 근거 생성 (Ollama llama3.1)
+  - 대시보드: 10탭 (Step 1~9 + Comparison)
+  - Pipeline Step 1~9 100% 완료
 
 - **v1.4 (2026-04-22)**:
   - Step 5 앙상블 상세 분석 반영

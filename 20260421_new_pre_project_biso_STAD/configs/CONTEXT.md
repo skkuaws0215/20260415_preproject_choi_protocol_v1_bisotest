@@ -2,6 +2,10 @@
 
 단일 진실 소스. 에이전트·연구자 공통 참조.
 
+> 컨텍스트 버전: `v2026.04.23-r3`  
+> 최종 업데이트: `2026-04-23`  
+> 변경 포인트: Step4/Step5 분리 상태 및 Step5 앙상블 정책(CatBoost·GraphSAGE 고정 + DL 상위 선택) 반영
+
 ## 개요
 
 - **질병:** 위암 (Stomach adenocarcinoma, **TCGA-STAD**)
@@ -9,11 +13,15 @@
 - **기반 프로토콜:** `drug_repurposing_pipeline_protocol.md` v2.4 (Downloads 사본, Scaffold Split §8-3 공식 도입, Colon 기준 이식 예정)
 - **참조 코드:** [20260420_new_pre_project_biso_Colon](../20260420_new_pre_project_biso_Colon), [20260416_new_pre_project_biso_Lung](../20260416_new_pre_project_biso_Lung)
 
-## 현재 운영 상태 (2026-04-21 갱신)
+## 현재 운영 상태 (2026-04-23 갱신)
 
 - **Step 2 전처리 + depmap 재필터링:** `run_step2_stad.sh` + `filter_stad_depmap_to_labels.py` 기준 주요 산출물 생성 완료 (`labels`, `drug_features`, `data/depmap/depmap_crispr_long_stad`, LINCS 파생 테이블 포함)
 - **Step 3 FE:** AWS Batch 실행 완료 (2026-04-21), `features_rows=5118`, sample join `83.3%` 확인. `nextflow run` 시 `-work-dir` 옵션 필수
-- **Step 6 실행 경로:** STAD config 기반 wrapper (`scripts/run_step6_stad.sh`) 구성 완료
+- **Step 3.5 FS:** `scripts/feature_selection.py` → `fe_qc/20260421_stad_fe_v1/features_slim.parquet` — **Step 4 모든 학습·OOF의 유일한 피처 소스**
+- **Step 4:** `prepare_phase2a/bc_data_stad.py` + `run_ml_all_stad.py` / `run_dl_all_stad.py` / `run_graph_all_stad.py`; 일괄 `scripts/run_step4_stad.sh` (기본 끝에 Step 5용 `run_ensemble_catboost_dl_graph_stad.py`, `SKIP_ENSEMBLE=1`로 생략 가능)
+- **Step 5 OOF 앙상블:** Lung `phase3_ensemble_analysis` 패턴 — **CatBoost(고정) + phase별 best DL + GraphSAGE(고정)** OOF만 사용; `ensemble_catboost_dl_graph_groupcv.json`. `diversity` 필드는 예측 간 평균 Spearman ρ(높을수록 예측 유사); `complementarity_1_minus_pairwise_pred_rho` 병기
+- **대시보드:** `stad_dashboard/app.py` (Streamlit) — Step 4(모델) / Step 5(앙상블) 분리, 표·차트·JSON 다운로드; Lung HTML/스크립트 레이아웃 참고
+- **Step 6 실행 경로:** STAD config 기반 wrapper (`scripts/run_step6_stad.sh`) 구성 완료 (Top30 CSV 3종 전제는 변경 없음)
 - **LINCS (GSE92742):** `rebuild_stad_lincs_cell_ids_gse92742.py` 재검증 결과 usable cell은 `AGS`만 확인
 - **해석/보고 제약:** STAD 분석에서 LINCS evidence는 AGS-only coverage limitation을 명시해야 함
 
@@ -47,6 +55,7 @@ for drug repurposing evidence, with LINCS used as supporting signal for AGS only
 | **PDC CPTAC-STAD 파일 매니페스트** | `scripts/fetch_pdc_cptac_stad_manifest.py` — `studyCatalog`+`study`로 CPTAC 위암 연구 선별 후 `filesPerStudy` → `curated_data/cptac_stad/pdc_manifests/<날짜>/`; `SYNC_S3=1` → `Stad_raw/cptac_stad/pdc_manifests/` |
 | **일괄 (우선순위 1→3)** | `scripts/fetch_stad_priority_external.sh` — cosmic_stad → GSE84437 → PDC 매니페스트 (`SKIP_COSMIC=1` 등 옵션) |
 | 작업 S3 (FE·학습 입력) | `s3://say2-4team/20260408_new_pre_project_biso/20260421_new_pre_project_biso_STAD/` |
+| 로컬 Step4·앙상블 | `results/<RESULT_TAG>/{ml,dl,graph}/` + `ensemble_catboost_dl_graph_groupcv.json`; 대시보드 `stad_dashboard/app.py` |
 
 ## LINCS (팀 표준 고정 파일)
 
@@ -85,6 +94,7 @@ for drug repurposing evidence, with LINCS used as supporting signal for AGS only
 - **Git 워크스페이스 루트:** `/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1` — Colon/Lung/STAD 폴더가 공존하는 동일 클론
 - **GitHub:** `skkuaws0215/20260415_preproject_choi_protocol_v1_bisotest` — choi_protocol 학습·앙상블 코드는 저장소 내 기존 경로(팀 가이드 `PROTOCOL_CHOI_통합실행가이드` 참조)
 - **연결 방식:** 본 프로젝트 `data/` 산출물(`labels.parquet`, `drug_features.parquet`, `depmap/depmap_crispr_long_stad.parquet`, `lincs_stad_drug_level_with_crispr_prefix.parquet`, `drug_target_mapping.parquet`) 경로를 학습 설정에 **STAD S3** (`params.s3_base` 아래 `data/`)로 지정
+- **STAD 로컬 Step 4·앙상블:** 본 폴더 `scripts/run_*_stad.py`, `run_step4_stad.sh`, `run_ensemble_catboost_dl_graph_stad.py`, `stad_dashboard/app.py` — 상세는 `STAD_reproduction_protocol.md` §3-3
 - **Nextflow dry-run:** 로컬에서 `cd nextflow && nextflow config .` — Batch 전 `params` 해석 확인
 - **Neo4j:** Disease 코드 `STAD`, Top-N 속성·검증 필드는 프로토콜 v2.4 Lung §12-2 패턴 복제
 

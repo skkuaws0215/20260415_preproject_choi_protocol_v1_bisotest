@@ -7,6 +7,10 @@
 - 데이터: STAD 실제 데이터만 사용
 - raw mirror: `curated_data/`는 읽기 전용
 
+> 프로토콜 버전: `v2026.04.23-r3`  
+> 최종 업데이트: `2026-04-23`  
+> 변경 포인트: Step 4(모델) / Step 5(앙상블) 분리, Step5 정책(CatBoost·GraphSAGE 고정 + DL 상위 선택), 대시보드 구조 동기화
+
 ## 0. 사전 준비
 
 - 작업 경로: `20260421_new_pre_project_biso_STAD`
@@ -150,70 +154,82 @@ python3 scripts/feature_selection.py \
 - initial: 19998 cols → final: 5008 cols (감축률 75.0%)
 - rows: 5118 유지
 
-**Step 4 입력 경로**: `fe_qc/20260421_stad_fe_v1/features_slim.parquet`
+**Step 4 입력 경로**: `fe_qc/20260421_stad_fe_v1/features_slim.parquet`  
+(Step 3.5에서 선택·저장한 컬럼만 사용. Step 4·앙상블은 이 slim 행렬을 전제로 함.)
 
-## §3.5 학습 / 앙상블 (Step 3.5~5) — 대장암 완료 후 이식 예정
+## 3-3. Step 4 모델링 + Step 5 앙상블 · 대시보드 (2026-04-23 갱신)
 
-**프로토콜 기반:** v2.4 (2026-04-21, Scaffold Split 공식화)
+**프로토콜 정렬:** v2.4 — 평가 4종(Holdout, cv5, groupcv, scaffoldcv)을 STAD 전용 스크립트에 반영.
 
-#### STAD 실행 순서 (ML → DL → Graph, Scaffold 처음부터 포함)
+### 3-3-1. 데이터 준비 (run_id 격리)
 
-대장암(Colon)은 모델 측정 진행 중간에 Scaffold split이 사후 도입되어
-실행 순서가 꼬임(ml/dl 측정 후 역으로 scaffold 추가 등).
-STAD는 **Colon 구현 완료 후** 깔끔한 순서로 이식한다.
+`features_slim.parquet` 기준으로 `data/<run_id>/`에 Phase 입력을 생성합니다.
 
-실행 순서:
-1. **ML Phase 2A/2B/2C** (Holdout + 5-Fold CV + GroupCV + ScaffoldCV)
-2. **DL Phase 2A/2B/2C** (동일 4종 평가)
-3. **Graph Phase 2A/2B/2C** (GroupCV + ScaffoldCV, ⚠️ Scaffold 해석 주의)
-4. **앙상블 (Phase 3)**: 결과 통합, Top30 추출
-5. **최종 종합 평가 (Phase 2 comprehensive metrics)**
+```bash
+python3 scripts/prepare_phase2a_data_stad.py --run-id <RUN_ID> [--force]
+python3 scripts/prepare_phase2bc_data_stad.py --run-id <RUN_ID> [--force]
+```
 
-#### 이식 대상 구현 (Colon에서 작업 중)
+### 3-3-2. 일괄 실행 (권장)
 
-- 전체 실험: Phase 2A/2B/2C × (ML 6 + DL 7 + Graph 2) = 45 실험
-- 평가 방식 4종:
-  - Holdout (train:test = 8:2)
-  - 5-Fold CV (일반 KFold)
-  - GroupCV (drug split, canonical_drug_id 기준 3-fold)
-  - **ScaffoldCV (v2.4 신규, Murcko scaffold 기준 3-fold)**
+```bash
+cd 20260421_new_pre_project_biso_STAD
+export RUN_ID=step4_stad_inputs_20260422_002
+export RESULT_TAG=20260422_stad_step4_v2
+./scripts/run_step4_stad.sh
+```
 
-#### Scaffold Split 구현 (Colon 참조)
+- 순서: prepare 2A → prepare 2B/2C → **ML** → **DL** → **Graph** → (기본) **Step 5용 CatBoost+DL+GraphSAGE OOF 앙상블**
+- 앙상블만 건너뛰려면: `SKIP_ENSEMBLE=1 ./scripts/run_step4_stad.sh`
 
-핵심 스크립트 (Colon에서 이식 예정):
-- `compute_scaffolds.py` — RDKit MurckoScaffoldSmiles 계산
-- `run_ml_scaffold_all.py` — ML 6 모델 × 3 Phase
-- `run_dl_scaffold_all.py` — DL 7 모델 × 3 Phase
-- `run_graph_scaffold_all.py` — Graph 2 모델 × 3 Phase
+### 3-3-3. 스크립트·산출물
 
-설정:
-- `eval_mode='scaffoldcv'`
-- 결과 파일 접미사: `_scaffoldcv.json`
-- GroupKFold 구조는 drug split과 동일, `groups` 파라미터만 scaffold_id로 교체
+| 단계 | 스크립트 | 결과 디렉터리 |
+|------|-----------|----------------|
+| ML | `scripts/run_ml_all_stad.py` | `results/<RESULT_TAG>/ml/` — `*_holdout.json`, `*_cv5.json`, `*_groupcv.json`, `*_scaffoldcv.json`, 각 `*_oof/` |
+| DL | `scripts/run_dl_all_stad.py` | `results/<RESULT_TAG>/dl/` (동형) |
+| Graph | `scripts/run_graph_all_stad.py` | `results/<RESULT_TAG>/graph/` (동형) |
+| 앙상블 | `scripts/run_ensemble_catboost_dl_graph_stad.py` | `results/<RESULT_TAG>/ensemble_catboost_dl_graph_groupcv.json` |
 
-#### ⚠️ Graph + Scaffold 해석 주의 (v2.4 §8-2)
+### 3-3-4. Step 5 OOF 앙상블 구성 (Lung `phase3_ensemble_analysis.py` 스타일)
 
-Graph 모델(GraphSAGE, GAT)에 Scaffold split 적용 시, **KNN graph의 edge가
-scaffold 경계를 넘을 수 있음** (transductive 특성상 val 노드가 train 노드의
-이웃이 될 수 있음). 이로 인해:
+**한 phase(2A / 2B / 2C)마다 사용하는 OOF는 정확히 3개**이며, 전 모델을 섞지 않습니다.
 
-- 완전히 엄격한 scaffold 검증은 불가능
-- **상대적 비교**는 유효
-- 결과 해석 시 반드시 "Graph+Scaffold는 상대 비교만" 명시할 것
+| 슬롯 | 규칙 |
+|------|------|
+| ML | **`CatBoost`** OOF만 사용 (`CatBoost.npy`, 없으면 fallback 이름). |
+| DL | 해당 phase `*_dl_*_groupcv_oof/` 안에서 **전체 `y`와 Spearman이 최대인 한 모델** 자동 선택. |
+| Graph | **`GraphSAGE` OOF 고정 사용** (`GraphSAGE.npy`). |
 
-#### STAD 적용 예상
+블렌드: **Simple 평균**, **GroupCV JSON `val_spearman_mean` 가중**, **0~1 그리드 3가중 최적화** — JSON에 수치·gain·`consensus_mean_std_across_models`·**예측 쌍별 Spearman 평균**(`diversity_mean_pairwise_spearman`, 별칭 `mean_pairwise_oof_prediction_spearman`) 및 **`complementarity_1_minus_pairwise_pred_rho`(1−ρ)** 기록.  
+※ Lung 명명 `diversity`는 실제로는 **예측 벡터 간 상관이 클수록 값이 커지는** 지표이므로, “다양성이 낮다”는 직관은 **ρ가 높을 때** 맞습니다. 해석은 README/대시보드 캡션 참고.
 
-- labels: 24 cells, 20 CRISPR 포함, 295 drugs
-- Scaffold 수: Colon 결과 참고 후 Step 3.5 진입 시점에 업데이트
-- 예상 산출: `results/stad_top30_phase2b_catboost_with_names.csv`,
-  `stad_top30_phase2c_catboost_with_names.csv`,
-  `stad_top30_unified_2b_and_2c_with_names.csv` (Step 6 전제)
+### 3-3-5. 대시보드 (Streamlit, Step4/Step5 분리)
 
-#### STAD 적용 시점
+```bash
+cd 20260421_new_pre_project_biso_STAD
+streamlit run stad_dashboard/app.py
+```
 
-- **Colon Step 4 완료 후** 시작
-- Colon의 `run_*_scaffold_all.py` 등을 STAD 경로로 이식
-- STAD는 Colon의 retrofitting 순서 꼬임 없이 처음부터 ML→DL→Graph 순서로 깔끔히 실행
+- Step별 탐색 + **Step 4(모델)** GroupCV 표·차트·최고 성능 카드 + **Step 5(앙상블)** 표(1~3)·Plotly(선택)·JSON 다운로드.
+- 상단 `STEP4_RESULT_TAG` / `STEP4_RUN_ID`를 로컬 결과에 맞게 수정 가능.
+
+### 3-3-6. Step 6 전제 산출물 (별도 파이프라인)
+
+Top30 CSV 3종은 Step 4 앙상블 JSON과 별개이며, 기존 Step 6 절차 그대로 필요:
+
+- `results/stad_top30_phase2b_catboost_with_names.csv`
+- `results/stad_top30_phase2c_catboost_with_names.csv`
+- `results/stad_top30_unified_2b_and_2c_with_names.csv`
+
+### 3-3-7. Colon 대비 추가 이식 여지 (선택)
+
+- Colon 전용 **대규모 조합 앙상블**(`run_ensemble.py` 12조합 등)은 STAD에 아직 포팅하지 않음. 현재는 **CatBoost+DL+Graph 3-way** 및 Lung식 지표만 확정.
+- 별도 `run_*_scaffold_all.py` 파일명은 Colon과 다를 수 있으나, STAD는 **동일 스크립트 내 `eval_mode=scaffoldcv`** 로 ScaffoldCV를 이미 포함.
+
+#### ⚠️ Graph + Scaffold / KNN 해석 (v2.4)
+
+Graph는 transductive KNN edge로 **scaffold 경계를 넘는 이웃**이 생길 수 있어, 엄격한 scaffold 검증은 불가. **상대 비교**로 해석할 것.
 
 ## 4. 외부검증 (Step 6)
 
@@ -289,6 +305,13 @@ FE 품질 (`features/manifest.json`):
 - [ ] `reports/lincs/stad_lincs_alias_deep_check.json` 존재 (3차 검증)
 - [ ] README/protocol에 AGS-only 한계 명시됨
 - [ ] 해석이 DepMap/GDSC/PRISM 축 중심임을 문서화
+
+### 6.4 Step 4 · 앙상블 (선택 체크)
+
+- [ ] `data/<run_id>/y_train.npy` 및 `X_numeric*.npy` 존재
+- [ ] `results/<RESULT_TAG>/{ml,dl,graph}/*_groupcv.json` 존재
+- [ ] `results/<RESULT_TAG>/ensemble_catboost_dl_graph_groupcv.json` 존재 (앙상블 실행 시)
+- [ ] 대시보드 `stad_dashboard/app.py`의 `STEP4_RUN_ID` / `STEP4_RESULT_TAG`가 로컬 산출물과 일치
 
 ## 7. 과거 이슈 및 재발 방지
 

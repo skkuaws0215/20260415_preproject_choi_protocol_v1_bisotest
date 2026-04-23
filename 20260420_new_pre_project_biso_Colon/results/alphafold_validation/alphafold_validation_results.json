@@ -36,6 +36,28 @@
         "pct_confident": 71.3,
         "pct_very_confident": 30.3
       },
+      "pocket": {
+        "n_residues": 9,
+        "residues": [
+          "CYS:A467",
+          "SER:A468",
+          "SER:A471",
+          "PRO:A472",
+          "ASN:A473",
+          "CYS:A474",
+          "THR:A475",
+          "PHE:A510",
+          "LEU:A511"
+        ],
+        "confidence": 0.548,
+        "volume": 173.3,
+        "center": [
+          48.12144343058268,
+          -22.917222128974068,
+          -30.649888780381943
+        ],
+        "hydrophobic_ratio": 0.33
+      },
       "drugs": [
         "Lestaurtinib"
       ],
@@ -54,6 +76,27 @@
         "n_residues": 3870,
         "pct_confident": 80.3,
         "pct_very_confident": 76.1
+      },
+      "pocket": {
+        "n_residues": 8,
+        "residues": [
+          "SER:A267",
+          "CYS:A273",
+          "ASN:A275",
+          "THR:A277",
+          "ILE:A345",
+          "SER:A346",
+          "PRO:A347",
+          "SER:A348"
+        ],
+        "confidence": 0.377,
+        "volume": 136.9,
+        "center": [
+          -15.67437493801117,
+          -4.398874953389168,
+          -17.275500178337097
+        ],
+        "hydrophobic_ratio": 0.25
       },
       "drugs": [
         "Entinostat"
@@ -74,6 +117,26 @@
         "pct_confident": 88.2,
         "pct_very_confident": 84.7
       },
+      "pocket": {
+        "n_residues": 7,
+        "residues": [
+          "THR:A4",
+          "VAL:A5",
+          "ALA:A6",
+          "MET:A45",
+          "ILE:A46",
+          "ILE:A122",
+          "CYS:A123"
+        ],
+        "confidence": 0.377,
+        "volume": 86.8,
+        "center": [
+          -14.640285628182548,
+          13.28085708618164,
+          -3.8144285636288777
+        ],
+        "hydrophobic_ratio": 0.71
+      },
       "drugs": [
         "Entinostat"
       ],
@@ -92,6 +155,25 @@
         "n_residues": 5942,
         "pct_confident": 85.8,
         "pct_very_confident": 61.0
+      },
+      "pocket": {
+        "n_residues": 6,
+        "residues": [
+          "SER:A164",
+          "SER:A165",
+          "ALA:A166",
+          "SER:A169",
+          "PHE:A170",
+          "THR:A171"
+        ],
+        "confidence": 0.414,
+        "volume": 36.7,
+        "center": [
+          23.83400026957194,
+          23.935999870300293,
+          -34.35583368937174
+        ],
+        "hydrophobic_ratio": 0.33
       },
       "drugs": [
         "Tanespimycin"
@@ -112,6 +194,27 @@
         "pct_confident": 90.3,
         "pct_very_confident": 68.6
       },
+      "pocket": {
+        "n_residues": 8,
+        "residues": [
+          "GLN:A297",
+          "TRP:A298",
+          "SER:A299",
+          "LEU:A314",
+          "GLN:A315",
+          "LEU:A316",
+          "TYR:A317",
+          "CYS:A318"
+        ],
+        "confidence": 0.378,
+        "volume": 81.7,
+        "center": [
+          -29.955125093460083,
+          6.436625063419342,
+          8.728750050067902
+        ],
+        "hydrophobic_ratio": 0.5
+      },
       "drugs": [
         "Lestaurtinib"
       ],
@@ -130,6 +233,24 @@
         "n_residues": 3048,
         "pct_confident": 82.3,
         "pct_very_confident": 63.0
+      },
+      "pocket": {
+        "n_residues": 5,
+        "residues": [
+          "ALA:A52",
+          "PHE:A53",
+          "LEU:A54",
+          "THR:A55",
+          "GLN:A56"
+        ],
+        "confidence": 0.388,
+        "volume": 24.1,
+        "center": [
+          15.035199928283692,
+          -12.417600059509278,
+          -9.514400100708007
+        ],
+        "hydrophobic_ratio": 0.6
       },
       "drugs": [
         "Trametinib",
@@ -151,6 +272,24 @@
         "pct_confident": 78.6,
         "pct_very_confident": 64.8
       },
+      "pocket": {
+        "n_residues": 5,
+        "residues": [
+          "PRO:A268",
+          "PRO:A269",
+          "PRO:A270",
+          "LEU:A321",
+          "TYR:A324"
+        ],
+        "confidence": 0.348,
+        "volume": 15.4,
+        "center": [
+          -21.532600021362306,
+          -1.3121999740600585,
+          -1.0640000700950623
+        ],
+        "hydrophobic_ratio": 1.0
+      },
       "drugs": [
         "Trametinib",
         "Refametinib"
@@ -171,6 +310,28 @@
         "pct_confident": 83.3,
         "pct_very_confident": 11.3
       },
+      "pocket": {
+        "n_residues": 9,
+        "residues": [
+          "LEU:A2123",
+          "GLN:A2124",
+          "TYR:A2125",
+          "SER:A2127",
+          "PRO:A2128",
+          "LEU:A2131",
+          "PRO:A2158",
+          "SER:A2159",
+          "LEU:A2160"
+        ],
+        "confidence": 0.393,
+        "volume": 192.1,
+        "center": [
+          33.99588945176866,
+          -4.4031111399332685,
+          -31.781443913777668
+        ],
+        "hydrophobic_ratio": 0.67
+      },
       "drugs": [
         "Temsirolimus"
       ],
@@ -189,6 +350,28 @@
         "n_residues": 20287,
         "pct_confident": 83.3,
         "pct_very_confident": 11.3
+      },
+      "pocket": {
+        "n_residues": 9,
+        "residues": [
+          "LEU:A2123",
+          "GLN:A2124",
+          "TYR:A2125",
+          "SER:A2127",
+          "PRO:A2128",
+          "LEU:A2131",
+          "PRO:A2158",
+          "SER:A2159",
+          "LEU:A2160"
+        ],
+        "confidence": 0.393,
+        "volume": 192.1,
+        "center": [
+          33.99588945176866,
+          -4.4031111399332685,
+          -31.781443913777668
+        ],
+        "hydrophobic_ratio": 0.67
       },
       "drugs": [
         "Rapamycin"
@@ -209,6 +392,27 @@
         "pct_confident": 76.8,
         "pct_very_confident": 38.6
       },
+      "pocket": {
+        "n_residues": 8,
+        "residues": [
+          "VAL:A288",
+          "GLN:A289",
+          "LEU:A290",
+          "SER:A304",
+          "LEU:A362",
+          "ALA:A370",
+          "SER:A371",
+          "ALA:A372"
+        ],
+        "confidence": 0.395,
+        "volume": 144.2,
+        "center": [
+          -0.13512498885393143,
+          32.46262502670288,
+          1.9793749824166298
+        ],
+        "hydrophobic_ratio": 0.62
+      },
       "drugs": [
         "Lestaurtinib"
       ],
@@ -227,6 +431,25 @@
         "n_residues": 6467,
         "pct_confident": 74.8,
         "pct_very_confident": 45.4
+      },
+      "pocket": {
+        "n_residues": 6,
+        "residues": [
+          "CYS:A32",
+          "PRO:A33",
+          "THR:A34",
+          "CYS:A36",
+          "CYS:A38",
+          "LEU:A58"
+        ],
+        "confidence": 0.423,
+        "volume": 69.7,
+        "center": [
+          -31.978833834330242,
+          -19.24166663487752,
+          -2.8638333479563394
+        ],
+        "hydrophobic_ratio": 0.33
       },
       "drugs": [
         "Lestaurtinib"
@@ -247,6 +470,27 @@
         "pct_confident": 72.5,
         "pct_very_confident": 47.6
       },
+      "pocket": {
+        "n_residues": 8,
+        "residues": [
+          "LEU:A336",
+          "HIS:A337",
+          "ASN:A338",
+          "GLN:A340",
+          "PRO:A341",
+          "LEU:A342",
+          "ASN:A375",
+          "ILE:A379"
+        ],
+        "confidence": 0.44,
+        "volume": 159.9,
+        "center": [
+          26.417374849319458,
+          1.0796249955892563,
+          -33.37774991989136
+        ],
+        "hydrophobic_ratio": 0.5
+      },
       "drugs": [
         "Lestaurtinib"
       ],
@@ -265,6 +509,27 @@
         "n_residues": 8396,
         "pct_confident": 88.4,
         "pct_very_confident": 69.6
+      },
+      "pocket": {
+        "n_residues": 8,
+        "residues": [
+          "LEU:A190",
+          "LEU:A191",
+          "VAL:A192",
+          "PHE:A205",
+          "GLN:A206",
+          "VAL:A207",
+          "SER:A208",
+          "THR:A209"
+        ],
+        "confidence": 0.387,
+        "volume": 85.9,
+        "center": [
+          -24.677249670028687,
+          14.308500051498413,
+          26.470374822616577
+        ],
+        "hydrophobic_ratio": 0.62
       },
       "drugs": [
         "AZD6482"
@@ -285,6 +550,24 @@
         "pct_confident": 73.5,
         "pct_very_confident": 69.8
       },
+      "pocket": {
+        "n_residues": 5,
+        "residues": [
+          "MET:A644",
+          "MET:A645",
+          "ASN:A646",
+          "LEU:A647",
+          "GLN:A648"
+        ],
+        "confidence": 0.491,
+        "volume": 24.0,
+        "center": [
+          -31.856200408935546,
+          -5.872000026702881,
+          -8.845600032806397
+        ],
+        "hydrophobic_ratio": 0.6
+      },
       "drugs": [
         "Topotecan",
         "Irinotecan",
@@ -297,6 +580,9 @@
   "summary": {
     "avg_plddt": 82.31,
     "high_confidence_targets": 14,
-    "very_high_confidence": 1
+    "very_high_confidence": 1,
+    "targets_with_pocket": 14,
+    "avg_pocket_size": 7.2,
+    "avg_pocket_confidence": 0.411
   }
 }

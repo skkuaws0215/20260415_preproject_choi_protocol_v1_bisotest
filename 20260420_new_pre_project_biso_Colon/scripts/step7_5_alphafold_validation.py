@@ -28,6 +28,8 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from Bio.PDB import PDBParser, NeighborSearch
+from scipy.spatial import ConvexHull
 
 try:
     from rdkit import Chem
@@ -203,22 +205,205 @@ def parse_plddt_from_pdb(pdb_path):
     return None
 
 
-def generate_3d_viewer_html(structures, output_path):
-    """3Dmol.js 기반 3D 뷰어 HTML 생성"""
+def detect_binding_pockets(pdb_path, min_pocket_size=10, probe_radius=3.0):
+    """
+    BioPython 기반 binding pocket 탐지.
 
-    # 각 구조의 PDB 내용 로드
+    방법: 단백질 표면 잔기 중 소수성 잔기가 밀집된 영역 = 잠재적 결합 포켓
+    fpocket 의 간소화 버전.
+
+    1. 전체 원자 좌표 로드
+    2. 표면 노출 잔기 추정 (이웃 원자 수 적은 잔기)
+    3. 소수성 + 포켓 형성 잔기 클러스터링
+    4. 가장 큰 클러스터 = 주요 포켓
+    """
+    parser = PDBParser(QUIET=True)
+    try:
+        structure = parser.get_structure("protein", pdb_path)
+    except Exception as e:
+        print(f"    PDB parse error: {e}")
+        return None
+
+    model = structure[0]
+
+    # 전체 CA 원자
+    ca_atoms = []
+    all_atoms = []
+    residue_info = {}
+
+    for chain in model:
+        for residue in chain:
+            if residue.id[0] != " ":  # hetero atoms 제외
+                continue
+            resname = residue.get_resname()
+            resid = residue.get_id()[1]
+            chain_id = chain.get_id()
+
+            if residue.has_id("CA"):
+                ca = residue["CA"]
+                ca_atoms.append(ca)
+                residue_info[ca.get_serial_number()] = {
+                    "resname": resname,
+                    "resid": resid,
+                    "chain": chain_id,
+                    "coord": ca.get_coord().tolist(),
+                }
+
+            for atom in residue:
+                all_atoms.append(atom)
+
+    if len(ca_atoms) < 20:
+        return None
+
+    # 소수성 잔기 (포켓 형성에 중요)
+    HYDROPHOBIC = {"ALA", "VAL", "LEU", "ILE", "MET", "PHE", "TRP", "PRO", "TYR"}
+    POLAR_POCKET = {"SER", "THR", "ASN", "GLN", "HIS", "CYS"}
+    POCKET_RESIDUES = HYDROPHOBIC | POLAR_POCKET
+
+    # NeighborSearch 로 각 CA 의 이웃 수 계산
+    ns = NeighborSearch(all_atoms)
+
+    surface_residues = []
+    for ca in ca_atoms:
+        serial = ca.get_serial_number()
+        if serial not in residue_info:
+            continue
+
+        info = residue_info[serial]
+
+        # 이웃 원자 수 (10Å 이내)
+        neighbors = ns.search(ca.get_coord(), 10.0, "A")
+        n_neighbors = len(neighbors)
+
+        # 표면 잔기 = 이웃 적음 (< 중앙값)
+        # 포켓 잔기 = 적당한 이웃 (너무 많지도 적지도 않음)
+        info["n_neighbors"] = n_neighbors
+        info["is_hydrophobic"] = info["resname"] in HYDROPHOBIC
+        info["is_pocket_type"] = info["resname"] in POCKET_RESIDUES
+
+        surface_residues.append(info)
+
+    if not surface_residues:
+        return None
+
+    # 이웃 수 기준 중앙값
+    neighbor_counts = [r["n_neighbors"] for r in surface_residues]
+    median_neighbors = np.median(neighbor_counts)
+
+    # 포켓 후보: 소수성/극성 잔기 중 이웃이 중간 범위 (표면 근처 오목한 부분)
+    pocket_candidates = []
+    for r in surface_residues:
+        if r["is_pocket_type"] and r["n_neighbors"] < median_neighbors * 1.2:
+            pocket_candidates.append(r)
+
+    if len(pocket_candidates) < min_pocket_size:
+        # 기준 완화
+        pocket_candidates = [r for r in surface_residues if r["n_neighbors"] < median_neighbors * 1.3]
+
+    if not pocket_candidates:
+        return None
+
+    coords = np.array([r["coord"] for r in pocket_candidates])
+
+    # 간단한 그리디 클러스터링
+    used = set()
+    clusters = []
+
+    for i in range(len(pocket_candidates)):
+        if i in used:
+            continue
+        cluster = [i]
+        used.add(i)
+
+        for j in range(i + 1, len(pocket_candidates)):
+            if j in used:
+                continue
+            dist = np.linalg.norm(coords[i] - coords[j])
+            if dist < 8.0:
+                # 클러스터 내 모든 멤버와 거리 체크
+                close_to_cluster = False
+                for k in cluster:
+                    if np.linalg.norm(coords[k] - coords[j]) < 8.0:
+                        close_to_cluster = True
+                        break
+                if close_to_cluster:
+                    cluster.append(j)
+                    used.add(j)
+
+        if len(cluster) >= min_pocket_size // 2:
+            clusters.append(cluster)
+
+    if not clusters:
+        return None
+
+    # 가장 큰 클러스터 = 주요 포켓
+    clusters.sort(key=len, reverse=True)
+    main_pocket_indices = clusters[0]
+
+    pocket_residues = [pocket_candidates[i] for i in main_pocket_indices]
+
+    # 포켓 신뢰도 (pLDDT 기반 — PDB B-factor 에서)
+    # pocket 잔기의 평균 이웃 수로 대략적 confidence
+    pocket_confidence = 1.0 - (np.mean([r["n_neighbors"] for r in pocket_residues]) / max(neighbor_counts))
+    pocket_confidence = max(0, min(1, pocket_confidence))
+
+    # 포켓 볼륨 추정 (ConvexHull)
+    pocket_coords = np.array([r["coord"] for r in pocket_residues])
+    try:
+        if len(pocket_coords) >= 4:
+            hull = ConvexHull(pocket_coords)
+            volume = hull.volume
+        else:
+            volume = 0
+    except Exception:
+        volume = 0
+
+    return {
+        "n_residues": len(pocket_residues),
+        "residues": [f"{r['resname']}:{r['chain']}{r['resid']}" for r in pocket_residues],
+        "confidence": round(pocket_confidence, 3),
+        "volume": round(volume, 1),
+        "center": np.mean(pocket_coords, axis=0).tolist(),
+        "hydrophobic_ratio": round(sum(1 for r in pocket_residues if r["is_hydrophobic"]) / len(pocket_residues), 2),
+    }
+
+
+def generate_3d_viewer_html(structures, output_path):
+    """3Dmol.js 기반 3D 뷰어 — binding site 포함"""
+
     structure_data = []
     for s in structures:
         pdb_path = s.get("pdb_path")
         if pdb_path and Path(pdb_path).exists():
             with open(pdb_path) as f:
                 pdb_content = f.read()
+
+            pocket = s.get("pocket", {})
+            pocket_residues = pocket.get("residues", []) if pocket else []
+
+            # 포켓 잔기를 JS 에서 사용할 형식으로 변환
+            # "LEU:A90" → {resi: 90, chain: "A"}
+            pocket_js = []
+            for res_str in pocket_residues:
+                parts = res_str.split(":")
+                if len(parts) == 2:
+                    chain_resid = parts[1]
+                    chain = chain_resid[0]
+                    resid = chain_resid[1:]
+                    if resid.isdigit():
+                        pocket_js.append({"resi": int(resid), "chain": chain})
+
             structure_data.append(
                 {
                     "gene": s["gene"],
                     "uniprot": s["uniprot_id"],
-                    "drug": s.get("drugs", [""])[0],
-                    "plddt_mean": s.get("plddt", {}).get("mean", 0),
+                    "drug": s.get("drugs", [""])[0] if s.get("drugs") else "",
+                    "plddt_mean": s.get("plddt", {}).get("mean", 0) if s.get("plddt") else 0,
+                    "pocket_size": pocket.get("n_residues", 0) if pocket else 0,
+                    "pocket_conf": pocket.get("confidence", 0) if pocket else 0,
+                    "pocket_volume": pocket.get("volume", 0) if pocket else 0,
+                    "pocket_residues": pocket_js,
+                    "pocket_residues_str": pocket_residues,
                     "pdb": pdb_content,
                 }
             )
@@ -227,17 +412,38 @@ def generate_3d_viewer_html(structures, output_path):
         print("  No structures to visualize")
         return
 
-    # HTML 생성
     options_html = ""
-    pdb_js_array = ""
-
     for i, sd in enumerate(structure_data):
-        pdb_escaped = sd["pdb"].replace("\\", "\\\\").replace("`", "\\`").replace("${", "\\${")
-        pdb_js_array += (
-            f'  {{ gene: "{sd["gene"]}", uniprot: "{sd["uniprot"]}", drug: "{sd["drug"]}", '
-            f'plddt: {sd["plddt_mean"]}, pdb: `{pdb_escaped}` }},\n'
+        pocket_info = f" | Pocket: {sd['pocket_size']} res" if sd["pocket_size"] > 0 else ""
+        options_html += (
+            f'<option value="{i}">{sd["gene"]} ({sd["uniprot"]}) - pLDDT: {sd["plddt_mean"]}{pocket_info}</option>\n'
         )
-        options_html += f'<option value="{i}">{sd["gene"]} ({sd["uniprot"]}) - pLDDT: {sd["plddt_mean"]}</option>\n'
+
+    # 구조 데이터를 별도 JS 파일 대신 인라인으로
+    structures_js = "var structures = [\n"
+    for sd in structure_data:
+        pdb_escaped = sd["pdb"].replace("\\", "\\\\").replace("`", "\\`").replace("${", "\\${")
+        pocket_js_str = json.dumps(sd["pocket_residues"])
+        pocket_res_str = json.dumps(sd["pocket_residues_str"])
+        structures_js += f"""  {{
+    gene: "{sd['gene']}", uniprot: "{sd['uniprot']}", drug: "{sd['drug']}",
+    plddt: {sd['plddt_mean']}, pocket_size: {sd['pocket_size']},
+    pocket_conf: {sd['pocket_conf']}, pocket_volume: {sd['pocket_volume']},
+    pocket_residues: {pocket_js_str},
+    pocket_residues_str: {pocket_res_str},
+    pdb: `{pdb_escaped}`
+  }},
+"""
+    structures_js += "];\n"
+
+    # 테이블 행
+    table_rows = ""
+    for sd in structure_data:
+        pocket_info = f"{sd['pocket_size']} residues ({sd['pocket_conf']:.3f})" if sd["pocket_size"] > 0 else "Not detected"
+        table_rows += (
+            f'<tr><td>{sd["gene"]}</td><td>{sd["uniprot"]}</td><td>{sd["drug"]}</td>'
+            f'<td>{sd["plddt_mean"]}</td><td>{pocket_info}</td><td>{sd["pocket_volume"]:.0f}</td></tr>\n'
+        )
 
     html = f"""<!DOCTYPE html>
 <html>
@@ -248,63 +454,76 @@ def generate_3d_viewer_html(structures, output_path):
 body {{ font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }}
 .container {{ max-width: 1200px; margin: 0 auto; }}
 h1 {{ color: #2c3e50; }}
-.viewer-container {{ width: 100%; height: 500px; position: relative; border: 2px solid #3498db; border-radius: 8px; overflow: hidden; }}
+h3 {{ color: #34495e; }}
+.viewer-container {{ width: 100%; height: 550px; position: relative; border: 2px solid #3498db; border-radius: 8px; overflow: hidden; background: white; }}
 .controls {{ margin: 15px 0; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
-select, button {{ padding: 8px 15px; margin: 5px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc; }}
-button {{ background: #3498db; color: white; border: none; cursor: pointer; }}
+select, button {{ padding: 8px 15px; margin: 5px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc; cursor: pointer; }}
+button {{ background: #3498db; color: white; border: none; }}
 button:hover {{ background: #2980b9; }}
-.info {{ padding: 15px; background: white; border-radius: 8px; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
-.legend {{ display: flex; gap: 15px; margin: 10px 0; }}
-.legend-item {{ display: flex; align-items: center; gap: 5px; }}
-.legend-color {{ width: 20px; height: 20px; border-radius: 3px; }}
+button.active {{ background: #e74c3c; }}
+.info-panel {{ padding: 15px; background: white; border-radius: 8px; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+.legend {{ display: flex; gap: 15px; margin: 10px 0; flex-wrap: wrap; }}
+.legend-item {{ display: flex; align-items: center; gap: 5px; font-size: 13px; }}
+.legend-color {{ width: 18px; height: 18px; border-radius: 3px; }}
+.metric {{ display: inline-block; padding: 5px 12px; margin: 3px; border-radius: 15px; font-size: 13px; font-weight: bold; }}
+.metric-blue {{ background: #e8f4fd; color: #2980b9; }}
+.metric-gold {{ background: #fef9e7; color: #d4ac0d; }}
+.metric-green {{ background: #eafaf1; color: #27ae60; }}
 table {{ border-collapse: collapse; width: 100%; margin-top: 10px; }}
-th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 13px; }}
 th {{ background: #3498db; color: white; }}
 tr:nth-child(even) {{ background: #f9f9f9; }}
+.pocket-label {{ color: #d4ac0d; font-weight: bold; }}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>AlphaFold 3D Structure Viewer</h1>
-<h3>Colon (COAD+READ) Drug Repurposing — Top 15 Target Proteins</h3>
+<h1>🔬 AlphaFold 3D Structure Viewer</h1>
+<h3>Colon (COAD+READ) Drug Repurposing — Top 15 Target Proteins with Binding Sites</h3>
 
 <div class="controls">
   <label><b>Select Target:</b></label>
   <select id="proteinSelect" onchange="loadStructure()">
     {options_html}
   </select>
-  <button onclick="setStyle('cartoon')">Cartoon</button>
+  <button onclick="setStyle('cartoon')">Cartoon (pLDDT)</button>
   <button onclick="setStyle('stick')">Stick</button>
   <button onclick="setStyle('sphere')">Sphere</button>
+  <button id="pocketBtn" onclick="togglePocket()">Show Pocket</button>
   <button onclick="toggleSpin()">Spin</button>
 </div>
 
 <div class="legend">
-  <b>pLDDT Color:</b>
-  <div class="legend-item"><div class="legend-color" style="background:#0053D6"></div> Very High (>90)</div>
+  <b>pLDDT:</b>
+  <div class="legend-item"><div class="legend-color" style="background:#0053D6"></div> Very High (&gt;90)</div>
   <div class="legend-item"><div class="legend-color" style="background:#65CBF3"></div> High (70-90)</div>
   <div class="legend-item"><div class="legend-color" style="background:#FFDB13"></div> Low (50-70)</div>
-  <div class="legend-item"><div class="legend-color" style="background:#FF7D45"></div> Very Low (<50)</div>
+  <div class="legend-item"><div class="legend-color" style="background:#FF7D45"></div> Very Low (&lt;50)</div>
+  <div class="legend-item"><div class="legend-color" style="background:#DAA520"></div> <span class="pocket-label">Binding Pocket (gold stick)</span></div>
 </div>
 
 <div id="viewer" class="viewer-container"></div>
 
-<div id="info" class="info"></div>
+<div id="info" class="info-panel">Loading...</div>
 
 <h3>All Target Structures</h3>
 <table>
-<tr><th>Gene</th><th>UniProt</th><th>Drug(s)</th><th>pLDDT Mean</th><th>pLDDT Confident (%)</th></tr>
-{"".join(f'<tr><td>{sd["gene"]}</td><td>{sd["uniprot"]}</td><td>{sd["drug"]}</td><td>{sd["plddt_mean"]}</td><td>-</td></tr>' for sd in structure_data)}
+<tr><th>Gene</th><th>UniProt</th><th>Drug(s)</th><th>pLDDT</th><th>Binding Pocket</th><th>Volume (ų)</th></tr>
+{table_rows}
 </table>
+
+<p style="color: #7f8c8d; font-size: 12px; margin-top: 20px;">
+마우스 드래그로 회전, 휠로 확대/축소. Cartoon (pLDDT Color)는 B-factor(pLDDT) 기반입니다.
+포켓 후보 잔기는 gold stick으로 표시됩니다.
+</p>
 </div>
 
 <script>
-var structures = [
-{pdb_js_array}
-];
+{structures_js}
 
 var viewer = null;
 var spinning = false;
+var showPocket = true;
 var currentStyle = 'cartoon';
 
 function initViewer() {{
@@ -318,41 +537,79 @@ function loadStructure() {{
 
   viewer.clear();
   viewer.addModel(s.pdb, "pdb");
-  applyPLDDTColoring();
+
+  applyStyle();
+
   viewer.zoomTo();
   viewer.render();
 
+  // Info panel
+  var pocketInfo = s.pocket_size > 0
+    ? '<span class="metric metric-gold">Pocket: ' + s.pocket_size + ' residues</span>' +
+      '<span class="metric metric-gold">Conf: ' + s.pocket_conf.toFixed(3) + '</span>' +
+      '<span class="metric metric-gold">Vol: ' + s.pocket_volume.toFixed(0) + ' ų</span>'
+    : '<span class="metric" style="background:#fee;color:#c00;">No pocket detected</span>';
+
+  var siteRes = s.pocket_residues_str.length > 0
+    ? '<br><b>Site Residues:</b> ' + s.pocket_residues_str.join('; ')
+    : '';
+
   document.getElementById("info").innerHTML =
-    "<b>Gene:</b> " + s.gene + " | <b>UniProt:</b> " + s.uniprot +
-    " | <b>Drug:</b> " + s.drug + " | <b>Mean pLDDT:</b> " + s.plddt;
+    '<span class="metric metric-blue">Drug: ' + s.drug + '</span>' +
+    '<span class="metric metric-blue">Target: ' + s.gene + '</span>' +
+    '<span class="metric metric-blue">UniProt: ' + s.uniprot + '</span>' +
+    '<span class="metric metric-green">Mean pLDDT: ' + s.plddt.toFixed(1) + '</span>' +
+    pocketInfo + siteRes;
 }}
 
-function applyPLDDTColoring() {{
-  viewer.setStyle({{}}, {{
-    cartoon: {{
-      colorfunc: function(atom) {{
-        var b = atom.b;
-        if (b >= 90) return '#0053D6';
-        if (b >= 70) return '#65CBF3';
-        if (b >= 50) return '#FFDB13';
-        return '#FF7D45';
+function applyStyle() {{
+  var idx = document.getElementById("proteinSelect").value;
+  var s = structures[idx];
+
+  // 기본 스타일
+  if (currentStyle === 'cartoon') {{
+    viewer.setStyle({{}}, {{
+      cartoon: {{
+        colorfunc: function(atom) {{
+          var b = atom.b;
+          if (b >= 90) return '#0053D6';
+          if (b >= 70) return '#65CBF3';
+          if (b >= 50) return '#FFDB13';
+          return '#FF7D45';
+        }}
       }}
+    }});
+  }} else if (currentStyle === 'stick') {{
+    viewer.setStyle({{}}, {{stick: {{colorscheme: 'Jmol'}}}});
+  }} else if (currentStyle === 'sphere') {{
+    viewer.setStyle({{}}, {{sphere: {{scale: 0.3, colorscheme: 'Jmol'}}}});
+  }}
+
+  // 포켓 잔기 gold stick 으로 하이라이트
+  if (showPocket && s.pocket_residues.length > 0) {{
+    for (var i = 0; i < s.pocket_residues.length; i++) {{
+      var pr = s.pocket_residues[i];
+      viewer.addStyle(
+        {{resi: pr.resi, chain: pr.chain}},
+        {{stick: {{color: '#DAA520', radius: 0.15}}}}
+      );
     }}
-  }});
+  }}
+
+  viewer.render();
 }}
 
 function setStyle(style) {{
   currentStyle = style;
-  var styleObj = {{}};
+  applyStyle();
+}}
 
-  if (style === 'cartoon') {{
-    applyPLDDTColoring();
-  }} else if (style === 'stick') {{
-    viewer.setStyle({{}}, {{stick: {{colorscheme: 'Jmol'}}}});
-  }} else if (style === 'sphere') {{
-    viewer.setStyle({{}}, {{sphere: {{scale: 0.3, colorscheme: 'Jmol'}}}});
-  }}
-  viewer.render();
+function togglePocket() {{
+  showPocket = !showPocket;
+  var btn = document.getElementById("pocketBtn");
+  btn.textContent = showPocket ? "Hide Pocket" : "Show Pocket";
+  btn.className = showPocket ? "active" : "";
+  applyStyle();
 }}
 
 function toggleSpin() {{
@@ -367,7 +624,7 @@ window.onload = initViewer;
 
     with open(output_path, "w") as f:
         f.write(html)
-    print(f"  ✅ 3D Viewer: {output_path}")
+    print(f"  ✅ 3D Viewer (with pockets): {output_path}")
 
 
 def main():
@@ -436,6 +693,13 @@ def main():
         # 이 유전자를 타겟으로 하는 약물 목록
         drugs_for_gene = [d for d, genes in drug_targets.items() if gene in genes]
 
+        # Binding pocket 탐지
+        pocket = detect_binding_pockets(str(pdb_path))
+        if pocket:
+            print(f"    Pocket: {pocket['n_residues']} residues, conf={pocket['confidence']:.3f}, vol={pocket['volume']:.0f}Å³")
+        else:
+            print("    Pocket: not detected")
+
         structures.append(
             {
                 "gene": gene,
@@ -443,6 +707,7 @@ def main():
                 "pdb_path": str(pdb_path),
                 "pdb_url": pdb_url,
                 "plddt": plddt,
+                "pocket": pocket,
                 "drugs": drugs_for_gene,
                 "alphafold_version": af_info.get("modelVersion", "?"),
             }
@@ -477,6 +742,13 @@ def main():
             "avg_plddt": round(np.mean([s["plddt"]["mean"] for s in structures if s["plddt"]]), 2) if structures else 0,
             "high_confidence_targets": sum(1 for s in structures if s["plddt"] and s["plddt"]["mean"] >= 70),
             "very_high_confidence": sum(1 for s in structures if s["plddt"] and s["plddt"]["mean"] >= 90),
+            "targets_with_pocket": sum(1 for s in structures if s.get("pocket")),
+            "avg_pocket_size": round(np.mean([s["pocket"]["n_residues"] for s in structures if s.get("pocket")]), 1)
+            if any(s.get("pocket") for s in structures)
+            else 0,
+            "avg_pocket_confidence": round(np.mean([s["pocket"]["confidence"] for s in structures if s.get("pocket")]), 3)
+            if any(s.get("pocket") for s in structures)
+            else 0,
         },
     }
 
@@ -495,15 +767,19 @@ def main():
     print(f"  Very high (≥90): {results['summary']['very_high_confidence']}")
     print()
 
-    print(f"{'Gene':15s} {'UniProt':10s} {'pLDDT':>7s} {'Confident%':>10s} {'Drugs':30s}")
-    print("-" * 80)
+    print(f"{'Gene':15s} {'UniProt':10s} {'pLDDT':>7s} {'Pocket':>8s} {'PocketConf':>10s} {'Vol':>8s} {'Drugs':25s}")
+    print("-" * 90)
     for s in sorted(structures, key=lambda x: x["plddt"]["mean"] if x["plddt"] else 0, reverse=True):
         plddt = s["plddt"]
+        pocket = s.get("pocket")
         if plddt:
             conf_icon = "🟢" if plddt["mean"] >= 70 else "🟡" if plddt["mean"] >= 50 else "🔴"
+            p_size = f"{pocket['n_residues']}res" if pocket else "N/A"
+            p_conf = f"{pocket['confidence']:.3f}" if pocket else "N/A"
+            p_vol = f"{pocket['volume']:.0f}ų" if pocket else "N/A"
             print(
                 f"{s['gene']:15s} {s['uniprot_id']:10s} {conf_icon} {plddt['mean']:>5.1f} "
-                f"{plddt['pct_confident']:>9.1f}% {', '.join(s['drugs'][:3]):30s}"
+                f"{p_size:>8s} {p_conf:>10s} {p_vol:>8s} {', '.join(s['drugs'][:2]):25s}"
             )
 
     print(f"\n  3D Viewer: {viewer_path}")

@@ -109,19 +109,10 @@ with tab_ensemble:
     render_step5_ensemble()
 
 
-# ── Tab 6: Step 6 External Validation (placeholder) ────────────────────────
+# ── Tab 6: Step 6-9 Integrated Results ─────────────────────────────────────
 with tab_validation:
-    st.subheader("✅ Step 6: External Validation")
-    st.info(
-        "⏸️ **Pending** — Step 5 앙상블 완료 후 착수 예정.\n\n"
-        "**검증 데이터셋** (옵션 B):\n"
-        "- CPTAC-CRC\n"
-        "- GSE39582\n"
-        "- COSMIC-CRC\n"
-        "- PRISM (CRC)\n"
-        "- ClinicalTrials (CRC)\n\n"
-        "자세한 계획은 `dashboard/TODO.md` 참조."
-    )
+    from dashboard.views import step6_9_results
+    step6_9_results.render()
 
 
 # ── Tab 7: Comparison (placeholder) ─────────────────────────────────────────

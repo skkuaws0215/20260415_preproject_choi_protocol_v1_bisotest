@@ -9,35 +9,49 @@ Drug repurposing pipeline for Colorectal Cancer (COAD+READ).
 ## Start Date
 2026-04-20
 
-## Pipeline Status (2026-04-22)
+## Pipeline Status (2026-04-24)
 
-```
-✅ Step 1-2: 전처리 + QC (35 cells × 295 drugs = 9,692 pairs)
-✅ Step 3:   Feature Engineering (Nextflow, 17,925 features)
-✅ Step 3.5: Feature Selection (19,998 → 5,662 features)
-✅ Step 4:   모델 학습 완료 (ML 6 + DL 7 + Graph 2 = 15 models × 3 phases)
-✅ Step 4.5: FS 실험 [옵션] (Top 1000, Graph +29.9% 개선)
-✅ Step 5:   앙상블 (Best 0.6010, GraphSAGE×0.8 + CatBoost×0.2)
-⬜ Step 6:   외부 검증
-⬜ Step 7:   ADMET Gate
-⬜ Step 8:   Neo4j
-```
+| Step | Description | Status | Key Result |
+|------|-------------|--------|------------|
+| Step 1-2 | Data Preprocessing + QC | ✅ Complete | 35 cells × 295 drugs = 9,692 pairs |
+| Step 3 | Feature Engineering | ✅ Complete | 17,925 features |
+| Step 3.5 | Feature Selection | ✅ Complete | 19,998 → 5,662 features |
+| Step 4 | Model Training | ✅ Complete | 15 models × 3 phases |
+| Step 4.5 | FS Experiment | ✅ Complete | Graph +29.9% |
+| Step 5 | Ensemble | ✅ Complete | Best Spearman 0.6010 (+23.1%) |
+| Step 6 | External Validation | ✅ Complete | 5 sources, 4 drugs Very High |
+| Step 7 | ADMET Gate | ✅ Complete | 22 assays (Choi protocol), Top 15 |
+| Step 7.5 | AlphaFold Validation | ✅ Complete | 14/14 structures, pocket detection |
+| Step 7.6 | COAD vs READ Analysis | ✅ Complete | JAK2 COAD-preferred, rest Both |
+| Step 8 | Neo4j Knowledge Graph | ✅ Complete | biso-kg Aura (30,589 nodes) |
+| Step 9 | LLM Explanation | ✅ Complete | 15 drug explanations (llama3.1) |
 
-## Key Results
+### Key Results
 
-| Metric | Value |
-|--------|-------|
-| Best Single Model | GraphSAGE FSimp 2B = 0.5914 |
-| Best Ensemble | GraphSAGE(0.8) + CatBoost(0.2) = **0.6010** |
-| Baseline → Ensemble | +23.1% improvement |
-| Scaffold Split Best | GAT FSimp 2C = 0.4459 |
+- **Performance**: Baseline 0.4881 → Ensemble 0.6010 (+23.1%)
+- **Top 15 Drug Candidates**:
+  - FDA_APPROVED_CRC: 2 (Topotecan, Irinotecan)
+  - REPURPOSING_CANDIDATE: 3 (Temsirolimus, Rapamycin, etc.) 🎯
+  - CLINICAL_TRIAL: 3
+  - RESEARCH_PHASE: 7
+- **Very High Confidence (5/5)**: Temsirolimus, Camptothecin, Irinotecan, Topotecan
+- **ADMET**: 22 assays + Tanimoto matching, Safety Score avg 5.13
+- **AlphaFold**: 14/14 targets high confidence (pLDDT ≥ 70), all pockets detected
+- **COAD/READ**: Most drugs applicable to both; Lestaurtinib COAD-preferred
+- **Knowledge Graph**: Neo4j Aura with BRCA + Lung + Colon data
 
-## Dashboard
+### Dashboard
 
-```bash
-streamlit run dashboard/app.py
-# Tab 1: Overview | Tab 2: Data/QC | Tab 3: FE | Tab 4: Modeling | Tab 5: Ensemble
-```
+Run: `streamlit run dashboard/app.py`
+
+| Tab | Content |
+|-----|---------|
+| 🏠 Overview | Pipeline summary + key metrics |
+| 📥 Step 1-2 | Data overview + QC report |
+| 🧬 Step 3 | Feature engineering + selection |
+| 🤖 Step 4 | Model training + comparison |
+| 🎯 Step 5 | Ensemble results + diversity |
+| ✅ Step 6-9 | Validation, ADMET, AlphaFold, COAD/READ, LLM |
 
 ## Directory Structure    20260420_new_pre_project_biso_Colon/
 ├── curated_data/           # Raw data (read-only)

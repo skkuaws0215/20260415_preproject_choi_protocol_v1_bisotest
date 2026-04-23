@@ -162,3 +162,41 @@
   - `dashboard/utils/` — 상수, 스타일
 - **참고:** `lung_pipeline_dashboard.html` (Lung 대시보드, 정적 HTML)
 - **미완료 작업:** `dashboard/TODO.md` 참조 (통합 재진행 시 반영)
+
+---
+
+## Current Status (2026-04-24)
+
+### Pipeline Complete: Step 1-9 ✅
+
+All 9 steps of the drug repurposing pipeline are complete:
+
+1. **Preprocessing + QC**: 35 cell lines × 295 drugs = 9,692 pairs
+2. **Feature Engineering**: 17,925 multi-omics features
+3. **Feature Selection**: 19,998 → 5,662 (importance-based)
+4. **Model Training**: 15 models × 3 phases (GNN, GB, DL, ML)
+5. **Ensemble**: GraphSAGE(0.8) + CatBoost(0.2) = Spearman 0.6010
+6. **External Validation**: 5 sources (PRISM 73.3%, CT 46.7%, COSMIC 33.3%, CPTAC 46.7%, GEO 46.7%)
+7. **ADMET Gate**: Choi protocol 22 assays + Tanimoto, Top 15 selected
+7.5. **AlphaFold**: 14/14 structures, binding pocket detection
+7.6. **COAD vs READ**: TCGA 531 patients, most drugs Both applicable
+8. **Neo4j**: Knowledge graph loaded to biso-kg Aura
+9. **LLM Explanation**: 15 drug explanations via Ollama llama3.1
+
+### Top 15 Drug Candidates
+
+| Category | Count | Key Drugs |
+|----------|-------|-----------|
+| FDA_APPROVED_CRC | 2 | Topotecan, Irinotecan |
+| REPURPOSING_CANDIDATE | 3 | Temsirolimus, Rapamycin, AZD6482 |
+| CLINICAL_TRIAL | 3 | Camptothecin, Trametinib, Tanespimycin |
+| RESEARCH_PHASE | 7 | Entinostat, Lestaurtinib, etc. |
+
+### Commits (latest)
+
+- `c26d612` Step 9 LLM explanation
+- `1ce9246` Step 8 Neo4j KG loading
+- `caea482` Step 7.6 COAD vs READ
+- `6a578c0` Step 7.5 AlphaFold + pocket
+- `74479f7` Step 7 ADMET Gate + Top 15
+- `71362bf` Step 6 external validation (5 sources)

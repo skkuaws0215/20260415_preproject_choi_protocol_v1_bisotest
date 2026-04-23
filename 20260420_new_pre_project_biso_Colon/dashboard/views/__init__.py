@@ -14,6 +14,7 @@ dashboard.views — 각 탭의 뷰 구현.
 
 from dashboard.views.overview import render as render_overview
 from dashboard.views.step4_modeling import render as render_step4
+from . import step6_9_results
 
 __all__ = [
     "render_overview",

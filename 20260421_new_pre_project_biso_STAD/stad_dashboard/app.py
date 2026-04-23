@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import math
 import statistics
@@ -365,63 +366,165 @@ def render_header() -> None:
         </style>
         <div class="stad-hero">
             <h1>STAD Drug Repurposing Pipeline</h1>
-            <p>Stomach adenocarcinoma (TCGA-STAD) · Step-based dashboard</p>
+            <p>Stomach adenocarcinoma (TCGA-STAD) · 전 단계(0-1 … 9) + Overview — 왼쪽 사이드바에서 이동</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
-def render_top_nav() -> str:
-    st.markdown(
-        """
-        <style>
-        .stad-nav-title {
-            font-size: 0.95rem;
-            color: #475569;
-            margin: 6px 0 10px 0;
-            font-weight: 600;
-        }
-        </style>
-        <div class="stad-nav-title">Navigate by Step</div>
-        """,
-        unsafe_allow_html=True,
-    )
+def _exec_stad_view(filename: str) -> None:
+    """Load `stad_dashboard/views/<filename>` without package path issues."""
+    mod_path = Path(__file__).resolve().parent / "views" / filename
+    if not mod_path.is_file():
+        st.error(f"View module missing: `{mod_path}`")
+        return
+    spec = importlib.util.spec_from_file_location(f"stad_view_{filename.replace('.', '_')}", mod_path)
+    if spec is None or spec.loader is None:
+        st.error("Failed to create module spec for view")
+        return
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.render()
 
-    pages = [
-        ("Step 0-1", "🏠 Step 0-1"),
-        ("Step 2", "🧪 Step 2"),
-        ("Step 3", "🧬 Step 3"),
-        ("Step 3.5", "🗂️ Step 3.5"),
-        ("Step 4", "🤖 Step 4"),
-        ("Step 5", "🎯 Step 5"),
-        ("Step 6", "✅ Step 6"),
-        ("Protocol", "📚 Protocol"),
+
+def _nav_pages() -> list[str]:
+    return [
+        "Overview",
+        "Step 0-1",
+        "Step 2",
+        "Step 3",
+        "Step 3.5",
+        "Step 4",
+        "Step 5",
+        "Step 6",
+        "Step 7",
+        "Step 8",
+        "Step 9",
+        "Protocol",
     ]
 
-    if "stad_page" not in st.session_state:
-        st.session_state["stad_page"] = "Step 0-1"
 
-    cols = st.columns(len(pages))
-    for idx, (page_key, label) in enumerate(pages):
-        if cols[idx].button(label, use_container_width=True):
-            st.session_state["stad_page"] = page_key
-
+def render_sidebar_nav() -> str:
+    """왼쪽 고정 사이드바 — 상단 11열 버튼(좁은 화면에서 잘림) 문제를 피함."""
+    pages = _nav_pages()
+    with st.sidebar:
+        st.markdown("### STAD 단계")
+        st.caption("Step 0-1부터 Step 9까지 동일 앱에서 전환합니다.")
+        page = st.radio(
+            "현재 페이지",
+            pages,
+            index=0,
+            label_visibility="collapsed",
+        )
+    st.markdown(f"#### 현재: **{page}**")
     st.markdown("---")
-    return st.session_state["stad_page"]
+    return page
+
+
+def render_overview() -> None:
+    """전 단계 요약 — 각 Step 탭으로 이동하기 전 상태 점검."""
+    st.subheader("Overview: 파이프라인 단계별 산출물")
+    st.caption("`STAD_reproduction_protocol.md` 순서와 대응. `results/`·`curated_data/`는 로컬 실행 후에만 OK로 표시됩니다.")
+
+    rows: list[dict[str, Any]] = [
+        {
+            "Step": "0-1",
+            "설명": "Raw 동기화, LINCS 링크, 코호트 tar",
+            "대표 경로": "scripts/parallel_download_stad.sh, curated_data/",
+            "OK?": all(
+                (PROJECT_ROOT / p).exists()
+                for p in (
+                    "scripts/parallel_download_stad.sh",
+                    "curated_data",
+                )
+            ),
+        },
+        {
+            "Step": "2",
+            "설명": "전처리·라벨·QC",
+            "대표 경로": "data/labels.parquet, reports/step2_integrated_qc_report.json",
+            "OK?": (PROJECT_ROOT / "reports/step2_integrated_qc_report.json").exists(),
+        },
+        {
+            "Step": "3",
+            "설명": "FE (Nextflow / Batch)",
+            "대표 경로": "fe_qc/20260421_stad_fe_v1/features/features.parquet",
+            "OK?": (PROJECT_ROOT / "fe_qc/20260421_stad_fe_v1/features/features.parquet").exists(),
+        },
+        {
+            "Step": "3.5",
+            "설명": "Feature selection",
+            "대표 경로": "fe_qc/20260421_stad_fe_v1/features_slim.parquet",
+            "OK?": (PROJECT_ROOT / "fe_qc/20260421_stad_fe_v1/features_slim.parquet").exists(),
+        },
+        {
+            "Step": "4",
+            "설명": "ML / DL / Graph GroupCV",
+            "대표 경로": f"results/{STEP4_RESULT_TAG}/ml/",
+            "OK?": (PROJECT_ROOT / "results" / STEP4_RESULT_TAG / "ml").exists(),
+        },
+        {
+            "Step": "5",
+            "설명": "CatBoost+DL+Graph 앙상블",
+            "대표 경로": f"results/{STEP4_RESULT_TAG}/ensemble_catboost_dl_graph_groupcv.json",
+            "OK?": (PROJECT_ROOT / "results" / STEP4_RESULT_TAG / "ensemble_catboost_dl_graph_groupcv.json").exists(),
+        },
+        {
+            "Step": "6",
+            "설명": "외부 5소스 + 종합",
+            "대표 경로": "results/stad_comprehensive_validation_results.json",
+            "OK?": (PROJECT_ROOT / "results/stad_comprehensive_validation_results.json").exists(),
+        },
+        {
+            "Step": "7",
+            "설명": "ADMET · Top15 · AlphaFold · 서브타입",
+            "대표 경로": "results/stad_final_top15.csv",
+            "OK?": (PROJECT_ROOT / "results/stad_final_top15.csv").exists(),
+        },
+        {
+            "Step": "8",
+            "설명": "KG JSON / 뷰어 / Neo4j(선택) · 질환별 네트워크",
+            "대표 경로": "results/stad_knowledge_graph_data.json (+ 대시보드 참조 KG)",
+            "OK?": (PROJECT_ROOT / "results/stad_knowledge_graph_data.json").exists(),
+        },
+        {
+            "Step": "9",
+            "설명": "LLM 근거 (Ollama 또는 dry-run)",
+            "대표 경로": "results/stad_drug_explanations.json",
+            "OK?": (PROJECT_ROOT / "results/stad_drug_explanations.json").exists(),
+        },
+    ]
+    st.dataframe(
+        pd.DataFrame(rows),
+        use_container_width=True,
+        hide_index=True,
+    )
+    st.info(
+        "Step 8에서 **위암**은 STAD `results/` 산출물을, **대장·폐·유방**은 저장소에 포함된 참조 KG 또는 "
+        "형제 폴더 Colon `knowledge_graph_data.json`(로컬 생성 시)을 사용합니다."
+    )
 
 
 def render_step_0_1() -> None:
     st.subheader("Step 0-1: Raw Sync")
-    st.caption("Raw data sync and source readiness")
+    st.caption(
+        "README·`STAD_reproduction_protocol.md` §1: Stad_raw 동기화, LINCS GSE92742 정렬, "
+        "TCGA-STAD 코호트 tar 등. (Colon 파이프라인의 Step 0–1에 해당; STAD는 단일 탭으로 묶음)"
+    )
 
     checks = [
         PROJECT_ROOT / "scripts/parallel_download_stad.sh",
+        PROJECT_ROOT / "scripts/download_stad_cohort_data.sh",
+        PROJECT_ROOT / "scripts/link_lincs_gse92742_from_colon.sh",
         PROJECT_ROOT / "curated_data",
         PROJECT_ROOT / "data",
+        PROJECT_ROOT / "curated_data/cbioportal/stad_tcga_pan_can_atlas_2018",
+        PROJECT_ROOT / "curated_data/geo/GSE62254",
     ]
     for p in checks:
         st.write(f"- `{p.relative_to(PROJECT_ROOT)}`: **{file_status(p)}**")
+    st.info("`SYNC_S3=1 ./scripts/parallel_download_stad.sh` — `configs/CONTEXT.md` 의 Stad_raw 규약 참고.")
 
 
 def render_step_2() -> None:
@@ -821,16 +924,48 @@ def render_step_5() -> None:
 
 def render_step_6() -> None:
     st.subheader("Step 6: External Validation")
-    st.info("Reserved. Add Top30 and external validation summary here.")
+    st.caption(
+        "`STAD_reproduction_protocol.md` §4 · `run_step6_stad.sh`: PRISM, ClinicalTrials, COSMIC, CPTAC, GEO + 종합 스코어."
+    )
 
     checks = [
         PROJECT_ROOT / "scripts/run_step6_stad.sh",
         PROJECT_ROOT / "results/stad_top30_phase2b_catboost_with_names.csv",
         PROJECT_ROOT / "results/stad_top30_phase2c_catboost_with_names.csv",
         PROJECT_ROOT / "results/stad_top30_unified_2b_and_2c_with_names.csv",
+        PROJECT_ROOT / "results/stad_top30_drugs_ensemble.csv",
+        PROJECT_ROOT / "results/stad_prism_validation_results.json",
+        PROJECT_ROOT / "results/stad_clinical_trials_validation_results.json",
+        PROJECT_ROOT / "results/stad_cosmic_validation_results.json",
+        PROJECT_ROOT / "results/stad_cptac_validation_results.json",
+        PROJECT_ROOT / "results/stad_geo_validation_results.json",
+        PROJECT_ROOT / "results/stad_comprehensive_drug_scores.csv",
+        PROJECT_ROOT / "results/stad_comprehensive_validation_results.json",
     ]
     for p in checks:
         st.write(f"- `{p.relative_to(PROJECT_ROOT)}`: **{file_status(p)}**")
+
+    comp = PROJECT_ROOT / "results" / "stad_comprehensive_drug_scores.csv"
+    if comp.exists():
+        st.markdown("---")
+        st.write("### 종합 스코어 미리보기 (상위 10)")
+        try:
+            cdf = pd.read_csv(comp)
+            st.dataframe(cdf.head(10), use_container_width=True, hide_index=True)
+        except Exception as exc:
+            st.warning(f"CSV read failed: {exc}")
+
+
+def render_step_7() -> None:
+    _exec_stad_view("step7_stad.py")
+
+
+def render_step_8() -> None:
+    _exec_stad_view("step8_stad.py")
+
+
+def render_step_9() -> None:
+    _exec_stad_view("step9_stad.py")
 
 
 def render_protocol() -> None:
@@ -861,9 +996,11 @@ def main() -> None:
 
     render_header()
 
-    page = render_top_nav()
+    page = render_sidebar_nav()
 
-    if page == "Step 0-1":
+    if page == "Overview":
+        render_overview()
+    elif page == "Step 0-1":
         render_step_0_1()
     elif page == "Step 2":
         render_step_2()
@@ -877,8 +1014,17 @@ def main() -> None:
         render_step_5()
     elif page == "Step 6":
         render_step_6()
-    else:
+    elif page == "Step 7":
+        render_step_7()
+    elif page == "Step 8":
+        render_step_8()
+    elif page == "Step 9":
+        render_step_9()
+    elif page == "Protocol":
         render_protocol()
+    else:
+        st.warning(f"알 수 없는 페이지: {page!r} — Overview로 돌아가 사이드바를 확인하세요.")
+        render_overview()
 
 
 if __name__ == "__main__":

@@ -7,16 +7,16 @@
 - 데이터: STAD 실제 데이터만 사용
 - raw mirror: `curated_data/`는 읽기 전용
 
-> 프로토콜 버전: `v2026.04.23-r3`  
-> 최종 업데이트: `2026-04-23`  
-> 변경 포인트: Step 4(모델) / Step 5(앙상블) 분리, Step5 정책(CatBoost·GraphSAGE 고정 + DL 상위 선택), 대시보드 구조 동기화
+> 프로토콜 버전: `v2026.04.24-r5`  
+> 최종 업데이트: `2026-04-24`  
+> 변경 포인트: 대시보드 사이드바 네비(전 Step)·Step 8 질환별 KG(위암 실데이터 + 타암종 참조)·Step 9 연동·문서 경로 정리
 
 ## 0. 사전 준비
 
 - 작업 경로: `20260421_new_pre_project_biso_STAD`
 - Python: 3.10 (`conda` env `drug4` 권장)
 - AWS CLI 인증
-- 참조 프로토콜: `/Users/skku_aws2_14/Downloads/drug_repurposing_pipeline_protocol (2).md` (업데이트 중)
+- 참조 프로토콜: 팀에서 배포하는 상위 `drug_repurposing_pipeline_protocol` 문서(로컬 경로는 문서에 하드코딩하지 않음)
 
 ## 1. Raw 수집/동기화
 
@@ -245,6 +245,123 @@ Step 6 실행 전, 학습 산출 Top30 CSV 3종이 필요합니다.
 SYNC_S3=1 ./scripts/run_step6_stad.sh
 ```
 
+### 4.1 Step 6 결론 및 COSMIC (코멘트)
+
+- **PRISM / ClinicalTrials / CPTAC / GEO**: 위암 축으로 필터·정규화 적용 후 종합 점수에 반영. GEO(GSE62254)는 GPL570 SOFT 기반 프로브→유전자 매핑이 필요하며, `scripts/fetch_geo_gpl570_stad.sh` 및 `curated_data/geo/GSE62254/GPL570_probe_to_gene.json` 캐시로 재현한다.
+- **COSMIC**: (1) 소형 STAD CGC 번들만 있으면 **유전자 교차 매칭이 거의 0**일 수 있음 → 전체 Census 데이터 확보 시 개선. (2) Actionability는 **로컬 parquet 텍스트에 나오는 약물명**만 매칭되므로 행 수·범위가 작으면 COSMIC 열만으로는 히트가 적음. (3) 상세 코멘트는 `scripts/step6_ext_cosmic_stad.py` 상단 블록 참고.
+
+### 4.2 Step 7 — 대장암 프로토콜 프로그램 대응 (Colon `20260420_colon_protocol.md` §Step 7)
+
+Colon과 **동일한 단계·동일한 방법론**(22 assay + Tanimoto, Top15, AlphaFold, 질환 맥락 분석)을 쓰고, **스크립트 파일명만 STAD 전용**으로 치환한다.
+
+| 단계 | Colon 스크립트 | STAD 스크립트 |
+|------|----------------|---------------|
+| 7-1 ADMET | `scripts/step7_1_admet_filtering.py` | `scripts/step7_1_admet_filtering_stad.py` |
+| 7-2 Top 15 | `scripts/step7_2_select_top15.py` | `scripts/step7_2_select_top15_stad.py` |
+| 7.5 AlphaFold | `scripts/step7_5_alphafold_validation.py` | `scripts/step7_5_alphafold_validation_stad.py` |
+| 7.6 코호트 맥락 | `scripts/step7_6_coad_read_analysis.py` (COAD vs READ) | `scripts/step7_6_stad_subtype_analysis.py` (MSI-H vs MSS 등) |
+
+**최종 15약 3단계 구분** (`step7_2_select_top15_stad.py` 산출 컬럼 `recommendation_stage`, `stad_step7_three_stage_summary.json`):
+
+1. **1단계 — 전환·표준 궤적**: ADMET `PASS` 이고 (`FDA_APPROVED_GASTRIC` **또는** 위암 관련 임상시험 건수 ≥ 3).
+2. **2단계 — 근거·검토**: ADMET `PASS` 이고 1단계 미해당 (연구단계·저빈도 임상·재창출 후보).
+3. **3단계 — 탐색·보조**: ADMET `WARNING` (AlphaFold·TCGA 서브타입 등 **보조 증거** 위주로 해석).
+
+CSV 보고 순서는 **1→2→3단계** 후 `safety_score` 내림차순이며, `usage_priority_rank`에 임상 카테고리 우선순위 기반 이전 순위가 남는다.
+
+### 4.3 Step 7 실행 전 체크리스트 (초안 운영 시 유의)
+
+- [ ] `curated_data/admet/tdc_admet_group/admet_group/` — Colon과 동일 **22개 assay** CSV (`train_val.csv` / `test.csv`) 존재
+- [ ] `data/drug_features.parquet` — `canonical_smiles` 포함 (7-1 SMILES 매핑)
+- [ ] `results/stad_top30_drugs_ensemble.csv` (또는 `stad_top30_phase2b_catboost_with_names.csv`, 또는 `STAD_TOP30_CSV`)
+- [ ] Step 6 CT JSON(선택): `results/stad_clinical_trials_validation_results.json` — 없으면 시험 수 0으로만 3단계·카테고리 계산
+- [ ] **7.5**: `pip` 패키지 `rdkit`, `biopython`, `scipy` 및 **인터넷**(UniProt·AlphaFold EBI API). 오프라인이면 `SKIP_ALPHAFOLD=1 ./scripts/run_step7_stad.sh`
+- [ ] **7-1 RDKit**: 일부 샌드박스/제한 환경에서 RDKit import 시 **exit 139**가 나면, Colon Step7과 동일하게 **로컬 conda 환경(`drug4`) 터미널**에서 실행할 것
+- [ ] **7.6**: `curated_data/cbioportal/stad_tcga_pan_can_atlas_2018/data_mrna_seq_v2_rsem.txt`(또는 `data_mrna*rsem*.txt`) 및 선택 `data/stad_subtype_metadata.parquet` — 없으면 스킵: `SKIP_SUBTYPE=1`
+- [ ] 서브타입 parquet 생성(선택): `python3 scripts/stad_subtype_tagging.py --cbioportal-dir curated_data/cbioportal/stad_tcga_pan_can_atlas_2018 --output data/stad_subtype_metadata.parquet`
+
+### 4.4 Step 7 실행 블록 (Colon §Step 7 실행과 동일 순서)
+
+한 번에 실행:
+
+```bash
+cd 20260421_new_pre_project_biso_STAD
+./scripts/run_step7_stad.sh
+```
+
+Colon 프로토콜과 동일하게 **개별 호출**할 때:
+
+```bash
+cd 20260421_new_pre_project_biso_STAD
+python3 scripts/step7_1_admet_filtering_stad.py
+python3 scripts/step7_2_select_top15_stad.py
+python3 scripts/step7_5_alphafold_validation_stad.py
+python3 scripts/step7_6_stad_subtype_analysis.py
+```
+
+선택 환경변수 (셸 스크립트와 동일):
+
+```bash
+SKIP_ALPHAFOLD=1 SKIP_SUBTYPE=1 ./scripts/run_step7_stad.sh
+# 또는 Top30 경로만 바꿀 때
+STAD_TOP30_CSV=/path/to/custom_top30.csv ./scripts/run_step7_stad.sh
+```
+
+**주요 산출물**
+
+- `results/stad_drugs_with_admet.csv`, `results/stad_admet_summary.json`
+- `results/stad_final_top15.csv`, `results/stad_all_admet_pass.csv`, `results/stad_final_top15_summary.json`
+- `results/stad_step7_three_stage_summary.json` — 15약 3단계 요약
+- `results/stad_alphafold_validation/` — PDB, `stad_alphafold_3d_viewer.html`, `stad_alphafold_validation_results.json`
+- `results/stad_subtype_expression_analysis.json`, `results/stad_subtype_drug_context.csv`
+
+### 4.4A 대시보드 (`stad_dashboard/app.py`)
+
+- **실행:** 저장소 루트에서 `streamlit run stad_dashboard/app.py`
+- **네비게이션:** 왼쪽 **사이드바 라디오**로 Overview · Step 0-1 … Step 9 · Protocol 전환 (상단 다열 버튼은 제거).
+- **Overview:** 단계별 대표 산출물 존재 여부 요약 표.
+- **Step 8:** 질환 라디오 — **위암**은 `results/stad_knowledge_graph_data.json`(파이프라인), **대장암**은 동일 워크스페이스의 Colon `results/knowledge_graph_data.json`이 있으면 우선, 없으면 `stad_dashboard/assets/kg_reference/colorectal.json`(참조 데모). **폐암·유방암**은 동일 폴더의 `lung.json` / `breast.json`(참조 데모, 추후 Lung/Breast 파이프라인 JSON으로 교체 가능).
+- **Step 9:** `results/stad_drug_explanations.json` — 없으면 `STAD_LLM_DRY_RUN=1` 로 Step 9 스크립트 실행.
+
+### 4.5 Step 8 — Neo4j + KG 뷰어 (Colon `step8_neo4j_load.py` / `step8_generate_kg_viewer.py` 대응)
+
+| 단계 | Colon | STAD |
+|------|---------|------|
+| 로컬 KG JSON | (Colon은 별도 export 없이 `knowledge_graph_data.json` 수동·타 스크립트) | `scripts/step8_export_kg_json_stad.py` → `results/stad_knowledge_graph_data.json` |
+| HTML 뷰어 | `scripts/step8_generate_kg_viewer.py` | `scripts/step8_generate_kg_viewer_stad.py` → `results/stad_knowledge_graph_viewer.html` (또는 `--data-json` / `--output-html` 로 다른 KG JSON용 HTML 생성) |
+| Neo4j 적재 | `scripts/step8_neo4j_load.py` | `scripts/step8_neo4j_load_stad.py` → Aura 등 (**`NEO4J_URI` / `NEO4J_USER` / `NEO4J_PASSWORD`** 필수; 없으면 DB 미접속·`stad_neo4j_load_summary.json` 만 `skipped`) |
+
+질병 노드 기본 이름: **`Gastric Cancer`** (바꾸려면 `STAD_NEO4J_DISEASE_NAME`).
+
+```bash
+cd 20260421_new_pre_project_biso_STAD
+./scripts/run_step8_9_stad.sh
+```
+
+개별 실행:
+
+```bash
+python3 scripts/step8_export_kg_json_stad.py
+python3 scripts/step8_generate_kg_viewer_stad.py
+python3 scripts/step8_neo4j_load_stad.py
+```
+
+### 4.6 Step 9 — LLM 근거 (Colon `step9_llm_explanation.py` 대응)
+
+- 스크립트: `scripts/step9_llm_explanation_stad.py`
+- 입력: Step 6·7 STAD 산출물(`stad_final_top15.csv`, `stad_comprehensive_drug_scores.csv`, ADMET/AlphaFold/서브타입 JSON 등)
+- 출력: `results/stad_drug_explanations.json`, `results/stad_drug_explanations_report.md`
+- 실행: 로컬 **Ollama** (`ollama run`, 기본 모델 `OLLAMA_MODEL` 또는 `llama3.1`). CLI 없으면 explanation 필드에 `ERROR:` 메시지가 들어가도 파일은 생성됨.
+
+```bash
+python3 scripts/step9_llm_explanation_stad.py
+# Ollama 없이 산출물 형식만 확인
+python3 scripts/step9_llm_explanation_stad.py --dry-run
+# 또는
+OLLAMA_MODEL=llama3.1 ./scripts/run_step8_9_stad.sh
+STAD_LLM_DRY_RUN=1 ./scripts/run_step8_9_stad.sh
+```
+
 ## 5. 알려진 제한 사항 (현재 확정)
 
 LINCS evidence in STAD is AGS-only under GSE92742 (362 trt_cp signatures).  
@@ -312,6 +429,22 @@ FE 품질 (`features/manifest.json`):
 - [ ] `results/<RESULT_TAG>/{ml,dl,graph}/*_groupcv.json` 존재
 - [ ] `results/<RESULT_TAG>/ensemble_catboost_dl_graph_groupcv.json` 존재 (앙상블 실행 시)
 - [ ] 대시보드 `stad_dashboard/app.py`의 `STEP4_RUN_ID` / `STEP4_RESULT_TAG`가 로컬 산출물과 일치
+
+### 6.5 Step 7 완료 후 (ADMET·Top15·3단계)
+
+- [ ] `results/stad_drugs_with_admet.csv` 및 `results/stad_admet_summary.json` 존재
+- [ ] `results/stad_final_top15.csv` — 컬럼 `recommendation_stage`, `recommendation_stage_label_ko`, `usage_priority_rank` 확인
+- [ ] `results/stad_step7_three_stage_summary.json` — `counts_by_stage` 합이 15인지 확인
+- [ ] (7.5 실행 시) `results/stad_alphafold_validation/stad_alphafold_validation_results.json` 존재
+- [ ] (7.6 실행 시) `results/stad_subtype_expression_analysis.json` 존재 — 표본 수 부족 시 경고만 있어도 정상(탐색적)
+
+### 6.6 Step 8·9 완료 후 (Neo4j / KG 뷰어 / LLM)
+
+- [ ] `results/stad_knowledge_graph_data.json` 및 `results/stad_knowledge_graph_viewer.html` 존재
+- [ ] 대시보드 Step 8에서 위암 네트워크가 로드되는지(참조: 폐·유방·대장 탭은 데모 JSON 또는 Colon 산출물)
+- [ ] `results/stad_neo4j_load_summary.json` — `status`가 `applied` 또는 자격 증명 없을 때 `skipped` 인지 확인 (**Neo4j 비밀번호 등은 git에 커밋하지 말 것**)
+- [ ] (Neo4j 실적재 시) Aura 콘솔에서 Disease `Gastric Cancer`·관계 증가 확인
+- [ ] `results/stad_drug_explanations.json` — 15행 근접, `explanation`에 치명적 ERROR만 없는지(오프라인이면 `ollama not found` 허용)
 
 ## 7. 과거 이슈 및 재발 방지
 

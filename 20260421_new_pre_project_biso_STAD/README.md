@@ -3,9 +3,9 @@
 위암(TCGA-STAD) drug repurposing 파이프라인 프로젝트입니다.  
 코드는 Colon/Lung 파이프라인 구조를 재사용하고, 데이터 경로만 STAD 기준으로 운영합니다.
 
-> 문서 버전: `v2026.04.23-r3`  
-> 최종 업데이트: `2026-04-23`  
-> 변경 요약: Step4/Step5 대시보드 분리, Step5 앙상블 정책(CatBoost·GraphSAGE 고정 + DL 상위 선택) 반영
+> 문서 버전: `v2026.04.24-r4`  
+> 최종 업데이트: `2026-04-24`  
+> 변경 요약: 대시보드 사이드바(Overview·Step 0-1…9), Step 8 다질환 KG, Step 9 안내, 프로토콜 §4.4A 반영
 
 ## 현재 상태
 
@@ -17,8 +17,11 @@
 | Step 3.5 | Feature selection 완료 → `fe_qc/20260421_stad_fe_v1/features_slim.parquet` (Step 4 입력) |
 | Step 4 | ML→DL→Graph 단일 모델 학습/평가 스크립트 + `run_step4_stad.sh` (기본 끝에 Step 5용 앙상블 JSON 생성, `SKIP_ENSEMBLE=1`로 생략 가능) |
 | Step 5 | `scripts/run_ensemble_catboost_dl_graph_stad.py` — **CatBoost(고정) + phase별 best DL + GraphSAGE(고정)** OOF 블렌드, Lung `phase3_ensemble_analysis` 스타일(Simple / JSON 가중 / 그리드). 산출: `results/<tag>/ensemble_catboost_dl_graph_groupcv.json` |
-| 대시보드 | `stad_dashboard/app.py` — Step4(모델) / Step5(앙상블) 분리, GroupCV 차트·앙상블 표·지표 해설(diversity ρ vs complementarity) |
-| Step 6 | 외부검증 스크립트 경로 구성 완료 — Top30 CSV 3종 필요 시 실행 |
+| Step 6 | 외부검증(`run_step6_stad.sh`) — PRISM/ClinicalTrials/COSMIC/CPTAC/GEO + 종합 |
+| Step 7 | ADMET·Top15·AlphaFold·서브타입 — `./scripts/run_step7_stad.sh` |
+| Step 8 | KG JSON·HTML·Neo4j(선택) — `./scripts/run_step8_9_stad.sh` ; 대시보드에서 위·대장·폐·유방 네트워크 전환 |
+| Step 9 | LLM 근거 — `STAD_LLM_DRY_RUN=1` 로 형식 검증 가능 |
+| 대시보드 | `streamlit run stad_dashboard/app.py` — **왼쪽 사이드바**에서 전 단계 + Step 8 질환별 KG |
 
 
 ## 핵심 제약
@@ -53,7 +56,7 @@ STAD는 labels sample_id와 DepMap cell_line_name의 표기가 다릅니다.
 
 - 운영 컨텍스트: [configs/CONTEXT.md](configs/CONTEXT.md)
 - STAD 재현 절차: [STAD_reproduction_protocol.md](STAD_reproduction_protocol.md) (§3-3 Step 4·앙상블·대시보드)
-- 상위(계속 업데이트) 프로토콜: `/Users/skku_aws2_14/Downloads/drug_repurposing_pipeline_protocol (2).md`
+- 상위(계속 업데이트) 프로토콜: 팀 배포본 `drug_repurposing_pipeline_protocol`(로컬 절대 경로는 README에 적지 않음)
 - 코드 템플릿: [20260420_new_pre_project_biso_Colon](../20260420_new_pre_project_biso_Colon), [20260416_new_pre_project_biso_Lung](../20260416_new_pre_project_biso_Lung)
 
 ## 빠른 실행 순서

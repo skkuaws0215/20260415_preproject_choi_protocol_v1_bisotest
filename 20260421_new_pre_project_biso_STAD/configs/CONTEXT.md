@@ -2,9 +2,9 @@
 
 단일 진실 소스. 에이전트·연구자 공통 참조.
 
-> 컨텍스트 버전: `v2026.04.23-r3`  
-> 최종 업데이트: `2026-04-23`  
-> 변경 포인트: Step4/Step5 분리 상태 및 Step5 앙상블 정책(CatBoost·GraphSAGE 고정 + DL 상위 선택) 반영
+> 컨텍스트 버전: `v2026.04.24-r4`  
+> 최종 업데이트: `2026-04-24`  
+> 변경 포인트: 대시보드 사이드바·Overview·Step 8 다질환 KG 참조 경로; 로컬 베이스 절대 경로 제거
 
 ## 개요
 
@@ -20,7 +20,7 @@
 - **Step 3.5 FS:** `scripts/feature_selection.py` → `fe_qc/20260421_stad_fe_v1/features_slim.parquet` — **Step 4 모든 학습·OOF의 유일한 피처 소스**
 - **Step 4:** `prepare_phase2a/bc_data_stad.py` + `run_ml_all_stad.py` / `run_dl_all_stad.py` / `run_graph_all_stad.py`; 일괄 `scripts/run_step4_stad.sh` (기본 끝에 Step 5용 `run_ensemble_catboost_dl_graph_stad.py`, `SKIP_ENSEMBLE=1`로 생략 가능)
 - **Step 5 OOF 앙상블:** Lung `phase3_ensemble_analysis` 패턴 — **CatBoost(고정) + phase별 best DL + GraphSAGE(고정)** OOF만 사용; `ensemble_catboost_dl_graph_groupcv.json`. `diversity` 필드는 예측 간 평균 Spearman ρ(높을수록 예측 유사); `complementarity_1_minus_pairwise_pred_rho` 병기
-- **대시보드:** `stad_dashboard/app.py` (Streamlit) — Step 4(모델) / Step 5(앙상블) 분리, 표·차트·JSON 다운로드; Lung HTML/스크립트 레이아웃 참고
+- **대시보드:** `streamlit run stad_dashboard/app.py` — **사이드바**에서 Overview·Step 0-1…9·Protocol; Step 8은 위암(`results/stad_knowledge_graph_data.json`) + 대장(Colon 동행 산출물 우선)·폐·유방 참조 KG(`stad_dashboard/assets/kg_reference/*.json`)
 - **Step 6 실행 경로:** STAD config 기반 wrapper (`scripts/run_step6_stad.sh`) 구성 완료 (Top30 CSV 3종 전제는 변경 없음)
 - **LINCS (GSE92742):** `rebuild_stad_lincs_cell_ids_gse92742.py` 재검증 결과 usable cell은 `AGS`만 확인
 - **해석/보고 제약:** STAD 분석에서 LINCS evidence는 AGS-only coverage limitation을 명시해야 함
@@ -44,7 +44,7 @@ for drug repurposing evidence, with LINCS used as supporting signal for AGS only
 
 | 구분 | 경로 |
 |------|------|
-| 로컬 STAD 베이스 | `/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260421_new_pre_project_biso_STAD` |
+| 로컬 STAD 베이스 | Git 워크트리의 `20260421_new_pre_project_biso_STAD/` (본 파일 기준 상대 경로로 해석) |
 | Raw S3 (팀 적재) | `s3://say2-4team/Stad_raw/` |
 | Stad_raw 시드 (공통) | 2026-04-21: `Colon_raw`에서 질병 비특이 디렉터리만 `aws s3 sync` — `GDSC/`, `depmap/`, `drugbank/`, `chembl/`, `admet/`, `LInc1000/`, `gtex/`, `msigdb/`, `opentargets/`, `string/` (제외: `cBioPortal/`, `geo/`, 루트 가공 parquet 4종) |
 | Stad_raw STAD 코호트 | 2026-04-21: `scripts/download_stad_cohort_data.sh` — GEO `GSE62254`/`GSE15459` series matrix (NCBI FTP); TCGA-STAD PanCan 2018 스터지 tar는 `https://github.com/labxscut/HCG/releases/download/HCG/stad_tcga_pan_can_atlas_2018.tar.gz` (cBioPortal 동일 스터디 미러, README 근거) → 로컬 `curated_data/` 후 `SYNC_S3=1`으로 `Stad_raw/geo/`, `Stad_raw/cbioportal/` 업로드 |

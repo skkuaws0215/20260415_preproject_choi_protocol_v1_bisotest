@@ -1,0 +1,302 @@
+{
+  "step": "Step 7.5 AlphaFold Validation",
+  "disease": "colorectal cancer (COAD+READ)",
+  "top_n_drugs": 15,
+  "unique_targets": 16,
+  "uniprot_mapped": 14,
+  "structures_downloaded": 14,
+  "gene_to_uniprot": {
+    "FLT3": "P36888",
+    "HDAC1": "Q13547",
+    "HDAC3": "O15379",
+    "HSP90": "P07900",
+    "JAK2": "O60674",
+    "MEK1": "Q02750",
+    "MEK2": "P36507",
+    "MTOR": "P42345",
+    "MTORC1": "P42345",
+    "NTRK1": "P04629",
+    "NTRK2": "Q16620",
+    "NTRK3": "Q16288",
+    "PI3Kbeta": "O00329",
+    "TOP1": "P11387"
+  },
+  "structures": [
+    {
+      "gene": "FLT3",
+      "uniprot_id": "P36888",
+      "pdb_path": "AF-P36888-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-P36888-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 76.19,
+        "median": 84.62,
+        "min": 27.0,
+        "max": 98.62,
+        "n_residues": 7935,
+        "pct_confident": 71.3,
+        "pct_very_confident": 30.3
+      },
+      "drugs": [
+        "Lestaurtinib"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "HDAC1",
+      "uniprot_id": "Q13547",
+      "pdb_path": "AF-Q13547-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-Q13547-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 86.41,
+        "median": 97.0,
+        "min": 29.45,
+        "max": 98.88,
+        "n_residues": 3870,
+        "pct_confident": 80.3,
+        "pct_very_confident": 76.1
+      },
+      "drugs": [
+        "Entinostat"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "HDAC3",
+      "uniprot_id": "O15379",
+      "pdb_path": "AF-O15379-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-O15379-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 90.73,
+        "median": 98.31,
+        "min": 30.8,
+        "max": 99.0,
+        "n_residues": 3446,
+        "pct_confident": 88.2,
+        "pct_very_confident": 84.7
+      },
+      "drugs": [
+        "Entinostat"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "HSP90",
+      "uniprot_id": "P07900",
+      "pdb_path": "AF-P07900-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-P07900-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 85.55,
+        "median": 92.75,
+        "min": 29.56,
+        "max": 98.5,
+        "n_residues": 5942,
+        "pct_confident": 85.8,
+        "pct_very_confident": 61.0
+      },
+      "drugs": [
+        "Tanespimycin"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "JAK2",
+      "uniprot_id": "O60674",
+      "pdb_path": "AF-O60674-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-O60674-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 87.46,
+        "median": 92.81,
+        "min": 21.81,
+        "max": 98.56,
+        "n_residues": 9192,
+        "pct_confident": 90.3,
+        "pct_very_confident": 68.6
+      },
+      "drugs": [
+        "Lestaurtinib"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "MEK1",
+      "uniprot_id": "Q02750",
+      "pdb_path": "AF-Q02750-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-Q02750-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 84.05,
+        "median": 92.69,
+        "min": 24.58,
+        "max": 98.69,
+        "n_residues": 3048,
+        "pct_confident": 82.3,
+        "pct_very_confident": 63.0
+      },
+      "drugs": [
+        "Trametinib",
+        "Refametinib"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "MEK2",
+      "uniprot_id": "P36507",
+      "pdb_path": "AF-P36507-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-P36507-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 82.54,
+        "median": 92.69,
+        "min": 24.14,
+        "max": 98.69,
+        "n_residues": 3121,
+        "pct_confident": 78.6,
+        "pct_very_confident": 64.8
+      },
+      "drugs": [
+        "Trametinib",
+        "Refametinib"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "MTOR",
+      "uniprot_id": "P42345",
+      "pdb_path": "AF-P42345-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-P42345-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 78.57,
+        "median": 84.5,
+        "min": 23.27,
+        "max": 94.56,
+        "n_residues": 20287,
+        "pct_confident": 83.3,
+        "pct_very_confident": 11.3
+      },
+      "drugs": [
+        "Temsirolimus"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "MTORC1",
+      "uniprot_id": "P42345",
+      "pdb_path": "AF-P42345-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-P42345-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 78.57,
+        "median": 84.5,
+        "min": 23.27,
+        "max": 94.56,
+        "n_residues": 20287,
+        "pct_confident": 83.3,
+        "pct_very_confident": 11.3
+      },
+      "drugs": [
+        "Rapamycin"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "NTRK1",
+      "uniprot_id": "P04629",
+      "pdb_path": "AF-P04629-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-P04629-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 78.92,
+        "median": 87.62,
+        "min": 23.58,
+        "max": 98.62,
+        "n_residues": 6155,
+        "pct_confident": 76.8,
+        "pct_very_confident": 38.6
+      },
+      "drugs": [
+        "Lestaurtinib"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "NTRK2",
+      "uniprot_id": "Q16620",
+      "pdb_path": "AF-Q16620-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-Q16620-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 77.53,
+        "median": 88.75,
+        "min": 23.52,
+        "max": 98.38,
+        "n_residues": 6467,
+        "pct_confident": 74.8,
+        "pct_very_confident": 45.4
+      },
+      "drugs": [
+        "Lestaurtinib"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "NTRK3",
+      "uniprot_id": "Q16288",
+      "pdb_path": "AF-Q16288-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-Q16288-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 77.36,
+        "median": 89.38,
+        "min": 25.5,
+        "max": 98.44,
+        "n_residues": 6640,
+        "pct_confident": 72.5,
+        "pct_very_confident": 47.6
+      },
+      "drugs": [
+        "Lestaurtinib"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "PI3Kbeta",
+      "uniprot_id": "O00329",
+      "pdb_path": "AF-O00329-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-O00329-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 88.21,
+        "median": 93.38,
+        "min": 28.64,
+        "max": 98.69,
+        "n_residues": 8396,
+        "pct_confident": 88.4,
+        "pct_very_confident": 69.6
+      },
+      "drugs": [
+        "AZD6482"
+      ],
+      "alphafold_version": "?"
+    },
+    {
+      "gene": "TOP1",
+      "uniprot_id": "P11387",
+      "pdb_path": "AF-P11387-F1.pdb",
+      "pdb_url": "https://alphafold.ebi.ac.uk/files/AF-P11387-F1-model_v6.pdb",
+      "plddt": {
+        "mean": 80.25,
+        "median": 95.88,
+        "min": 24.39,
+        "max": 98.81,
+        "n_residues": 6384,
+        "pct_confident": 73.5,
+        "pct_very_confident": 69.8
+      },
+      "drugs": [
+        "Topotecan",
+        "Irinotecan",
+        "Camptothecin",
+        "LMP744"
+      ],
+      "alphafold_version": "?"
+    }
+  ],
+  "summary": {
+    "avg_plddt": 82.31,
+    "high_confidence_targets": 14,
+    "very_high_confidence": 1
+  }
+}

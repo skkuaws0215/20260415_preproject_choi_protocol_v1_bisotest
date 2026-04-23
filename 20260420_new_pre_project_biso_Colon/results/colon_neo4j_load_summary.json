@@ -1,0 +1,13 @@
+{
+  "step": "Step 8 Neo4j Knowledge Graph",
+  "target": "neo4j+s://108928fe.databases.neo4j.io",
+  "disease": "Colorectal Cancer (COAD+READ)",
+  "loaded": {
+    "disease_node": 1,
+    "cell_lines": 35,
+    "drug_disease_relations": 30,
+    "top15_admet": 15,
+    "alphafold_targets": 14,
+    "coad_read_recommendations": "loaded"
+  }
+}

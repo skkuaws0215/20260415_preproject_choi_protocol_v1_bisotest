@@ -57,17 +57,20 @@ render_header()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 탭 구성 (7개)
+# 탭 구성 (10개)
 # ─────────────────────────────────────────────────────────────────────────────
 
 (
-    tab_overview,
-    tab_data_qc,
-    tab_fe,
-    tab_modeling,
-    tab_ensemble,
-    tab_validation,
-    tab_compare,
+    tab1,
+    tab2,
+    tab3,
+    tab4,
+    tab5,
+    tab6,
+    tab7,
+    tab8,
+    tab9,
+    tab10,
 ) = st.tabs(
     [
         "🏠 Overview",
@@ -76,60 +79,71 @@ render_header()
         "🤖 Step 4 Modeling",
         "🎯 Step 5 Ensemble",
         "✅ Step 6 Validation",
+        "💊 Step 7 ADMET",
+        "🕸️ Step 8 KG",
+        "📝 Step 9 LLM",
         "🔬 Comparison",
     ]
 )
 
 
 # ── Tab 1: Overview (구현 완료) ──────────────────────────────────────────────
-with tab_overview:
+with tab1:
     render_overview()
 
 
 # ── Tab 2: Step 1-2 Data & QC ────────────────────────────────────────────────
-with tab_data_qc:
+with tab2:
     from dashboard.views.step2_data_qc import render_step2_data_qc
     render_step2_data_qc()
 
 
 # ── Tab 3: Step 3 Feature Engineering ────────────────────────────────────────
-with tab_fe:
+with tab3:
     from dashboard.views.step3_fe import render_step3_fe
     render_step3_fe()
 
 
 # ── Tab 4: Step 4 Modeling ───────────────────────────────────────────────────
-with tab_modeling:
+with tab4:
     render_step4()
 
 
 # ── Tab 5: Step 5 Ensemble ──────────────────────────────────────────────────
-with tab_ensemble:
+with tab5:
     from dashboard.views.step5_ensemble import render_step5_ensemble
     render_step5_ensemble()
 
 
-# ── Tab 6: Step 6-9 Integrated Results ─────────────────────────────────────
-with tab_validation:
-    from dashboard.views import step6_9_results
-    step6_9_results.render()
+# ── Tab 6: Step 6 Validation ────────────────────────────────────────────────
+with tab6:
+    from dashboard.views import step6_validation
+    step6_validation.render()
 
 
-# ── Tab 7: Comparison (placeholder) ─────────────────────────────────────────
-with tab_compare:
-    st.subheader("🔬 Comparison: Lung vs Colon vs STAD")
-    st.info(
-        "🚧 **Coming later** — 3개 암종 통합 비교 뷰.\n\n"
-        "**전제 조건**:\n"
-        "- 파서 암종 prefix 일반화 (`colon_*` → `{lung,colon,stad}_*`)\n"
-        "- Lung Step 4 결과 재파싱\n"
-        "- STAD Step 4 결과 완료 대기\n\n"
-        "**현재 수치** (세션 요약 기준):\n"
-        "- Lung 최고 (CatBoost 2C): **0.5030**\n"
-        "- Colon 최고 (CatBoost 2B): **0.4881**\n"
-        "- 차이: **-0.0149** (Lung 우세)\n\n"
-        "자세한 계획은 `dashboard/TODO.md` 참조."
-    )
+# ── Tab 7: Step 7 ADMET ─────────────────────────────────────────────────────
+with tab7:
+    from dashboard.views import step7_admet
+    step7_admet.render()
+
+
+# ── Tab 8: Step 8 Knowledge Graph ───────────────────────────────────────────
+with tab8:
+    from dashboard.views import step8_knowledge_graph
+    step8_knowledge_graph.render()
+
+
+# ── Tab 9: Step 9 LLM ────────────────────────────────────────────────────────
+with tab9:
+    from dashboard.views import step9_llm
+    step9_llm.render()
+
+
+# ── Tab 10: Comparison ───────────────────────────────────────────────────────
+with tab10:
+    st.subheader("🔬 Cross-Disease Comparison")
+    from dashboard.views import step8_knowledge_graph
+    step8_knowledge_graph.render()
 
 
 # ─────────────────────────────────────────────────────────────────────────────

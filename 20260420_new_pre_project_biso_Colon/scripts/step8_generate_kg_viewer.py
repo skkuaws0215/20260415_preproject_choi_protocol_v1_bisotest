@@ -16,7 +16,7 @@ from pathlib import Path
 
 
 def generate_kg_viewer(data_path, output_path):
-    """vis.js 기반 Knowledge Graph 뷰어 생성"""
+    """순수 Canvas JS 기반 Knowledge Graph 뷰어 (CDN 불필요)"""
 
     with open(data_path) as f:
         graph = json.load(f)
@@ -24,112 +24,22 @@ def generate_kg_viewer(data_path, output_path):
     nodes = graph["nodes"]
     edges = graph["edges"]
 
-    # 노드 타입별 색상/모양
-    type_config = {
-        "disease": {"color": "#e74c3c", "shape": "diamond", "size": 40, "font_size": 18},
-        "drug": {"color": "#3498db", "shape": "dot", "size": 20, "font_size": 12},
-        "target": {"color": "#2ecc71", "shape": "triangle", "size": 18, "font_size": 11},
-        "pathway": {"color": "#9b59b6", "shape": "square", "size": 15, "font_size": 10},
-    }
-
-    # 카테고리별 drug 색상
-    drug_colors = {
-        "FDA_APPROVED_CRC": "#e74c3c",
-        "REPURPOSING_CANDIDATE": "#f39c12",
-        "CLINICAL_TRIAL": "#1abc9c",
-        "RESEARCH_PHASE": "#3498db",
-    }
-
-    # 관계 타입별 색상
-    edge_colors = {
-        "treats": "#e74c3c",
-        "predicted_for": "#f39c12",
-        "targets": "#2ecc71",
-        "associated_with": "#95a5a6",
-        "in_pathway": "#9b59b6",
-    }
-
-    # vis.js 노드 데이터 생성
-    vis_nodes = []
-    for n in nodes:
-        ntype = n["type"]
-        config = type_config.get(ntype, type_config["drug"])
-
-        color = config["color"]
-        if ntype == "drug" and n.get("category"):
-            color = drug_colors.get(n["category"], config["color"])
-
-        title_parts = [f"<b>{n['label']}</b>", f"Type: {ntype}"]
-        if n.get("category"):
-            title_parts.append(f"Category: {n['category']}")
-        if n.get("safety_score"):
-            title_parts.append(f"Safety: {n['safety_score']}")
-        if n.get("uniprot"):
-            title_parts.append(f"UniProt: {n['uniprot']}")
-        if n.get("plddt"):
-            title_parts.append(f"pLDDT: {n['plddt']}")
-        if n.get("pocket"):
-            title_parts.append(f"Pocket: {n['pocket']} res")
-
-        vis_nodes.append({
-            "id": n["id"],
-            "label": n["label"],
-            "shape": config["shape"],
-            "size": config["size"],
-            "color": {"background": color, "border": color, "highlight": {"background": "#f1c40f", "border": "#f39c12"}},
-            "font": {"size": config["font_size"], "color": "#2c3e50"},
-            "title": "<br>".join(title_parts),
-            "group": ntype,
-        })
-
-    # vis.js 엣지 데이터 생성
-    vis_edges = []
-    for e in edges:
-        etype = e["type"]
-        color = edge_colors.get(etype, "#bdc3c7")
-
-        title_parts = [f"Type: {etype}"]
-        if e.get("rank"):
-            title_parts.append(f"Rank: {e['rank']}")
-        if e.get("confidence"):
-            title_parts.append(f"Confidence: {e['confidence']}")
-
-        vis_edges.append({
-            "from": e["source"],
-            "to": e["target"],
-            "color": {"color": color, "highlight": "#f39c12"},
-            "title": "<br>".join(title_parts),
-            "arrows": "to",
-            "width": 2 if etype in ["treats", "targets"] else 1,
-            "dashes": etype == "predicted_for",
-        })
-
-    nodes_json = json.dumps(vis_nodes)
-    edges_json = json.dumps(vis_edges)
-
     # 통계
-    stats = {
-        "nodes": len(nodes),
-        "edges": len(edges),
-        "diseases": len([n for n in nodes if n["type"] == "disease"]),
-        "drugs": len([n for n in nodes if n["type"] == "drug"]),
-        "targets": len([n for n in nodes if n["type"] == "target"]),
-        "pathways": len([n for n in nodes if n["type"] == "pathway"]),
-    }
+    stats = {}
+    for t in ["disease", "drug", "target", "pathway"]:
+        stats[t] = len([n for n in nodes if n["type"] == t])
+    stats["edges"] = len(edges)
 
-    # 질병별 약물 분류
+    # 공유 약물
     disease_drugs = {}
     for e in edges:
         if e["type"] in ["treats", "predicted_for"]:
-            disease_id = e["target"]
-            drug_id = e["source"]
-            disease_name = next((n["label"] for n in nodes if n["id"] == disease_id), "?")
-            drug_name = next((n["label"] for n in nodes if n["id"] == drug_id), "?")
+            disease_name = next((n["label"] for n in nodes if n["id"] == e["target"]), "?")
+            drug_name = next((n["label"] for n in nodes if n["id"] == e["source"]), "?")
             if disease_name not in disease_drugs:
                 disease_drugs[disease_name] = []
             disease_drugs[disease_name].append(drug_name)
 
-    # 공유 약물
     all_drug_names = set()
     for drugs in disease_drugs.values():
         all_drug_names.update(drugs)
@@ -139,385 +49,443 @@ def generate_kg_viewer(data_path, output_path):
         if len(in_diseases) > 1:
             shared.append({"drug": drug, "diseases": in_diseases})
 
-    # 필터 옵션
-    filter_options = ""
-    for disease in disease_drugs:
-        filter_options += f'<option value="{disease}">{disease}</option>\n'
-
-    # 공유 약물 테이블
     shared_rows = ""
     for s in sorted(shared, key=lambda x: len(x["diseases"]), reverse=True):
-        shared_rows += f'<tr><td>{s["drug"]}</td><td>{", ".join(s["diseases"])}</td><td>{len(s["diseases"])}</td></tr>\n'
+        shared_rows += f'<tr><td>{s["drug"]}</td><td>{", ".join(s["diseases"])}</td></tr>\n'
+
+    nodes_json = json.dumps(nodes)
+    edges_json = json.dumps(edges)
 
     html = f"""<!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
 <title>Knowledge Graph — Drug Repurposing Network</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.6/vis-network.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.6/vis-network.min.css" rel="stylesheet">
 <style>
-* {{ margin: 0; padding: 0; box-sizing: border-box; }}
-body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #0a0a1a; color: #e0e0e0; }}
-
-.header {{
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    padding: 20px 30px;
-    border-bottom: 2px solid #e74c3c;
-}}
-.header h1 {{ color: #fff; font-size: 24px; }}
-.header p {{ color: #95a5a6; font-size: 14px; margin-top: 5px; }}
-
-.main-container {{ display: flex; height: calc(100vh - 80px); }}
-
-.sidebar {{
-    width: 320px;
-    background: #1a1a2e;
-    padding: 20px;
-    overflow-y: auto;
-    border-right: 1px solid #2c3e50;
-}}
-
-.graph-container {{
-    flex: 1;
-    position: relative;
-}}
-
-#network {{ width: 100%; height: 100%; }}
-
-.control-section {{
-    margin-bottom: 20px;
-    padding: 15px;
-    background: #16213e;
-    border-radius: 8px;
-    border: 1px solid #2c3e50;
-}}
-.control-section h3 {{
-    color: #3498db;
-    font-size: 14px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}}
-
-.stat-grid {{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}}
-.stat-item {{
-    background: #0a0a1a;
-    padding: 10px;
-    border-radius: 6px;
-    text-align: center;
-}}
-.stat-value {{ font-size: 20px; font-weight: bold; }}
-.stat-label {{ font-size: 11px; color: #7f8c8d; margin-top: 3px; }}
-
-.legend-item {{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 5px 0;
-    font-size: 13px;
-}}
-.legend-dot {{
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}}
-.legend-diamond {{
-    width: 14px;
-    height: 14px;
-    transform: rotate(45deg);
-    flex-shrink: 0;
-}}
-.legend-triangle {{
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 14px solid;
-    flex-shrink: 0;
-}}
-.legend-line {{
-    width: 20px;
-    height: 3px;
-    flex-shrink: 0;
-}}
-
-select, input {{
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-    background: #0a0a1a;
-    color: #e0e0e0;
-    border: 1px solid #2c3e50;
-    border-radius: 4px;
-    font-size: 13px;
-}}
-button {{
-    padding: 8px 15px;
-    margin: 3px;
-    background: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-}}
-button:hover {{ background: #2980b9; }}
-button.active {{ background: #e74c3c; }}
-
-.node-detail {{
-    padding: 15px;
-    background: #16213e;
-    border-radius: 8px;
-    border: 1px solid #2c3e50;
-    margin-top: 10px;
-}}
-.node-detail h4 {{ color: #f39c12; margin-bottom: 8px; }}
-.node-detail p {{ font-size: 12px; margin: 3px 0; }}
-
-table {{
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 12px;
-}}
-th {{ background: #2c3e50; padding: 6px; text-align: left; }}
-td {{ padding: 6px; border-bottom: 1px solid #2c3e50; }}
-
-.edge-legend {{ margin-top: 10px; }}
-.edge-legend-item {{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 4px 0;
-    font-size: 12px;
-}}
+* {{ margin:0; padding:0; box-sizing:border-box; }}
+body {{ font-family:'Segoe UI',Arial,sans-serif; background:#0a0a1a; color:#e0e0e0; overflow:hidden; }}
+.header {{ background:linear-gradient(135deg,#1a1a2e,#16213e); padding:15px 25px; border-bottom:2px solid #e74c3c; display:flex; justify-content:space-between; align-items:center; }}
+.header h1 {{ color:#fff; font-size:20px; }}
+.header-stats {{ display:flex; gap:15px; }}
+.header-stat {{ text-align:center; }}
+.header-stat .val {{ font-size:18px; font-weight:bold; }}
+.header-stat .lbl {{ font-size:10px; color:#7f8c8d; }}
+.main {{ display:flex; height:calc(100vh - 60px); }}
+.sidebar {{ width:280px; background:#1a1a2e; padding:15px; overflow-y:auto; border-right:1px solid #2c3e50; }}
+.canvas-wrap {{ flex:1; position:relative; }}
+canvas {{ display:block; }}
+.section {{ margin-bottom:15px; padding:12px; background:#16213e; border-radius:6px; border:1px solid #2c3e50; }}
+.section h3 {{ color:#3498db; font-size:12px; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }}
+select,input {{ width:100%; padding:6px; margin:3px 0; background:#0a0a1a; color:#e0e0e0; border:1px solid #2c3e50; border-radius:3px; font-size:12px; }}
+button {{ padding:6px 12px; margin:2px; background:#3498db; color:white; border:none; border-radius:3px; cursor:pointer; font-size:11px; }}
+button:hover {{ background:#2980b9; }}
+.legend-item {{ display:flex; align-items:center; gap:6px; margin:3px 0; font-size:11px; }}
+.dot {{ width:12px; height:12px; border-radius:50%; }}
+.diamond {{ width:10px; height:10px; transform:rotate(45deg); }}
+.tri {{ width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:12px solid; }}
+table {{ width:100%; border-collapse:collapse; font-size:11px; margin-top:5px; }}
+th {{ background:#2c3e50; padding:4px; text-align:left; }}
+td {{ padding:4px; border-bottom:1px solid #2c3e50; }}
+#detail {{ margin-top:10px; padding:10px; background:#16213e; border-radius:6px; border:1px solid #f39c12; display:none; }}
+#detail h4 {{ color:#f39c12; margin-bottom:5px; font-size:13px; }}
+#detail p {{ font-size:11px; margin:2px 0; }}
+.edge-line {{ display:inline-block; width:16px; height:3px; vertical-align:middle; margin-right:5px; }}
 </style>
 </head>
 <body>
-
 <div class="header">
-    <h1>🔬 Drug Repurposing Knowledge Graph</h1>
-    <p>BRCA · Lung · Colorectal Cancer — Interactive Network Viewer</p>
+  <h1>🔬 Drug Repurposing Knowledge Graph</h1>
+  <div class="header-stats">
+    <div class="header-stat"><div class="val" style="color:#e74c3c">{stats.get('disease',0)}</div><div class="lbl">Diseases</div></div>
+    <div class="header-stat"><div class="val" style="color:#3498db">{stats.get('drug',0)}</div><div class="lbl">Drugs</div></div>
+    <div class="header-stat"><div class="val" style="color:#2ecc71">{stats.get('target',0)}</div><div class="lbl">Targets</div></div>
+    <div class="header-stat"><div class="val" style="color:#fff">{stats.get('edges',0)}</div><div class="lbl">Edges</div></div>
+  </div>
 </div>
-
-<div class="main-container">
-    <div class="sidebar">
-        <!-- Stats -->
-        <div class="control-section">
-            <h3>📊 Graph Statistics</h3>
-            <div class="stat-grid">
-                <div class="stat-item">
-                    <div class="stat-value" style="color:#e74c3c">{stats['diseases']}</div>
-                    <div class="stat-label">Diseases</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" style="color:#3498db">{stats['drugs']}</div>
-                    <div class="stat-label">Drugs</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" style="color:#2ecc71">{stats['targets']}</div>
-                    <div class="stat-label">Targets</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" style="color:#fff">{stats['edges']}</div>
-                    <div class="stat-label">Edges</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="control-section">
-            <h3>🎛 Controls</h3>
-            <label>Disease Filter</label>
-            <select id="diseaseFilter" onchange="filterByDisease()">
-                <option value="all">All Diseases</option>
-                {filter_options}
-            </select>
-            <label>Search Node</label>
-            <input id="searchInput" placeholder="Type drug/target name..." oninput="searchNode()">
-            <div style="margin-top:10px">
-                <button onclick="resetView()">Reset View</button>
-                <button onclick="togglePhysics()">Toggle Physics</button>
-            </div>
-        </div>
-
-        <!-- Legend: Nodes -->
-        <div class="control-section">
-            <h3>🔵 Node Types</h3>
-            <div class="legend-item"><div class="legend-diamond" style="background:#e74c3c"></div> Disease</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Drug (Repurposing)</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Drug (FDA Approved)</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#1abc9c"></div> Drug (Clinical Trial)</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div> Drug (Research)</div>
-            <div class="legend-item"><div class="legend-triangle" style="border-bottom-color:#2ecc71"></div> Target</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Pathway</div>
-        </div>
-
-        <!-- Legend: Edges -->
-        <div class="control-section">
-            <h3>🔗 Edge Types</h3>
-            <div class="edge-legend">
-                <div class="edge-legend-item"><div class="legend-line" style="background:#e74c3c"></div> TREATS</div>
-                <div class="edge-legend-item"><div class="legend-line" style="background:#f39c12;border-style:dashed"></div> PREDICTED_FOR</div>
-                <div class="edge-legend-item"><div class="legend-line" style="background:#2ecc71"></div> TARGETS</div>
-                <div class="edge-legend-item"><div class="legend-line" style="background:#95a5a6"></div> ASSOCIATED_WITH</div>
-                <div class="edge-legend-item"><div class="legend-line" style="background:#9b59b6"></div> IN_PATHWAY</div>
-            </div>
-        </div>
-
-        <!-- Shared Drugs -->
-        <div class="control-section">
-            <h3>🔄 Cross-Disease Drugs ({len(shared)})</h3>
-            <table>
-                <tr><th>Drug</th><th>Diseases</th><th>#</th></tr>
-                {shared_rows}
-            </table>
-        </div>
-
-        <!-- Node Detail -->
-        <div id="nodeDetail" class="node-detail" style="display:none">
-            <h4 id="detailTitle">Node Detail</h4>
-            <div id="detailContent"></div>
-        </div>
+<div class="main">
+  <div class="sidebar">
+    <div class="section">
+      <h3>Controls</h3>
+      <select id="diseaseFilter" onchange="filterDisease()">
+        <option value="all">All Diseases</option>
+        <option value="Breast Cancer">Breast Cancer</option>
+        <option value="Lung Cancer">Lung Cancer</option>
+        <option value="Colorectal Cancer">Colorectal Cancer</option>
+      </select>
+      <input id="search" placeholder="Search node..." oninput="searchNode()">
+      <button onclick="resetView()">Reset</button>
+      <button onclick="toggleLabels()">Labels</button>
     </div>
-
-    <div class="graph-container">
-        <div id="network"></div>
+    <div class="section">
+      <h3>Node Types</h3>
+      <div class="legend-item"><div class="diamond" style="background:#e74c3c"></div> Disease</div>
+      <div class="legend-item"><div class="dot" style="background:#f39c12"></div> Drug (Repurposing)</div>
+      <div class="legend-item"><div class="dot" style="background:#e74c3c"></div> Drug (FDA Approved)</div>
+      <div class="legend-item"><div class="dot" style="background:#1abc9c"></div> Drug (Clinical Trial)</div>
+      <div class="legend-item"><div class="dot" style="background:#3498db"></div> Drug (Research)</div>
+      <div class="legend-item"><div class="tri" style="border-bottom-color:#2ecc71"></div> Target</div>
     </div>
+    <div class="section">
+      <h3>Edge Types</h3>
+      <div class="legend-item"><span class="edge-line" style="background:#e74c3c"></span> TREATS</div>
+      <div class="legend-item"><span class="edge-line" style="background:#f39c12"></span> PREDICTED_FOR</div>
+      <div class="legend-item"><span class="edge-line" style="background:#2ecc71"></span> TARGETS</div>
+      <div class="legend-item"><span class="edge-line" style="background:#95a5a6"></span> ASSOCIATED_WITH</div>
+    </div>
+    <div class="section">
+      <h3>Cross-Disease Drugs ({len(shared)})</h3>
+      <table><tr><th>Drug</th><th>Diseases</th></tr>{shared_rows}</table>
+    </div>
+    <div id="detail">
+      <h4 id="detailTitle"></h4>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="canvas"></canvas>
+  </div>
 </div>
-
 <script>
-var nodesData = new vis.DataSet({nodes_json});
-var edgesData = new vis.DataSet({edges_json});
-var allNodes = {nodes_json};
-var allEdges = {edges_json};
+var rawNodes = {nodes_json};
+var rawEdges = {edges_json};
 
-var container = document.getElementById("network");
-var data = {{ nodes: nodesData, edges: edgesData }};
-var options = {{
-    physics: {{
-        enabled: true,
-        barnesHut: {{
-            gravitationalConstant: -3000,
-            centralGravity: 0.3,
-            springLength: 120,
-            springConstant: 0.04,
-            damping: 0.09,
-        }},
-        stabilization: {{ iterations: 150 }},
-    }},
-    interaction: {{
-        hover: true,
-        tooltipDelay: 100,
-        navigationButtons: true,
-        keyboard: true,
-    }},
-    edges: {{
-        smooth: {{ type: "continuous" }},
-        font: {{ size: 10, color: "#7f8c8d" }},
-    }},
+var typeColors = {{
+  disease: '#e74c3c',
+  drug: '#3498db',
+  target: '#2ecc71',
+  pathway: '#9b59b6'
 }};
+var drugColors = {{
+  'FDA_APPROVED_CRC': '#e74c3c',
+  'REPURPOSING_CANDIDATE': '#f39c12',
+  'CLINICAL_TRIAL': '#1abc9c',
+  'RESEARCH_PHASE': '#3498db'
+}};
+var edgeColors = {{
+  treats: '#e74c3c',
+  predicted_for: '#f39c12',
+  targets: '#2ecc71',
+  associated_with: '#556677',
+  in_pathway: '#9b59b6'
+}};
+var typeSizes = {{ disease:22, drug:10, target:8, pathway:6 }};
 
-var network = new vis.Network(container, data, options);
-var physicsEnabled = true;
+var canvas, ctx, W, H;
+var graphNodes = [], graphEdges = [];
+var showLabels = true;
+var dragging = null, dragOff = {{x:0,y:0}};
+var panX = 0, panY = 0, zoom = 1;
+var lastMouse = null;
+var selectedNode = null;
+var filterDiseaseName = 'all';
+var searchQuery = '';
 
-// 노드 클릭 상세 정보
-network.on("click", function(params) {{
-    if (params.nodes.length > 0) {{
-        var nodeId = params.nodes[0];
-        var node = allNodes.find(n => n.id === nodeId);
-        if (node) {{
-            var detail = document.getElementById("nodeDetail");
-            detail.style.display = "block";
-            document.getElementById("detailTitle").textContent = node.label;
+function init() {{
+  canvas = document.getElementById('canvas');
+  ctx = canvas.getContext('2d');
+  resize();
+  window.addEventListener('resize', resize);
+  canvas.addEventListener('mousedown', onDown);
+  canvas.addEventListener('mousemove', onMove);
+  canvas.addEventListener('mouseup', onUp);
+  canvas.addEventListener('wheel', onWheel);
+  canvas.addEventListener('dblclick', onDblClick);
+  buildGraph();
+  simulate();
+}}
 
-            var html = "<p><b>Type:</b> " + (node.type || node.group) + "</p>";
-            if (node.category) html += "<p><b>Category:</b> " + node.category + "</p>";
-            if (node.safety_score) html += "<p><b>Safety Score:</b> " + node.safety_score + "</p>";
-            if (node.uniprot) html += "<p><b>UniProt:</b> " + node.uniprot + "</p>";
-            if (node.plddt) html += "<p><b>pLDDT:</b> " + node.plddt + "</p>";
-            if (node.pocket) html += "<p><b>Pocket:</b> " + node.pocket + " residues</p>";
+function resize() {{
+  var wrap = canvas.parentElement;
+  W = wrap.clientWidth; H = wrap.clientHeight;
+  canvas.width = W; canvas.height = H;
+}}
 
-            // 연결된 노드
-            var connected = network.getConnectedNodes(nodeId);
-            html += "<p><b>Connections:</b> " + connected.length + "</p>";
+function buildGraph() {{
+  graphNodes = [];
+  graphEdges = [];
+  var nodeMap = {{}};
 
-            document.getElementById("detailContent").innerHTML = html;
-        }}
+  rawNodes.forEach(function(n) {{
+    var color = typeColors[n.type] || '#888';
+    if (n.type === 'drug' && n.category) color = drugColors[n.category] || color;
+    var gn = {{
+      id: n.id, label: n.label, type: n.type,
+      x: W/2 + (Math.random()-0.5)*W*0.6,
+      y: H/2 + (Math.random()-0.5)*H*0.6,
+      vx: 0, vy: 0,
+      r: typeSizes[n.type] || 8,
+      color: color,
+      category: n.category || '',
+      uniprot: n.uniprot || '',
+      plddt: n.plddt || '',
+      pocket: n.pocket || '',
+      safety_score: n.safety_score || '',
+      visible: true, highlight: false
+    }};
+    graphNodes.push(gn);
+    nodeMap[n.id] = gn;
+  }});
+
+  rawEdges.forEach(function(e) {{
+    var src = nodeMap[e.source], tgt = nodeMap[e.target];
+    if (src && tgt) {{
+      graphEdges.push({{
+        source: src, target: tgt,
+        type: e.type,
+        color: edgeColors[e.type] || '#444'
+      }});
     }}
-}});
+  }});
 
-function filterByDisease() {{
-    var disease = document.getElementById("diseaseFilter").value;
-    if (disease === "all") {{
-        nodesData.clear();
-        nodesData.add(allNodes.map(n => ({{...n}})));
-        edgesData.clear();
-        edgesData.add(allEdges.map(e => ({{...e}})));
-        return;
+  applyFilter();
+}}
+
+function applyFilter() {{
+  if (filterDiseaseName === 'all' && !searchQuery) {{
+    graphNodes.forEach(function(n) {{ n.visible = true; n.highlight = false; }});
+    return;
+  }}
+
+  if (searchQuery) {{
+    graphNodes.forEach(function(n) {{
+      n.visible = true;
+      n.highlight = n.label.toLowerCase().includes(searchQuery);
+    }});
+    return;
+  }}
+
+  var diseaseId = 'disease_' + filterDiseaseName;
+  var visible = new Set();
+  visible.add(diseaseId);
+
+  graphEdges.forEach(function(e) {{
+    if (e.source.id === diseaseId || e.target.id === diseaseId) {{
+      visible.add(e.source.id);
+      visible.add(e.target.id);
+    }}
+  }});
+  graphEdges.forEach(function(e) {{
+    if (visible.has(e.source.id) && e.type === 'targets') {{
+      visible.add(e.target.id);
+    }}
+  }});
+
+  graphNodes.forEach(function(n) {{
+    n.visible = visible.has(n.id);
+    n.highlight = false;
+  }});
+}}
+
+function simulate() {{
+  for (var iter = 0; iter < 2; iter++) {{
+    // repulsion
+    for (var i = 0; i < graphNodes.length; i++) {{
+      if (!graphNodes[i].visible) continue;
+      for (var j = i+1; j < graphNodes.length; j++) {{
+        if (!graphNodes[j].visible) continue;
+        var dx = graphNodes[j].x - graphNodes[i].x;
+        var dy = graphNodes[j].y - graphNodes[i].y;
+        var d = Math.sqrt(dx*dx + dy*dy) || 1;
+        var f = 800 / (d * d);
+        graphNodes[i].vx -= dx/d * f;
+        graphNodes[i].vy -= dy/d * f;
+        graphNodes[j].vx += dx/d * f;
+        graphNodes[j].vy += dy/d * f;
+      }}
+    }}
+    // attraction (edges)
+    graphEdges.forEach(function(e) {{
+      if (!e.source.visible || !e.target.visible) return;
+      var dx = e.target.x - e.source.x;
+      var dy = e.target.y - e.source.y;
+      var d = Math.sqrt(dx*dx + dy*dy) || 1;
+      var f = (d - 100) * 0.005;
+      e.source.vx += dx/d * f;
+      e.source.vy += dy/d * f;
+      e.target.vx -= dx/d * f;
+      e.target.vy -= dy/d * f;
+    }});
+    // center gravity
+    graphNodes.forEach(function(n) {{
+      if (!n.visible) return;
+      n.vx += (W/2 - n.x) * 0.001;
+      n.vy += (H/2 - n.y) * 0.001;
+      n.vx *= 0.9; n.vy *= 0.9;
+      if (n !== dragging) {{
+        n.x += n.vx;
+        n.y += n.vy;
+      }}
+    }});
+  }}
+  draw();
+  requestAnimationFrame(simulate);
+}}
+
+function draw() {{
+  ctx.clearRect(0,0,W,H);
+  ctx.save();
+  ctx.translate(panX, panY);
+  ctx.scale(zoom, zoom);
+
+  // edges
+  graphEdges.forEach(function(e) {{
+    if (!e.source.visible || !e.target.visible) return;
+    ctx.beginPath();
+    ctx.moveTo(e.source.x, e.source.y);
+    ctx.lineTo(e.target.x, e.target.y);
+    ctx.strokeStyle = e.color;
+    ctx.globalAlpha = 0.4;
+    ctx.lineWidth = e.type === 'treats' ? 2 : 1;
+    if (e.type === 'predicted_for') ctx.setLineDash([4,4]); else ctx.setLineDash([]);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    ctx.setLineDash([]);
+  }});
+
+  // nodes
+  graphNodes.forEach(function(n) {{
+    if (!n.visible) return;
+    var alpha = (searchQuery && !n.highlight) ? 0.15 : 1;
+    ctx.globalAlpha = alpha;
+
+    ctx.beginPath();
+    if (n.type === 'disease') {{
+      // diamond
+      ctx.save();
+      ctx.translate(n.x, n.y);
+      ctx.rotate(Math.PI/4);
+      ctx.fillStyle = n.color;
+      ctx.fillRect(-n.r/1.4, -n.r/1.4, n.r*1.4, n.r*1.4);
+      ctx.restore();
+    }} else if (n.type === 'target') {{
+      // triangle
+      ctx.beginPath();
+      ctx.moveTo(n.x, n.y - n.r);
+      ctx.lineTo(n.x - n.r, n.y + n.r);
+      ctx.lineTo(n.x + n.r, n.y + n.r);
+      ctx.closePath();
+      ctx.fillStyle = n.color;
+      ctx.fill();
+    }} else {{
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.fillStyle = n.color;
+      ctx.fill();
     }}
 
-    var diseaseId = "disease_" + disease;
-    var visibleNodes = new Set([diseaseId]);
-    var visibleEdges = [];
+    // selected ring
+    if (n === selectedNode) {{
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r + 4, 0, Math.PI*2);
+      ctx.strokeStyle = '#f1c40f';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }}
 
-    allEdges.forEach(function(e) {{
-        if (e.to === diseaseId || e.from === diseaseId) {{
-            visibleNodes.add(e.from);
-            visibleNodes.add(e.to);
-            visibleEdges.push(e);
-        }}
-    }});
+    // label
+    if (showLabels || n.type === 'disease' || n === selectedNode) {{
+      ctx.fillStyle = '#ccc';
+      ctx.font = (n.type === 'disease' ? 'bold 14px' : '10px') + ' Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(n.label, n.x, n.y + n.r + 14);
+    }}
+    ctx.globalAlpha = 1;
+  }});
+  ctx.restore();
+}}
 
-    // 2차 연결 (drug → target)
-    allEdges.forEach(function(e) {{
-        if (visibleNodes.has(e.from) && e.type === "targets") {{
-            visibleNodes.add(e.to);
-            visibleEdges.push(e);
-        }}
-    }});
+function getNodeAt(mx, my) {{
+  var x = (mx - panX) / zoom, y = (my - panY) / zoom;
+  for (var i = graphNodes.length-1; i >= 0; i--) {{
+    var n = graphNodes[i];
+    if (!n.visible) continue;
+    var d = Math.sqrt((x-n.x)*(x-n.x) + (y-n.y)*(y-n.y));
+    if (d < n.r + 5) return n;
+  }}
+  return null;
+}}
 
-    var filteredNodes = allNodes.filter(n => visibleNodes.has(n.id));
-    nodesData.clear();
-    nodesData.add(filteredNodes);
-    edgesData.clear();
-    edgesData.add(visibleEdges);
-    network.fit();
+function onDown(e) {{
+  var n = getNodeAt(e.offsetX, e.offsetY);
+  if (n) {{
+    dragging = n;
+    dragOff.x = (e.offsetX - panX)/zoom - n.x;
+    dragOff.y = (e.offsetY - panY)/zoom - n.y;
+    selectedNode = n;
+    showDetail(n);
+  }} else {{
+    lastMouse = {{x: e.offsetX, y: e.offsetY}};
+    selectedNode = null;
+    document.getElementById('detail').style.display = 'none';
+  }}
+}}
+
+function onMove(e) {{
+  if (dragging) {{
+    dragging.x = (e.offsetX - panX)/zoom - dragOff.x;
+    dragging.y = (e.offsetY - panY)/zoom - dragOff.y;
+    dragging.vx = 0; dragging.vy = 0;
+  }} else if (lastMouse) {{
+    panX += e.offsetX - lastMouse.x;
+    panY += e.offsetY - lastMouse.y;
+    lastMouse = {{x: e.offsetX, y: e.offsetY}};
+  }}
+}}
+
+function onUp() {{ dragging = null; lastMouse = null; }}
+
+function onWheel(e) {{
+  e.preventDefault();
+  var factor = e.deltaY > 0 ? 0.9 : 1.1;
+  zoom *= factor;
+  zoom = Math.max(0.2, Math.min(5, zoom));
+}}
+
+function onDblClick(e) {{
+  var n = getNodeAt(e.offsetX, e.offsetY);
+  if (n && n.type === 'disease') {{
+    document.getElementById('diseaseFilter').value = n.label;
+    filterDisease();
+  }}
+}}
+
+function showDetail(n) {{
+  var d = document.getElementById('detail');
+  d.style.display = 'block';
+  document.getElementById('detailTitle').textContent = n.label;
+  var html = '<p><b>Type:</b> ' + n.type + '</p>';
+  if (n.category) html += '<p><b>Category:</b> ' + n.category + '</p>';
+  if (n.safety_score) html += '<p><b>Safety:</b> ' + n.safety_score + '</p>';
+  if (n.uniprot) html += '<p><b>UniProt:</b> ' + n.uniprot + '</p>';
+  if (n.plddt) html += '<p><b>pLDDT:</b> ' + n.plddt + '</p>';
+  if (n.pocket) html += '<p><b>Pocket:</b> ' + n.pocket + ' res</p>';
+  // connections
+  var conns = graphEdges.filter(function(e) {{ return e.source === n || e.target === n; }});
+  html += '<p><b>Connections:</b> ' + conns.length + '</p>';
+  document.getElementById('detailContent').innerHTML = html;
+}}
+
+function filterDisease() {{
+  filterDiseaseName = document.getElementById('diseaseFilter').value;
+  applyFilter();
 }}
 
 function searchNode() {{
-    var query = document.getElementById("searchInput").value.toLowerCase();
-    if (!query) {{
-        allNodes.forEach(function(n) {{
-            nodesData.update({{id: n.id, opacity: 1.0}});
-        }});
-        return;
-    }}
-    allNodes.forEach(function(n) {{
-        var match = n.label.toLowerCase().includes(query);
-        nodesData.update({{id: n.id, opacity: match ? 1.0 : 0.15}});
-    }});
+  searchQuery = document.getElementById('search').value.toLowerCase();
+  applyFilter();
 }}
 
 function resetView() {{
-    document.getElementById("diseaseFilter").value = "all";
-    document.getElementById("searchInput").value = "";
-    nodesData.clear();
-    nodesData.add(allNodes.map(n => ({{...n}})));
-    edgesData.clear();
-    edgesData.add(allEdges.map(e => ({{...e}})));
-    network.fit();
+  filterDiseaseName = 'all';
+  searchQuery = '';
+  document.getElementById('diseaseFilter').value = 'all';
+  document.getElementById('search').value = '';
+  panX = 0; panY = 0; zoom = 1;
+  applyFilter();
 }}
 
-function togglePhysics() {{
-    physicsEnabled = !physicsEnabled;
-    network.setOptions({{ physics: {{ enabled: physicsEnabled }} }});
-}}
+function toggleLabels() {{ showLabels = !showLabels; }}
+
+window.onload = init;
 </script>
 </body>
 </html>"""

@@ -95,6 +95,27 @@
 
 ---
 
+## 현재 진행 상태 (2026-04-22)
+
+- **완료 Step**: 1, 2, 3, 3.5, 4, 4.5(옵션), 5
+- **다음 Step**: 6 (외부 검증)
+
+### 핵심 성과
+
+- **최종 앙상블**: GraphSAGE FSimp(w=0.8) + CatBoost FSimp(w=0.2) = **0.6010** (Drug Split Spearman)
+- **핵심 발견**: Feature Selection (5657→1000) 이 Graph 모델에 가장 효과적 (+29.9%)
+- **앙상블 구성**: GNN + Gradient Boosting 조합, 예측 상관 0.67 (충분한 diversity)
+- **Overfit 현황**: 69% (FS 로 미해결, Hyperparameter tuning 별도 필요)
+
+### 주요 산출물
+
+- 대시보드: `dashboard/app.py` (Streamlit, 5/7 탭 구현)
+- 실험 보고서: `COLON_STEP4_5_FS_EXPERIMENT_20260422.md`
+- 앙상블 결과: `results/ensemble_20260422/ensemble_results.json`
+- 프로토콜: `20260420_colon_protocol.md` (v1.4)
+
+---
+
 ## 코딩·운영 선호 (에이전트용)
 
 - Python **3.10**, conda 환경 **`drug4`**

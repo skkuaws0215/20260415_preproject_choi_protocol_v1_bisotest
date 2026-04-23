@@ -4,7 +4,7 @@
 - **옵션:** B (중간 확장)
 - **작업 시작일:** 2026-04-20
 - **최종 업데이트:** 2026-04-22
-- **문서 버전:** v1.3
+- **문서 버전:** v1.4
 
 ## 경로 (수정 반영)
 
@@ -103,11 +103,48 @@
 - **Step 4: ✅ ML/DL/Graph 전체 완료 (Drug Split + Scaffold Split, 2026-04-22)**
 - **Step 4.5 (Feature Selection, 옵션): ✅ 완료 (FSimp Top 1000 결과 반영)**
 - **Step 5: ✅ 앙상블 완료 (2026-04-22)**
-  - Best: Tier1_2B_fsimp = **0.6010** (ML + DL + Graph cross-category weighted average)
-  - 단일 Best: GraphSAGE FSimp 2B = 0.5869
-  - 앙상블 Gain: +0.0096 (단일 대비), +0.1129 (baseline 대비 +23.1%)
-  - 결과: `results/ensemble_20260422/ensemble_results.json`
-  - 대시보드: Tab 5 참조
+  
+### Step 5 앙상블 상세
+
+#### 최종 선정: Tier1_2B_fsimp (GraphSAGE + CatBoost Weighted Average)
+
+| 항목 | 값 |
+|------|-----|
+| **구성** | GraphSAGE FSimp 2B (w=0.8) + CatBoost FSimp 2B (w=0.2) |
+| **Spearman** | **0.6010** |
+| **Pearson** | 0.6417 |
+| **Kendall** | 0.4268 |
+| **RMSE** | 2.0890 |
+| **MAE** | 1.6021 |
+| **R²** | 0.4111 |
+
+#### 선정 근거
+
+1. **모든 지표에서 단일 모델 대비 일관된 개선** (Spearman/Pearson/RMSE/MAE/R² 5개 지표 전부)
+2. **과반수 샘플(53.8%)에서 단일 GraphSAGE 보다 정확**
+3. **모델 다양성 확보**: GraphSAGE ↔ CatBoost 예측 상관 0.67 (33% 독립적)
+   - GNN (그래프 구조 학습) + Gradient Boosting (테이블 기반 학습) = 서로 다르게 학습, 다르게 틀림
+4. DL (ResidualMLP) 은 가중치 0.0 으로 최적화에서 자동 탈락 — 기여 없음
+
+#### 성능 진행
+
+```
+Baseline:  CatBoost 2B         0.4881
+  ↓ FS (+20.2%)
+FSimp:     GraphSAGE FSimp 2B  0.5914
+  ↓ 앙상블 (+1.6%)
+Ensemble:  Graph0.8+ML0.2      0.6010  (총 +23.1%)
+```
+
+#### 다중 지표 비교
+
+| 지표 | GraphSAGE 단독 | 앙상블 | Δ |
+|------|---------------|--------|---|
+| Spearman | 0.5914 | **0.6010** | +0.0096 |
+| RMSE | 2.1034 | **2.0890** | -0.0144 |
+| MAE | 1.6211 | **1.6021** | -0.0190 |
+| R² | 0.4030 | **0.4111** | +0.0081 |
+
 - **Step 6+ (외부 검증): 대기**
 
 ## Step 4.5 Feature Selection (옵션)
@@ -195,11 +232,17 @@ Step 4 완료 후 다음 중 하나 이상 해당 시 실행:
 
 ---
 
-*문서명: `20260420_colon_protocol.md` (v1.3, 최종 업데이트 2026-04-22).*
+*문서명: `20260420_colon_protocol.md` (v1.4, 최종 업데이트 2026-04-22).*
 
 ---
 
 ## 📝 변경 이력
+
+- **v1.4 (2026-04-22)**:
+  - Step 5 앙상블 상세 분석 반영
+  - 최종 선정 모델: GraphSAGE(0.8) + CatBoost(0.2) = 0.6010
+  - 다중 지표 (Spearman/Pearson/Kendall/RMSE/MAE/R²) 비교 추가
+  - 선정 근거 4가지 명시
 
 - **v1.3 (2026-04-22)**:
   - Step 5 앙상블 완료 반영 (Best 0.6010)

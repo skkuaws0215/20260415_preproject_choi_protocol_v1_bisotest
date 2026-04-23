@@ -9,33 +9,35 @@ Drug repurposing pipeline for Colorectal Cancer (COAD+READ).
 ## Start Date
 2026-04-20
 
-## Pipeline Stages
+## Pipeline Status (2026-04-22)
 
-### Completed
-- [x] Step 1: Raw data download (~19GB)
-- [x] Step 2-0: Environment setup + script copy
-- [x] Step 2-1: Raw → Parquet format conversion
-- [x] Step 2-2: ChEMBL SQLite extraction
-- [x] Step 2-3: DepMap wide → long conversion
-- [x] Step 2-4: Colon cell line filter + labels generation (new)
-- [x] Step 2-5: Drug catalog + Bridge
-- [x] Step 2-6: LINCS gctx → parquet (new, GSE92742)
-- [x] Step 2-7: LINCS drug-level aggregation
-- [x] Step 2-8: Subtype tagging (new)
-- [x] Step 2-9: drug_target_mapping reuse (from Lung)
-- [x] Step 2-10: Integrated QC (ALL PASSED)
+```
+✅ Step 1-2: 전처리 + QC (35 cells × 295 drugs = 9,692 pairs)
+✅ Step 3:   Feature Engineering (Nextflow, 17,925 features)
+✅ Step 3.5: Feature Selection (19,998 → 5,662 features)
+✅ Step 4:   모델 학습 완료 (ML 6 + DL 7 + Graph 2 = 15 models × 3 phases)
+✅ Step 4.5: FS 실험 [옵션] (Top 1000, Graph +29.9% 개선)
+✅ Step 5:   앙상블 (Best 0.6010, GraphSAGE×0.8 + CatBoost×0.2)
+⬜ Step 6:   외부 검증
+⬜ Step 7:   ADMET Gate
+⬜ Step 8:   Neo4j
+```
 
-### In Progress
-- (Step 2 complete, Step 3 not yet started)
+## Key Results
 
-### Upcoming
-- [ ] Step 3: Feature Engineering (Nextflow + AWS Batch)
-- [ ] Step 3.5: Feature Selection
-- [ ] Step 4: Model training (15 models × 3 inputs × 3 evaluations)
-- [ ] Step 5: Ensemble
-- [ ] Step 6: Multi-objective ranking + External validation
-- [ ] Step 7: ADMET Gate
-- [ ] Step 8: Neo4j loading
+| Metric | Value |
+|--------|-------|
+| Best Single Model | GraphSAGE FSimp 2B = 0.5914 |
+| Best Ensemble | GraphSAGE(0.8) + CatBoost(0.2) = **0.6010** |
+| Baseline → Ensemble | +23.1% improvement |
+| Scaffold Split Best | GAT FSimp 2C = 0.4459 |
+
+## Dashboard
+
+```bash
+streamlit run dashboard/app.py
+# Tab 1: Overview | Tab 2: Data/QC | Tab 3: FE | Tab 4: Modeling | Tab 5: Ensemble
+```
 
 ## Directory Structure    20260420_new_pre_project_biso_Colon/
 ├── curated_data/           # Raw data (read-only)

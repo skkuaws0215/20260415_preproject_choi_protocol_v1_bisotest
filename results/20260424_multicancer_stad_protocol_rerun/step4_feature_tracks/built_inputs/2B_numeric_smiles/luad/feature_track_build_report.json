@@ -1,0 +1,29 @@
+{
+  "track": "2B_numeric_smiles",
+  "cancer": "luad",
+  "base_input": "results/20260424_multicancer_stad_protocol_rerun/step3_6_scaffold_metadata/luad/features_slim_with_scaffold.parquet",
+  "source": "s3://say2-4team/20260408_new_pre_project_biso/20260416_new_pre_project_biso_Lung/fe_output/20260416_lung_fe_v1/pair_features/drug_chem_features.parquet",
+  "output_path": "results/20260424_multicancer_stad_protocol_rerun/step4_feature_tracks/built_inputs/2B_numeric_smiles/luad/features_2b_numeric_smiles.parquet",
+  "added_feature_prefix_policy": "original prefix preserved",
+  "incremental_only": true,
+  "raw_smiles_as_feature": false,
+  "qc": {
+    "row_count": 125427,
+    "row_count_preserved": true,
+    "duplicate_key_count": 0,
+    "target_missing_rate": 0.0,
+    "added_feature_count": 2058,
+    "added_feature_missing_rate_mean": 0.0007143760180529432,
+    "added_feature_missing_rate_max": 0.16335398279477306,
+    "inf_count": 0,
+    "nan_count": 184401,
+    "non_numeric_added_feature_count": 0,
+    "duplicate_column_count": 0,
+    "skipped_duplicate_feature_count": 0,
+    "join_coverage": 1.0,
+    "scaffold_id_missing_rate": 0.0,
+    "unique_scaffold_count": 220,
+    "leakage_columns_in_model_feature_matrix": [],
+    "numeric_only_model_features": true
+  }
+}

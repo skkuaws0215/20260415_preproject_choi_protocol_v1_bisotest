@@ -1,0 +1,14 @@
+section,key,value
+status,step5_readiness,ready_with_caveat
+status,ml_status,"near-full (320/360, ElasticNet 2B/2C optional baseline 40 missing)"
+status,dl_status,full (420/420)
+status,graph_status,partial-full (95/120)
+caveat,graph_luad,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+integrity,strict_leakage_violation_count,0
+integrity,join_key_normalized,True
+integrity,join_key_columns,sample_id|canonical_drug_id
+integrity,join_key_dtype,string
+method,primary_ensemble_method,rank_mean
+method,secondary_ensemble_method,robust_weighted
+method,backup_ensemble_method,simple_mean
+missing_aware,luad_graph_missing_rows,10

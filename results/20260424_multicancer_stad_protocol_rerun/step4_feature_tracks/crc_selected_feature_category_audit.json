@@ -1,0 +1,44 @@
+{
+  "cancer": "crc",
+  "selected_feature_count": 3127,
+  "category_counts": {
+    "expression": 3126,
+    "smiles_derived": 1
+  },
+  "category_ratio": {
+    "expression": 0.9996802046690119,
+    "smiles_derived": 0.0003197953309881676
+  },
+  "top_30_examples": [
+    "sample__crispr__A1CF",
+    "sample__crispr__AAR2",
+    "sample__crispr__AARS2",
+    "sample__crispr__AARSD1",
+    "sample__crispr__AASDHPPT",
+    "sample__crispr__AATF",
+    "sample__crispr__ABCB7",
+    "sample__crispr__ABCD1",
+    "sample__crispr__ABHD10",
+    "sample__crispr__ABHD11",
+    "sample__crispr__ABHD13",
+    "sample__crispr__ABHD15",
+    "sample__crispr__ABHD17A",
+    "sample__crispr__ABHD5",
+    "sample__crispr__ABI3BP",
+    "sample__crispr__ABRAXAS1",
+    "sample__crispr__ACACA",
+    "sample__crispr__ACAD9",
+    "sample__crispr__ACAP2",
+    "sample__crispr__ACAP3",
+    "sample__crispr__ACAT1",
+    "sample__crispr__ACAT2",
+    "sample__crispr__ACBD4",
+    "sample__crispr__ACD",
+    "sample__crispr__ACER1",
+    "sample__crispr__ACIN1",
+    "sample__crispr__ACKR4",
+    "sample__crispr__ACLY",
+    "sample__crispr__ACO2",
+    "sample__crispr__ACOT12"
+  ]
+}

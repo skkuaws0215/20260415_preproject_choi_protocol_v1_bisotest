@@ -1,0 +1,57 @@
+version: 2026-04-24-step4-track-r1
+runline: 20260424_multicancer_stad_protocol_rerun
+target: sensitivity_score
+cancers:
+- stad
+- brca
+- luad
+- crc
+common_input:
+  base_features_with_scaffold: results/20260424_multicancer_stad_protocol_rerun/step3_6_scaffold_metadata/{cancer}/features_slim_with_scaffold.parquet
+  split_metadata_columns:
+  - sample_id
+  - canonical_drug_id
+  - canonical_smiles
+  - scaffold_smiles
+  - scaffold_id
+model_feature_exclude_columns:
+- sample_id
+- canonical_drug_id
+- canonical_smiles
+- scaffold_smiles
+- scaffold_id
+- sensitivity_score
+- label_binary
+- label_main
+- label_aux
+- label_main_type
+- label_aux_type
+- label_regression
+tracks:
+  2A_numeric:
+    description: FS-A selected numeric features only
+    input: step3_6_scaffold_metadata/{cancer}/features_slim_with_scaffold.parquet
+    include_rule: selected_features.csv numeric set from FS-A
+    exclude_rule: all split metadata + all label columns + target
+    scaffold_usage: split_metadata_only
+  2B_numeric_smiles:
+    description: 2A + SMILES-derived numeric chemical features
+    input: 2A + pair_features/drug_chem_features.parquet (join on canonical_drug_id)
+    include_rule: RDKit descriptor + Morgan fingerprint + drug_chem numeric features
+      only
+    exclude_rule: raw canonical_smiles/scaffold strings excluded
+    quality_qc:
+    - smiles_quality_flag
+    - morgan_bit_density_qc
+  2C_numeric_smiles_context:
+    description: 2B + biological/context features
+    input:
+    - pair_target_features.parquet (join on sample_id+canonical_drug_id)
+    - pair_lincs_features.parquet (join on sample_id+canonical_drug_id)
+    - sample_pathway_features.parquet (join on sample_id)
+    include_rule: target/lincs/pathway/context numeric features only; deduplicate
+      against 2A/2B
+    exclude_rule: no duplicate columns and no split metadata/label leakage columns
+current_feasibility_snapshot:
+  note: Current FS-A already contains substantial drug_chem/target/lincs features;
+    overlap must be checked before expanding 2B/2C.

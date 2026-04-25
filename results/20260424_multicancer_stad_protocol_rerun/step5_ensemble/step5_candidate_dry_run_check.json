@@ -1,0 +1,4807 @@
+{
+  "status": "dry_run_ok",
+  "candidate_review_passed": true,
+  "checks": {
+    "has_ml_candidate": true,
+    "has_dl_candidate": true,
+    "has_graph_candidate": true,
+    "has_primary_tier": true,
+    "has_secondary_tier": true,
+    "fixed_model_slot_forbidden": true,
+    "all_model_robust_ranking": true,
+    "graph_luad_caveat_present": true,
+    "blocked_issue_zero": true
+  },
+  "selected_candidates": [
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "candidate_tier": "primary",
+      "adjusted_score": 0.5232131095571009
+    },
+    {
+      "modality": "DL",
+      "model": "FTTransformer",
+      "candidate_tier": "secondary",
+      "adjusted_score": 0.513500555481008
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "candidate_tier": "primary",
+      "adjusted_score": 0.4239427574069187
+    },
+    {
+      "modality": "Graph",
+      "model": "GAT",
+      "candidate_tier": "secondary",
+      "adjusted_score": 0.3485114328046619
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "candidate_tier": "primary",
+      "adjusted_score": 0.5530381943191341
+    },
+    {
+      "modality": "ML",
+      "model": "CatBoost",
+      "candidate_tier": "secondary",
+      "adjusted_score": 0.5504326070074642
+    }
+  ],
+  "blocked_issues": [],
+  "mandatory_note": "Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.",
+  "join_key_normalization_applied": true,
+  "join_key_columns": [
+    "sample_id",
+    "canonical_drug_id"
+  ],
+  "join_key_dtype": "string",
+  "join_key_missing_count_before_join": 0,
+  "join_key_duplicate_count_before_join": 0,
+  "join_key_diagnostics": [
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/brca/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/brca/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/brca/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/brca/2A_numeric/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/brca/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/brca/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/brca/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/brca/2A_numeric/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/brca/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/brca/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/brca/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/brca/2A_numeric/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/brca/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/brca/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/brca/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/brca/2A_numeric/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/brca/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/brca/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/brca/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/brca/2A_numeric/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/brca/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/brca/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/brca/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/brca/2B_numeric_smiles/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/brca/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/brca/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/brca/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/brca/2B_numeric_smiles/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/brca/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/brca/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/brca/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/brca/2B_numeric_smiles/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/brca/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/brca/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/brca/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/brca/2B_numeric_smiles/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/brca/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/brca/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/brca/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/brca/2B_numeric_smiles/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/brca/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/brca/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/brca/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/brca/2C_numeric_smiles_context/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/brca/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/brca/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/brca/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/brca/2C_numeric_smiles_context/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/brca/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/brca/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/brca/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/brca/2C_numeric_smiles_context/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/brca/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/brca/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/brca/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/brca/2C_numeric_smiles_context/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/brca/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/brca/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/brca/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/brca/2C_numeric_smiles_context/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/crc/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/crc/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/crc/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/crc/2A_numeric/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/crc/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/crc/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/crc/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/crc/2A_numeric/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/crc/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/crc/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/crc/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/crc/2A_numeric/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/crc/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/crc/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/crc/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/crc/2A_numeric/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/crc/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/crc/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/crc/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/crc/2A_numeric/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/crc/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/crc/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/crc/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/crc/2B_numeric_smiles/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/crc/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/crc/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/crc/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/crc/2B_numeric_smiles/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/crc/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/crc/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/crc/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/crc/2B_numeric_smiles/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/crc/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/crc/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/crc/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/crc/2B_numeric_smiles/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/crc/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/crc/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/crc/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/crc/2B_numeric_smiles/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/crc/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/crc/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/crc/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/crc/2C_numeric_smiles_context/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/crc/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/crc/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/crc/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/crc/2C_numeric_smiles_context/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/crc/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/crc/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/crc/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/crc/2C_numeric_smiles_context/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/crc/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/crc/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/crc/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/crc/2C_numeric_smiles_context/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/crc/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/crc/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/crc/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/crc/2C_numeric_smiles_context/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/luad/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/luad/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/luad/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/luad/2A_numeric/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/luad/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/luad/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/luad/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/luad/2A_numeric/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/luad/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/luad/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/luad/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/luad/2A_numeric/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/luad/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/luad/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/luad/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/luad/2A_numeric/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/luad/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/luad/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/luad/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/luad/2A_numeric/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/luad/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/luad/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/luad/2B_numeric_smiles/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/luad/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/luad/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/luad/2B_numeric_smiles/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/luad/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/luad/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/luad/2B_numeric_smiles/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/luad/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/luad/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/luad/2B_numeric_smiles/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/luad/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/luad/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/luad/2B_numeric_smiles/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/luad/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/luad/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/luad/2C_numeric_smiles_context/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/luad/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/luad/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/luad/2C_numeric_smiles_context/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/luad/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/luad/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/luad/2C_numeric_smiles_context/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/luad/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/luad/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/luad/2C_numeric_smiles_context/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/luad/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/luad/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/luad/2C_numeric_smiles_context/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/stad/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/stad/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/stad/2A_numeric/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/stad/2A_numeric/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/stad/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/stad/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/stad/2A_numeric/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/stad/2A_numeric/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/stad/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/stad/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/stad/2A_numeric/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/stad/2A_numeric/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/stad/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/stad/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/stad/2A_numeric/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/stad/2A_numeric/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/stad/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/stad/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/stad/2A_numeric/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/stad/2A_numeric/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/stad/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/stad/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/stad/2B_numeric_smiles/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/stad/2B_numeric_smiles/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/stad/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/stad/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/stad/2B_numeric_smiles/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/stad/2B_numeric_smiles/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/stad/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/stad/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/stad/2B_numeric_smiles/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/stad/2B_numeric_smiles/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/stad/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/stad/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/stad/2B_numeric_smiles/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/stad/2B_numeric_smiles/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/stad/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/stad/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/stad/2B_numeric_smiles/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/stad/2B_numeric_smiles/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "ML/XGBoost/stad/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "DL/ResidualMLP/stad/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "Graph/GraphSAGE/stad/2C_numeric_smiles_context/cv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "context": "ensemble_join_base/stad/2C_numeric_smiles_context/cv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "ML/XGBoost/stad/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "DL/ResidualMLP/stad/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "Graph/GraphSAGE/stad/2C_numeric_smiles_context/groupcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "context": "ensemble_join_base/stad/2C_numeric_smiles_context/groupcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "ML/XGBoost/stad/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "DL/ResidualMLP/stad/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "Graph/GraphSAGE/stad/2C_numeric_smiles_context/holdout/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "context": "ensemble_join_base/stad/2C_numeric_smiles_context/holdout",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "ML/XGBoost/stad/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "DL/ResidualMLP/stad/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "Graph/GraphSAGE/stad/2C_numeric_smiles_context/scaffoldcv/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "context": "ensemble_join_base/stad/2C_numeric_smiles_context/scaffoldcv",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "ML/XGBoost/stad/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "DL/ResidualMLP/stad/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "Graph/GraphSAGE/stad/2C_numeric_smiles_context/unseen_drug/prediction_loading",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    },
+    {
+      "modality": "ensemble_base",
+      "model": "n/a",
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "context": "ensemble_join_base/stad/2C_numeric_smiles_context/unseen_drug",
+      "join_key_missing_count_before_join": 0,
+      "join_key_missing_count_by_column": {
+        "sample_id": 0,
+        "canonical_drug_id": 0
+      },
+      "join_key_duplicate_count_before_join": 0,
+      "join_key_dtypes": {
+        "sample_id": "object",
+        "canonical_drug_id": "object"
+      }
+    }
+  ],
+  "join_count_diagnostics": [
+    {
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 7730,
+      "inner_join_row_count": 7730,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 7730,
+      "inner_join_row_count": 7730,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1546,
+      "inner_join_row_count": 1546,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 7730,
+      "inner_join_row_count": 7730,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1459,
+      "inner_join_row_count": 1459,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 7730,
+      "inner_join_row_count": 7730,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 7730,
+      "inner_join_row_count": 7730,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1546,
+      "inner_join_row_count": 1546,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 7730,
+      "inner_join_row_count": 7730,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1459,
+      "inner_join_row_count": 1459,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 7730,
+      "inner_join_row_count": 7730,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 7730,
+      "inner_join_row_count": 7730,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1546,
+      "inner_join_row_count": 1546,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 7730,
+      "inner_join_row_count": 7730,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "brca",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1459,
+      "inner_join_row_count": 1459,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 9692,
+      "inner_join_row_count": 9692,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 9692,
+      "inner_join_row_count": 9692,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1939,
+      "inner_join_row_count": 1939,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 9692,
+      "inner_join_row_count": 9692,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1861,
+      "inner_join_row_count": 1861,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 9692,
+      "inner_join_row_count": 9692,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 9692,
+      "inner_join_row_count": 9692,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1939,
+      "inner_join_row_count": 1939,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 9692,
+      "inner_join_row_count": 9692,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1861,
+      "inner_join_row_count": 1861,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 9692,
+      "inner_join_row_count": 9692,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 9692,
+      "inner_join_row_count": 9692,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1939,
+      "inner_join_row_count": 1939,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 9692,
+      "inner_join_row_count": 9692,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "crc",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1861,
+      "inner_join_row_count": 1861,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 125427,
+      "inner_join_row_count": 125427,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 125427,
+      "inner_join_row_count": 125427,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 25086,
+      "inner_join_row_count": 25086,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 125427,
+      "inner_join_row_count": 125427,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 24092,
+      "inner_join_row_count": 24092,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 125427,
+      "inner_join_row_count": 125427,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 125427,
+      "inner_join_row_count": 125427,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 25086,
+      "inner_join_row_count": 25086,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 125427,
+      "inner_join_row_count": 125427,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 24092,
+      "inner_join_row_count": 24092,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 125427,
+      "inner_join_row_count": 125427,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 125427,
+      "inner_join_row_count": 125427,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 25086,
+      "inner_join_row_count": 25086,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 125427,
+      "inner_join_row_count": 125427,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "luad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|ML",
+      "left_join_row_count": 24092,
+      "inner_join_row_count": 24092,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 5118,
+      "inner_join_row_count": 5118,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 5118,
+      "inner_join_row_count": 5118,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1024,
+      "inner_join_row_count": 1024,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 5118,
+      "inner_join_row_count": 5118,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2A_numeric",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 978,
+      "inner_join_row_count": 978,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 5118,
+      "inner_join_row_count": 5118,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 5118,
+      "inner_join_row_count": 5118,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1024,
+      "inner_join_row_count": 1024,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 5118,
+      "inner_join_row_count": 5118,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2B_numeric_smiles",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 978,
+      "inner_join_row_count": 978,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "cv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 5118,
+      "inner_join_row_count": 5118,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "groupcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 5118,
+      "inner_join_row_count": 5118,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "holdout",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 1024,
+      "inner_join_row_count": 1024,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "scaffoldcv",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 5118,
+      "inner_join_row_count": 5118,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    },
+    {
+      "cancer": "stad",
+      "track": "2C_numeric_smiles_context",
+      "eval_mode": "unseen_drug",
+      "used_modalities": "DL|Graph|ML",
+      "left_join_row_count": 978,
+      "inner_join_row_count": 978,
+      "join_key_dtype_sample_id": "object",
+      "join_key_dtype_canonical_drug_id": "object"
+    }
+  ]
+}

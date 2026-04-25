@@ -1,0 +1,282 @@
+[
+  {
+    "cancer": "stad",
+    "category": "sample_numeric",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "stad",
+    "category": "expression",
+    "count": 3042,
+    "ratio": 0.9996713769306605,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "stad",
+    "category": "pathway",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "stad",
+    "category": "drug_chem",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "stad",
+    "category": "smiles_derived",
+    "count": 1,
+    "ratio": 0.00032862306933946765,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "stad",
+    "category": "target",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "stad",
+    "category": "lincs",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "stad",
+    "category": "context",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "stad",
+    "category": "metadata",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "stad",
+    "category": "unknown",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3043
+  },
+  {
+    "cancer": "brca",
+    "category": "sample_numeric",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "brca",
+    "category": "expression",
+    "count": 3046,
+    "ratio": 0.9996718083360683,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "brca",
+    "category": "pathway",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "brca",
+    "category": "drug_chem",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "brca",
+    "category": "smiles_derived",
+    "count": 1,
+    "ratio": 0.0003281916639317361,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "brca",
+    "category": "target",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "brca",
+    "category": "lincs",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "brca",
+    "category": "context",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "brca",
+    "category": "metadata",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "brca",
+    "category": "unknown",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3047
+  },
+  {
+    "cancer": "luad",
+    "category": "sample_numeric",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "luad",
+    "category": "expression",
+    "count": 2546,
+    "ratio": 0.9996073812328229,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "luad",
+    "category": "pathway",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "luad",
+    "category": "drug_chem",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "luad",
+    "category": "smiles_derived",
+    "count": 1,
+    "ratio": 0.00039261876717707107,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "luad",
+    "category": "target",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "luad",
+    "category": "lincs",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "luad",
+    "category": "context",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "luad",
+    "category": "metadata",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "luad",
+    "category": "unknown",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 2547
+  },
+  {
+    "cancer": "crc",
+    "category": "sample_numeric",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3127
+  },
+  {
+    "cancer": "crc",
+    "category": "expression",
+    "count": 3126,
+    "ratio": 0.9996802046690119,
+    "selected_feature_count": 3127
+  },
+  {
+    "cancer": "crc",
+    "category": "pathway",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3127
+  },
+  {
+    "cancer": "crc",
+    "category": "drug_chem",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3127
+  },
+  {
+    "cancer": "crc",
+    "category": "smiles_derived",
+    "count": 1,
+    "ratio": 0.0003197953309881676,
+    "selected_feature_count": 3127
+  },
+  {
+    "cancer": "crc",
+    "category": "target",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3127
+  },
+  {
+    "cancer": "crc",
+    "category": "lincs",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3127
+  },
+  {
+    "cancer": "crc",
+    "category": "context",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3127
+  },
+  {
+    "cancer": "crc",
+    "category": "metadata",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3127
+  },
+  {
+    "cancer": "crc",
+    "category": "unknown",
+    "count": 0,
+    "ratio": 0.0,
+    "selected_feature_count": 3127
+  }
+]

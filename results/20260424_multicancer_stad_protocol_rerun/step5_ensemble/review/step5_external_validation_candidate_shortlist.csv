@@ -1,0 +1,5 @@
+cancer,recommended_ensemble_method,spearman,rmse,mae,ndcg_at_30,primary_method_global,secondary_method_global,backup_method_global,luad_graph_caveat,ready_for_step6_external_validation,notes
+brca,robust_weighted,0.7871409658384021,1.382272875813566,1.0521642953720267,0.9040230476381738,rank_mean,robust_weighted,simple_mean,,True,Internal shortlist before external validation/ADMET; review caveats first.
+crc,robust_weighted,0.790584139110602,1.4296982716525877,1.0770477264107188,0.8565437493178852,rank_mean,robust_weighted,simple_mean,,True,Internal shortlist before external validation/ADMET; review caveats first.
+luad,simple_mean,0.8251360732968256,1.337167177111309,1.0058754464177142,0.863064181103956,rank_mean,robust_weighted,simple_mean,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,True,Internal shortlist before external validation/ADMET; review caveats first.
+stad,robust_weighted,0.7901643574266042,1.5592360988188976,1.1769086475439492,0.9294141687458508,rank_mean,robust_weighted,simple_mean,,True,Internal shortlist before external validation/ADMET; review caveats first.

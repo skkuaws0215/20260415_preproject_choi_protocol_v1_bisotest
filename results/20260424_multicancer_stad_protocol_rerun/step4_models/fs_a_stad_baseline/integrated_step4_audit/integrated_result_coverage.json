@@ -1,0 +1,39 @@
+{
+  "summary": [
+    {
+      "modality": "ML",
+      "expected": 360,
+      "completed": 320,
+      "missing": 40,
+      "status": "near-full",
+      "note": "missing: ElasticNet 2B/2C optional baseline 40"
+    },
+    {
+      "modality": "DL",
+      "expected": 420,
+      "completed": 420,
+      "missing": 0,
+      "status": "full",
+      "note": "complete 420/420"
+    },
+    {
+      "modality": "Graph",
+      "expected": 120,
+      "completed": 95,
+      "missing": 25,
+      "status": "partial-full",
+      "note": "missing: LUAD 25 due to local computation bottleneck"
+    }
+  ],
+  "ml_status": "near-full",
+  "dl_status": "full",
+  "graph_status": "partial-full",
+  "mandatory_note": "Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.",
+  "counts": {
+    "flattened_rows": 835,
+    "missing_rows": 65,
+    "leakage_warnings": 0,
+    "overfit_warnings": 217,
+    "overfit_severe": 106
+  }
+}

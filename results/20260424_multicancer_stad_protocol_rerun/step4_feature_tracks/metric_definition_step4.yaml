@@ -1,0 +1,41 @@
+version: 2026-04-24-step4-metric-r1
+core:
+- spearman
+- pearson
+- kendall_tau
+- rmse
+- mae
+- r2
+overfit:
+- train_spearman
+- test_spearman
+- spearman_gap
+- train_rmse
+- test_rmse
+- rmse_gap
+- fold_mean
+- fold_std
+- fold_min
+- fold_max
+ranking:
+- precision_at_5
+- precision_at_10
+- precision_at_30
+- ndcg_at_5
+- ndcg_at_10
+- ndcg_at_30
+- hit_rate_at_10
+- hit_rate_at_30
+split_leakage:
+- train_test_drug_overlap_count
+- train_test_drug_overlap_rate
+- train_test_scaffold_overlap_count
+- train_test_scaffold_overlap_rate
+label_drift:
+- train_label_mean
+- test_label_mean
+- train_label_std
+- test_label_std
+- label_mean_diff
+- label_ks_statistic
+- label_ks_pvalue

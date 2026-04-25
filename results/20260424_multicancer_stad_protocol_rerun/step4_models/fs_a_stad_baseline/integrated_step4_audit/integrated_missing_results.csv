@@ -1,0 +1,66 @@
+modality,cancer,track,model,eval_mode,missing_category,severity,recommended_action,missing_reason
+ML,stad,2B_numeric_smiles,ElasticNet,holdout,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,stad,2B_numeric_smiles,ElasticNet,cv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,stad,2B_numeric_smiles,ElasticNet,groupcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,stad,2B_numeric_smiles,ElasticNet,scaffoldcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,stad,2B_numeric_smiles,ElasticNet,unseen_drug,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,stad,2C_numeric_smiles_context,ElasticNet,holdout,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,stad,2C_numeric_smiles_context,ElasticNet,cv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,stad,2C_numeric_smiles_context,ElasticNet,groupcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,stad,2C_numeric_smiles_context,ElasticNet,scaffoldcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,stad,2C_numeric_smiles_context,ElasticNet,unseen_drug,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2B_numeric_smiles,ElasticNet,holdout,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2B_numeric_smiles,ElasticNet,cv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2B_numeric_smiles,ElasticNet,groupcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2B_numeric_smiles,ElasticNet,scaffoldcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2B_numeric_smiles,ElasticNet,unseen_drug,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2C_numeric_smiles_context,ElasticNet,holdout,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2C_numeric_smiles_context,ElasticNet,cv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2C_numeric_smiles_context,ElasticNet,groupcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2C_numeric_smiles_context,ElasticNet,scaffoldcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,brca,2C_numeric_smiles_context,ElasticNet,unseen_drug,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2B_numeric_smiles,ElasticNet,holdout,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2B_numeric_smiles,ElasticNet,cv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2B_numeric_smiles,ElasticNet,groupcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2B_numeric_smiles,ElasticNet,scaffoldcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2B_numeric_smiles,ElasticNet,unseen_drug,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2C_numeric_smiles_context,ElasticNet,holdout,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2C_numeric_smiles_context,ElasticNet,cv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2C_numeric_smiles_context,ElasticNet,groupcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2C_numeric_smiles_context,ElasticNet,scaffoldcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,crc,2C_numeric_smiles_context,ElasticNet,unseen_drug,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2B_numeric_smiles,ElasticNet,holdout,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2B_numeric_smiles,ElasticNet,cv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2B_numeric_smiles,ElasticNet,groupcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2B_numeric_smiles,ElasticNet,scaffoldcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2B_numeric_smiles,ElasticNet,unseen_drug,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2C_numeric_smiles_context,ElasticNet,holdout,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2C_numeric_smiles_context,ElasticNet,cv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2C_numeric_smiles_context,ElasticNet,groupcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2C_numeric_smiles_context,ElasticNet,scaffoldcv,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+ML,luad,2C_numeric_smiles_context,ElasticNet,unseen_drug,optional ElasticNet 2B/2C baseline,optional,exclude_from_final_model_slot_selection,ElasticNet 2B/2C optional baseline missing
+Graph,luad,2A_numeric,GAT,holdout,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2A_numeric,GAT,cv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2A_numeric,GAT,groupcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2A_numeric,GAT,scaffoldcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2A_numeric,GAT,unseen_drug,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GraphSAGE,holdout,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GraphSAGE,cv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GraphSAGE,groupcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GraphSAGE,scaffoldcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GraphSAGE,unseen_drug,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GAT,holdout,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GAT,cv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GAT,groupcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GAT,scaffoldcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2B_numeric_smiles,GAT,unseen_drug,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GraphSAGE,holdout,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GraphSAGE,cv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GraphSAGE,groupcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GraphSAGE,scaffoldcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GraphSAGE,unseen_drug,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GAT,holdout,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GAT,cv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GAT,groupcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GAT,scaffoldcv,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk
+Graph,luad,2C_numeric_smiles_context,GAT,unseen_drug,LUAD graph partial missing,caveat,repair in AWS/high-spec or lighter GAT config,LUAD local computation bottleneck / hang risk

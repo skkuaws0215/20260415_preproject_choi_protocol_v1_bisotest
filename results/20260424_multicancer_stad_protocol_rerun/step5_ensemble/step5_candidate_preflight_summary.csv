@@ -1,0 +1,13 @@
+section,key,value
+coverage,ML,"{""expected"": 360, ""completed"": 320, ""missing"": 40, ""status"": ""near-full""}"
+coverage,DL,"{""expected"": 420, ""completed"": 420, ""missing"": 0, ""status"": ""full""}"
+coverage,Graph,"{""expected"": 120, ""completed"": 95, ""missing"": 25, ""status"": ""partial-full""}"
+readiness,step5_readiness,ready_with_caveat
+preflight,checked_combos,335
+preflight,essential_prediction_ready_count,335
+preflight,essential_prediction_not_ready_count,0
+preflight,blocked_issue_count,0
+graph_luad_partial,luad_missing_rows,25
+output_path_collision,has_collision,False
+mandatory_note,text,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+output_path_collision,policy_note,Dedicated step5_ensemble output path with explicit managed filenames; overwrite is intentional and non-conflicting.

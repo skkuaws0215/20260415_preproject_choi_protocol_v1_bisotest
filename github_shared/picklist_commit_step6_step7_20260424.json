@@ -1,11 +1,15 @@
 {
   "purpose": "Curated, small result artifacts (CSV/JSON/MD) suitable to commit to GitHub without LFS. Full results/ tree is ~2.3 GiB; do not commit everything.",
   "suggested_paths_globs": [
+    "results/20260424_multicancer_stad_protocol_rerun/step4_0_input_qc/**",
+    "results/.../step4_feature_tracks/** (no **/*.parquet under this tree; ~76 MiB)",
+    "results/20260424_multicancer_stad_protocol_rerun/step4_models/fs_a_stad_baseline/integrated_step4_audit/**",
+    "results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/** except results/step5_ensemble_predictions.{csv,parquet}",
     "results/20260424_multicancer_stad_protocol_rerun/step6_external_validation_results/**",
     "results/20260424_multicancer_stad_protocol_rerun/step7_admet_prep/**"
   ],
-  "gitignore_status": "Root .gitignore uses **/results/** plus negations so only step6_external_validation_results and step7_admet_prep are trackable; other results/ paths stay ignored.",
-  "how_to_commit": "git add results/20260424_multicancer_stad_protocol_rerun/step6_external_validation_results/ results/20260424_multicancer_stad_protocol_rerun/step7_admet_prep/ github_shared/",
+  "gitignore_status": "Root .gitignore: **/results/** then re-include 20260424 rerun subtree with negations for small Step4–7 paths. Excluded from git: step5 predictions csv+parquet (~330M+), __pycache__, and all other step4_models (DL/Graph/npy) under fs_a except integrated_step4_audit/.",
+  "how_to_commit": "git add github_shared/ results/20260424_multicancer_stad_protocol_rerun/step4_0_input_qc/ results/20260424_multicancer_stad_protocol_rerun/step4_feature_tracks/ results/20260424_multicancer_stad_protocol_rerun/step4_models/fs_a_stad_baseline/integrated_step4_audit/ results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/ results/20260424_multicancer_stad_protocol_rerun/step6_external_validation_results/ results/20260424_multicancer_stad_protocol_rerun/step7_admet_prep/",
   "alternatives_if_you_prefer_not_to_touch_gitignore": [
     "Copy the same small files into github_shared/exports/ and commit that folder (duplicate data, simple).",
     "Attach a zip to a GitHub Release (good for 10–100s MiB).",

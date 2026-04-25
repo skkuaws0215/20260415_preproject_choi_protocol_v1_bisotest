@@ -1,0 +1,4 @@
+track,cancer,eval_mode,ensemble_method,row_count,spearman,pearson,rmse,mae,r2,ndcg_at_30,available_modality_count_mean,used_modalities,missing_modalities,strict_leakage_violation
+2A_numeric,luad,holdout,simple_mean,25086,0.3324155872704955,0.3154083794696842,2.594930649841342,1.9549433000445886,0.09921658368202102,0.0376603703525797,3.0,DL|Graph|ML,,False
+2B_numeric_smiles,luad,holdout,simple_mean,25086,0.8175095812162503,0.8708185725457486,1.3824467462212766,1.038728823697615,0.744338288455771,0.8440198143549372,2.0,DL|ML,Graph,False
+2C_numeric_smiles_context,luad,holdout,simple_mean,25086,0.8251360732968256,0.8782288906231868,1.337167177111309,1.0058754464177142,0.7608115051738485,0.863064181103956,2.0,DL|ML,Graph,False

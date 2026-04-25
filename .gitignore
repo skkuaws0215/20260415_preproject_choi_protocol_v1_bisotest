@@ -36,6 +36,23 @@
 !**/results/20260424_multicancer_stad_protocol_rerun/step6_external_validation_results/**
 !**/results/20260424_multicancer_stad_protocol_rerun/step7_admet_prep/
 !**/results/20260424_multicancer_stad_protocol_rerun/step7_admet_prep/**
+# Step4/5: small text/summary only (~2 MiB for these paths; not full step4_models / huge predictions)
+!**/results/20260424_multicancer_stad_protocol_rerun/step4_0_input_qc/
+!**/results/20260424_multicancer_stad_protocol_rerun/step4_0_input_qc/**
+!**/results/20260424_multicancer_stad_protocol_rerun/step4_feature_tracks/
+!**/results/20260424_multicancer_stad_protocol_rerun/step4_feature_tracks/**
+**/results/20260424_multicancer_stad_protocol_rerun/step4_feature_tracks/**/*.parquet
+# integrated_step4_audit: un-ignore parent dirs, then re-ignore all under fs_a, then un-ignore only this folder
+!**/results/20260424_multicancer_stad_protocol_rerun/step4_models/
+!**/results/20260424_multicancer_stad_protocol_rerun/step4_models/fs_a_stad_baseline/
+**/results/20260424_multicancer_stad_protocol_rerun/step4_models/fs_a_stad_baseline/**
+!**/results/20260424_multicancer_stad_protocol_rerun/step4_models/fs_a_stad_baseline/integrated_step4_audit/
+!**/results/20260424_multicancer_stad_protocol_rerun/step4_models/fs_a_stad_baseline/integrated_step4_audit/**
+!**/results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/
+!**/results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/**
+**/results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/results/step5_ensemble_predictions.csv
+**/results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/results/step5_ensemble_predictions.parquet
+**/results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/__pycache__/**
 **/logs/
 
 # FE/FS 중간 산출물

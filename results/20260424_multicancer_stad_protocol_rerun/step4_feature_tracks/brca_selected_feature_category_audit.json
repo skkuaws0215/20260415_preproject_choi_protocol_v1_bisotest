@@ -1,0 +1,44 @@
+{
+  "cancer": "brca",
+  "selected_feature_count": 3047,
+  "category_counts": {
+    "expression": 3046,
+    "smiles_derived": 1
+  },
+  "category_ratio": {
+    "expression": 0.9996718083360683,
+    "smiles_derived": 0.0003281916639317361
+  },
+  "top_30_examples": [
+    "sample__crispr__AAAS",
+    "sample__crispr__AAK1",
+    "sample__crispr__AARD",
+    "sample__crispr__AARS2",
+    "sample__crispr__AASDH",
+    "sample__crispr__AASDHPPT",
+    "sample__crispr__AATF",
+    "sample__crispr__AATK",
+    "sample__crispr__ABCB7",
+    "sample__crispr__ABCD1",
+    "sample__crispr__ABHD11",
+    "sample__crispr__ABHD15",
+    "sample__crispr__ABHD17A",
+    "sample__crispr__ABHD2",
+    "sample__crispr__ABRAXAS1",
+    "sample__crispr__ACACA",
+    "sample__crispr__ACAD9",
+    "sample__crispr__ACADL",
+    "sample__crispr__ACAP2",
+    "sample__crispr__ACAP3",
+    "sample__crispr__ACD",
+    "sample__crispr__ACHE",
+    "sample__crispr__ACIN1",
+    "sample__crispr__ACKR4",
+    "sample__crispr__ACLY",
+    "sample__crispr__ACO2",
+    "sample__crispr__ACOT4",
+    "sample__crispr__ACOXL",
+    "sample__crispr__ACR",
+    "sample__crispr__ACSF2"
+  ]
+}

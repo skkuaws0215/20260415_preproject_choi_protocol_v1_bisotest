@@ -1,0 +1,87 @@
+{
+  "step5_readiness": "ready_with_caveat",
+  "mandatory_note": "Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.",
+  "coverage": [
+    {
+      "modality": "ML",
+      "expected": 360,
+      "completed": 320,
+      "missing": 40,
+      "status": "near-full",
+      "note": "missing: ElasticNet 2B/2C optional baseline 40"
+    },
+    {
+      "modality": "DL",
+      "expected": 420,
+      "completed": 420,
+      "missing": 0,
+      "status": "full",
+      "note": "complete 420/420"
+    },
+    {
+      "modality": "Graph",
+      "expected": 120,
+      "completed": 95,
+      "missing": 25,
+      "status": "partial-full",
+      "note": "missing: LUAD 25 due to local computation bottleneck"
+    }
+  ],
+  "missing_classification": {
+    "ml_optional_missing_count": 40,
+    "graph_partial_missing_count": 25
+  },
+  "leakage_violation_count": 0,
+  "overfit_warning_count": 217,
+  "overfit_severe_count": 106,
+  "schema_compatibility": {
+    "ML": {
+      "count": 320,
+      "core_mean_present_ratio": 1.0,
+      "overfit_present_ratio": 1.0,
+      "ranking_mean_present_ratio": 1.0,
+      "split_leakage_present_ratio": 1.0,
+      "label_drift_present_ratio": 1.0,
+      "imputation_summary_present_ratio": 0.0
+    },
+    "DL": {
+      "count": 420,
+      "core_mean_present_ratio": 1.0,
+      "overfit_present_ratio": 1.0,
+      "ranking_mean_present_ratio": 1.0,
+      "split_leakage_present_ratio": 1.0,
+      "label_drift_present_ratio": 1.0,
+      "imputation_summary_present_ratio": 1.0
+    },
+    "Graph": {
+      "count": 95,
+      "core_mean_present_ratio": 1.0,
+      "overfit_present_ratio": 1.0,
+      "ranking_mean_present_ratio": 1.0,
+      "split_leakage_present_ratio": 1.0,
+      "label_drift_present_ratio": 1.0,
+      "imputation_summary_present_ratio": 1.0
+    }
+  },
+  "config_profiles_seen": [
+    "dl_7model_full",
+    "existing_result",
+    "graph_2model_full",
+    "light_resume"
+  ],
+  "profile_expected_availability": {
+    "existing_result": true,
+    "light_resume": true,
+    "dl_full": false,
+    "graph_full": false,
+    "graph_nan_repair": false
+  },
+  "imputation_policy": "model_input_only (nan/inf -> 0.0) where applied by runner config",
+  "selection_policy": "No fixed model slot. Use all-model robust ranking.",
+  "step5_policy": "Proceed based on integrated audit results only.",
+  "reasons": [
+    "ML near-full (320/360) with optional ElasticNet 2B/2C missing",
+    "DL full (420/420)",
+    "Graph partial-full (95/120) LUAD 25 missing"
+  ]
+}

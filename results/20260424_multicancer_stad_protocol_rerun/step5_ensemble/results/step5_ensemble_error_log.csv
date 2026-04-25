@@ -1,0 +1,21 @@
+failure_stage,error_type,error_message,traceback,retry_performed,status,message
+step5_ensemble_execution_script,ValueError,You are trying to merge on object and int64 columns for key 'canonical_drug_id'. If you wish to proceed you should use pd.concat,"Traceback (most recent call last):
+  File ""/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260415_preproject_choi_protocol_v1_bisotest/results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/run_step5_ensemble.py"", line 520, in main
+    rc = run_step5_once(root=root, step5_dir=step5_dir, dry_run=args.dry_run)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Users/skku_aws2_14/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest/20260415_preproject_choi_protocol_v1_bisotest-1/20260415_preproject_choi_protocol_v1_bisotest/results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/run_step5_ensemble.py"", line 176, in run_step5_once
+    merged = merged.merge(dfm, on=[""sample_id"", ""canonical_drug_id""], how=""outer"", suffixes=("""", ""_dup""))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py"", line 10859, in merge
+    return merge(
+           ^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/reshape/merge.py"", line 170, in merge
+    op = _MergeOperation(
+         ^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/reshape/merge.py"", line 807, in __init__
+    self._maybe_coerce_merge_keys()
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/reshape/merge.py"", line 1509, in _maybe_coerce_merge_keys
+    raise ValueError(msg)
+ValueError: You are trying to merge on object and int64 columns for key 'canonical_drug_id'. If you wish to proceed you should use pd.concat
+",False,,
+,,,,,no_error_log_generated,Step5 ensemble completed without combo-level errors.

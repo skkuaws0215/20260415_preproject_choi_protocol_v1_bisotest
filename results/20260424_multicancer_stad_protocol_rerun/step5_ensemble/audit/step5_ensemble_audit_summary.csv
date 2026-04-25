@@ -1,0 +1,11 @@
+section,key,value
+status,step5_readiness,ready_with_caveat
+input_status,ML,320/360 near-full
+input_status,DL,420/420 full complete
+input_status,Graph,95/120 partial-full
+policy,strict_leakage_violation_step4,0
+result,ensemble_methods,"simple_mean,rank_mean,robust_weighted"
+result,prediction_rows,1505658
+result,metrics_rows,180
+result,error_rows,0
+caveat,mandatory,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.

@@ -1,0 +1,118 @@
+{
+  "step5_design_only": true,
+  "ensemble_execution_performed": false,
+  "coverage": {
+    "ML": {
+      "expected": 360,
+      "completed": 320,
+      "missing": 40,
+      "status": "near-full"
+    },
+    "DL": {
+      "expected": 420,
+      "completed": 420,
+      "missing": 0,
+      "status": "full"
+    },
+    "Graph": {
+      "expected": 120,
+      "completed": 95,
+      "missing": 25,
+      "status": "partial-full"
+    }
+  },
+  "readiness_from_step4": "ready_with_caveat",
+  "mandatory_note": "Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.",
+  "candidate_policy": {
+    "fixed_model_slot": false,
+    "all_model_robust_ranking": true,
+    "primary_metrics": [
+      "groupcv Spearman",
+      "scaffoldcv Spearman",
+      "unseen_drug Spearman"
+    ],
+    "secondary_metrics": [
+      "RMSE",
+      "MAE",
+      "NDCG@30"
+    ],
+    "penalty": [
+      "spearman_gap > 0.3 warning",
+      "spearman_gap > 0.5 severe",
+      "fold_std > 0.05 warning",
+      "fold_std > 0.1 severe"
+    ],
+    "exclusion": [
+      "leakage violation",
+      "missing essential predictions"
+    ]
+  },
+  "selected_candidates": [
+    {
+      "modality": "DL",
+      "model": "ResidualMLP",
+      "candidate_tier": "primary",
+      "adjusted_score": 0.5232131095571009
+    },
+    {
+      "modality": "DL",
+      "model": "FTTransformer",
+      "candidate_tier": "secondary",
+      "adjusted_score": 0.513500555481008
+    },
+    {
+      "modality": "Graph",
+      "model": "GraphSAGE",
+      "candidate_tier": "primary",
+      "adjusted_score": 0.4239427574069187
+    },
+    {
+      "modality": "Graph",
+      "model": "GAT",
+      "candidate_tier": "secondary",
+      "adjusted_score": 0.34851143280466196
+    },
+    {
+      "modality": "ML",
+      "model": "XGBoost",
+      "candidate_tier": "primary",
+      "adjusted_score": 0.5530381943191341
+    },
+    {
+      "modality": "ML",
+      "model": "CatBoost",
+      "candidate_tier": "secondary",
+      "adjusted_score": 0.5504326070074642
+    }
+  ],
+  "preflight": {
+    "checked_combos": 335,
+    "essential_prediction_ready_count": 335,
+    "essential_prediction_not_ready_count": 0,
+    "join_key_ok_count": 335,
+    "target_column_ok_count": 335,
+    "prediction_column_ok_count": 335,
+    "prediction_format_breakdown": {
+      "csv": 215,
+      "parquet": 120
+    },
+    "blocked_issues": []
+  },
+  "graph_luad_partial": {
+    "enabled_missing_aware_policy": true,
+    "luad_missing_rows": 25,
+    "graph_partial_detected": true
+  },
+  "output_path_collision": {
+    "has_collision": false,
+    "existing_files": [
+      "step5_ensemble_design.md",
+      "step5_candidate_selection_policy.md",
+      "step5_candidate_preflight_summary.csv",
+      "step5_candidate_preflight_summary.json",
+      "step5_modality_candidate_table.csv",
+      "step5_missing_aware_policy.md"
+    ],
+    "policy_note": "Dedicated step5_ensemble output path with explicit managed filenames; overwrite is intentional and non-conflicting."
+  }
+}

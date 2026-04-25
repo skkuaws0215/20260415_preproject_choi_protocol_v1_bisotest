@@ -1,0 +1,27 @@
+{
+  "step5_readiness": "ready_with_caveat",
+  "input_status": {
+    "ML": "320/360 near-full (ElasticNet 2B/2C optional baseline 40 missing)",
+    "DL": "420/420 full complete",
+    "Graph": "95/120 partial-full"
+  },
+  "mandatory_caveat": "Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.",
+  "ensemble_methods": [
+    "simple_mean",
+    "rank_mean",
+    "robust_weighted"
+  ],
+  "counts": {
+    "prediction_rows": 1505658,
+    "metrics_rows": 180,
+    "used_modality_rows": 60,
+    "missing_modality_rows": 60,
+    "error_rows": 0
+  },
+  "checks": {
+    "component_prediction_join_success": true,
+    "strict_leakage_violation": 0,
+    "graph_missing_aware_applied": true,
+    "component_weight_sum_checked": true
+  }
+}

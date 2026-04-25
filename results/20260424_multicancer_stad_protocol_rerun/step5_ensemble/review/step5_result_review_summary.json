@@ -1,0 +1,78 @@
+{
+  "execution_status": "completed",
+  "step5_readiness": "ready_with_caveat",
+  "coverage": {
+    "ML": "near-full (320/360)",
+    "DL": "full (420/420)",
+    "Graph": "partial-full (95/120)"
+  },
+  "mandatory_caveats": [
+    "ML은 near-full 상태이며 ElasticNet 2B/2C optional baseline 40개가 누락됨.",
+    "DL은 420/420 full complete 상태임.",
+    "Graph는 95/120 partial-full 상태임.",
+    "Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.",
+    "Graph missing 조합에서는 missing-aware ensemble을 적용함.",
+    "Step5 join key는 sample_id/canonical_drug_id를 string으로 정규화하여 수행함."
+  ],
+  "strict_leakage_violation_count": 0,
+  "ensemble_recommendation": {
+    "primary": "rank_mean",
+    "secondary": "robust_weighted",
+    "backup": "simple_mean"
+  },
+  "stability_table": [
+    {
+      "ensemble_method": "rank_mean",
+      "mean_spearman": 0.46870001049529547,
+      "mean_rmse": 3.5744862316052037,
+      "mean_mae": 3.123347319766857,
+      "mean_ndcg30": 0.3317005142825592,
+      "std_spearman": 0.21076162402361176,
+      "primary_spearman": 0.3724180133254572,
+      "primary_rmse": 3.591551314294719,
+      "primary_mae": 3.1322922184982382,
+      "primary_ndcg30": 0.1690619560061798,
+      "count": 60,
+      "stability_score": 0.85
+    },
+    {
+      "ensemble_method": "robust_weighted",
+      "mean_spearman": 0.465021749713241,
+      "mean_rmse": 2.25038586527434,
+      "mean_mae": 1.7068912228404456,
+      "mean_ndcg30": 0.3292810720285881,
+      "std_spearman": 0.21255856150017366,
+      "primary_spearman": 0.36576947131342813,
+      "primary_rmse": 2.5259221316417384,
+      "primary_mae": 1.9192831067551088,
+      "primary_ndcg30": 0.16231315609591868,
+      "count": 60,
+      "stability_score": 0.3485361648301153
+    },
+    {
+      "ensemble_method": "simple_mean",
+      "mean_spearman": 0.46274743430282955,
+      "mean_rmse": 2.257983808481902,
+      "mean_mae": 1.7121010414893496,
+      "mean_ndcg30": 0.3312498616371678,
+      "std_spearman": 0.21287690392999822,
+      "primary_spearman": 0.36215913111675613,
+      "primary_rmse": 2.5396132356971446,
+      "primary_mae": 1.9293899654043338,
+      "primary_ndcg30": 0.16471238093224824,
+      "count": 60,
+      "stability_score": 0.21939939098716435
+    }
+  ],
+  "available_modality_distribution": [
+    {
+      "available_modality_count": 2,
+      "row_count": 850918
+    },
+    {
+      "available_modality_count": 3,
+      "row_count": 654740
+    }
+  ],
+  "luad_graph_missing_rows": 10
+}

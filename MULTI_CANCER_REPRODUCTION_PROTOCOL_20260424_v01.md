@@ -1,8 +1,8 @@
 # STAD 기반 다중 암종 재현 프로토콜
 ## BRCA / LUAD / CRC / STAD
 
-- 문서 날짜: `2026-04-24`
-- 프로토콜 버전: `v2026.04.25-mc-r6`
+- 문서 날짜: `2026-04-24` (최종 갱신: `2026-04-26`)
+- 프로토콜 버전: `v2026.04.26-mc-r7`
 - 적용 범위: `BRCA`, `LUAD`, `CRC`, `STAD` 통합 재실행
 
 ---
@@ -74,11 +74,22 @@
     - DL: `420/420` (`full`)
     - Graph: `95/120` (`partial-full`)
   - strict leakage violation: `0`
-  - Step5 readiness: `ready_with_caveat`
+  - Step5 readiness: `ready_with_caveat` → **Step5 ensemble 실행·감사·리뷰 완료(2026-04-26)**
+- Step 5 앙상블 실행(동일 `ready_with_caveat` 전제) 완료:
+  - 산출 루트: `results/20260424_multicancer_stad_protocol_rerun/step5_ensemble/`
+  - 앙상블 메서드: `simple_mean`, `rank_mean`, `robust_weighted`
+  - Step6 handoff 권고(리뷰 합의): 1차 `rank_mean`, 2차 `robust_weighted`, 백업 `simple_mean`
+  - 예측 행: `1,505,658` / 메트릭 조합 행: `180` / combo 오류: `0`
+  - 조인 키: `sample_id`, `canonical_drug_id`를 **문자열로 정규화** 후 병합(dtype 불일치 방지)
+  - missing-aware: 누락 모달리티 조합 `10`개, LUAD graph-missing 플래그 조합 `10`개
+  - 감사: `step5_ensemble/audit/` ( `step5_ensemble_report.md` 등)
+  - 해석 보고: `step5_ensemble/review/step5_result_review_report.md`
+  - 전역 mean 비교(감사 요약): `rank_mean` Spearman·NDCG@30이 상대적으로 우수, `robust_weighted`는 RMSE/MAE가 상대적으로 낮음(해석 시 평가축에 따라 1·2차 선택)
+  - Step6 진입: 외부검증/ADMET 전 **내부 앙상블 후보**로서 결과 전달; LUAD Graph partial caveat는 Step6에도 유지
 
 게이트 판단:
-- Step 4 실행/감사는 완료되었고, 다음 단계는 **Step5 진입 정책 결정**이다.
-- 현재 권고 실행선: `ML + DL + Graph partial` 기준 통합 해석.
+- Step 4·5 실행·감사는 완료되었고, 다음 단계는 **Step6 외부검증 정책·범위 확정(선행: Step5 shortlist·caveat 리뷰)**이다.
+- 현재 권고 실행선: `ML(near-full) + DL(full) + Graph(partial)` + Step5 `rank_mean` 중심 통합 해석.
 - 금지 범위 유지: 무승인 추가학습, 임의 재시도, 외부검증/ADMET 선실행 금지.
 
 ---
@@ -325,13 +336,15 @@ Step 3 -> Step 3.5 즉시 진입 가능 체크리스트(5항):
   - 동일한 일반화/안정성 기준으로 선정
   - LUAD는 Graph partial 상태를 강제 caveat로 표시
 
-보고할 블렌드 방식:
-- simple average,
-- metric-weighted blend,
-- grid-search optimized blend.
+실행·보고에 포함할 앙상블 메서드(본 러닝라인):
+- `simple_mean`, `rank_mean`, `robust_weighted` (grid-search blend는 본 러닝라인 Step5 범위 밖)
+- Step6 1차 전달 후보(리뷰 기준): `rank_mean` (안정성·일반화 축과의 정합)
 
 필수 산출물:
-- one ensemble summary JSON under the disease run result tag.
+- ensemble predictions/metrics, component weights, modality coverage, audit CSV/JSON, `step5_ensemble_run_config.json` (조인 키 정규화 기록 포함)
+
+데이터 병합 규칙(Step5):
+- 예측 병합 전 `sample_id`·`canonical_drug_id`는 반드시 동일한 문자열 규칙(`str` + strip)으로 정규화한다.
 
 추천 선택 정책:
 - choose the protocol-approved blend variant,
@@ -409,7 +422,7 @@ Step 3 -> Step 3.5 즉시 진입 가능 체크리스트(5항):
 - Step 4 feature track 입력(`2B`, `2C`) built parquet 및 build report exists.
 - Step 4-0 input QC 및 Step 4 preflight 결과 exists.
 - Step 4 ML/DL/Graph result JSON and OOF artifacts exist.
-- Step 5 fixed ensemble summary exists.
+- Step 5 ensemble summary exists (다중 메서드 + audit; 1차 `rank_mean` 권고).
 - Step 6 comprehensive external validation exists.
 - Step 7 final candidate report exists.
 - Step 8 KG JSON/HTML and Neo4j summary exist.

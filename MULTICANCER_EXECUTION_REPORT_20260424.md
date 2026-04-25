@@ -1,8 +1,9 @@
 # 멀티암종 실행 보고서 (최신 통합본)
 
-- 작성일시: `2026-04-26`
+- 작성일시: `2026-04-26` (Step5 반영)
 - 기준 실행 루트: `results/20260424_multicancer_stad_protocol_rerun/`
-- 기준 문서: `results/20260424_multicancer_stad_protocol_rerun/step4_models/fs_a_stad_baseline/integrated_step4_audit/integrated_step4_audit_report.md`
+- 기준 문서(Step4): `results/20260424_multicancer_stad_protocol_rerun/step4_models/fs_a_stad_baseline/integrated_step4_audit/integrated_step4_audit_report.md`
+- Step5 감사·리뷰: `step5_ensemble/audit/step5_ensemble_report.md`, `step5_ensemble/review/step5_result_review_report.md` (로컬 `results/` 트리)
 
 ## 1) Step 4 정식 범위
 
@@ -57,14 +58,28 @@
 - 최종 ML/DL/Graph 후보는 all-model robust ranking 기반 선정
 - Step5 진행은 통합 audit 결과를 근거로만 수행
 
-## 5) Step5 준비도
+## 5) Step5 준비도(실행 전)
 
 - integrated readiness: `ready_with_caveat`
 - strict leakage violation: `0`
 - caveat: LUAD Graph 25 미완료를 해석/비교에서 명시해야 함
 
-## 6) 권고
+## 6) Step5 실행·감사 요약(2026-04-26)
 
-- 단기: `ML + DL + Graph partial(95/120)` 기준으로 audit/통합 비교 진행
-- 중기: LUAD Graph missing 25는 AWS Batch 또는 경량 GAT 설정으로 별도 repair
-- 장기: Graph full은 로컬 단일 환경 대신 서버/AWS 병렬 실행으로 이전
+- 상태: `ready_with_caveat` 전제하에 Step5 **실행·감사·결과 리뷰 완료**
+- 앙상블 메서드: `simple_mean`, `rank_mean`, `robust_weighted`
+- Step6 1·2·3차 권고(리뷰): 1차 `rank_mean` → 2차 `robust_weighted` → 3차 `simple_mean`
+- 스케일: prediction rows `1,505,658` / metrics rows `180` / combo-level error `0`
+- 누수: Step4/Step5 audit 기준 strict violation `0`
+- 조인: `sample_id`·`canonical_drug_id` **string 정규화** 후 병합( dtype merge 오류 제거)
+- missing-aware: 누락 모달리티 조합 `10`개, LUAD graph-missing 플래그 `10`개
+- 강제 문구(유지): `Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.`
+- 전역 mean 메트릭(감사 `step5_ensemble_report.md`): `rank_mean`은 Spearman `0.4687`, NDCG@30 `0.3317` 등; `robust_weighted`는 RMSE `2.2504`, MAE `1.7069`로 오차 기준에서 유리 — **평가 목적에 맞게 1·2차 선택**
+- 산출 위치(로컬): `.../step5_ensemble/results/`, `.../step5_ensemble/audit/`, `.../step5_ensemble/review/`
+
+## 7) 권고(업데이트)
+
+- Step6 전: `step5_external_validation_candidate_shortlist.csv`와 LUAD Graph caveat를 우선 리뷰
+- 단기: Step5 `rank_mean` 중심으로 내부 후보·비교; Graph partial(95/120) 전제 유지
+- 중기: LUAD Graph 누락 25는 AWS Batch 또는 경량 GAT·별도 repair(무승인 재시도는 프로토콜 금지 범주와 별도 승인 필요)
+- 장기: Graph full은 로컬 단일 환경 대신 서버/AWS 병렬 실행 권고

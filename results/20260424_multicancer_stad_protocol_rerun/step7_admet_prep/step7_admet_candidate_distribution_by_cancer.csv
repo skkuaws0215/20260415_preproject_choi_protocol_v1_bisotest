@@ -1,0 +1,5 @@
+cancer,n_primary_top10,n_focused_top5,n_full_backup
+brca,10,5,15
+crc,10,5,15
+luad,10,5,15
+stad,10,5,15

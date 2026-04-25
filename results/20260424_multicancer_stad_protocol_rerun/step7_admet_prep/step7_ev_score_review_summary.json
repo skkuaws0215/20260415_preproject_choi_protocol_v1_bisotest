@@ -1,0 +1,40 @@
+{
+  "generated_utc": "2026-04-25T17:34:53.105435+00:00",
+  "source_step6": "results/20260424_multicancer_stad_protocol_rerun/step6_external_validation_results",
+  "inputs_read": [
+    "step6_ev_evidence_by_candidate.csv",
+    "step6_ev_evidence_by_cancer.csv",
+    "step6_ev_target_moa_recovery.csv",
+    "step6_ev_source_availability.csv",
+    "step6_ev_unavailable_sources.csv",
+    "step6_ev_evidence_report.md",
+    "step6_ev_execution_log.md"
+  ],
+  "n_candidates": 60,
+  "n_admet_primary_top10": 40,
+  "n_admet_focused_top5": 20,
+  "n_admet_full60": 60,
+  "ev_composite_stats": {
+    "min": -1.0,
+    "max": 9.0,
+    "mean": 2.15,
+    "std": 3.394037643489495
+  },
+  "per_cancer_mean_composite": {
+    "brca": 2.6,
+    "crc": 2.4,
+    "luad": 0.9333333333333332,
+    "stad": 2.6666666666666665
+  },
+  "target_moa_partial_rate": 0.2833333333333333,
+  "external_drug_response_all_zero": true,
+  "luad_graph_caveat": "all 15 rows have caveat_penalty in Step6-1; keep flag in Step7",
+  "admet_execution": "not_run",
+  "unavailable_source_note": [
+    {
+      "source": "local_GDSC_IC50",
+      "status": "unavailable",
+      "reason": "no_ic50_in_catalog_parquet; GDSC not joined in this step"
+    }
+  ]
+}

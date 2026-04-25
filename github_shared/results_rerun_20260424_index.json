@@ -1,0 +1,23 @@
+{
+  "generated_utc": "2026-04-25T17:37:09.774797+00:00",
+  "results_tree": "results/20260424_multicancer_stad_protocol_rerun",
+  "tier_criteria": {
+    "recommended_small_git": "Text (csv/json/md/txt/yaml) and size <= 262144 bytes (good default for many-file commits)",
+    "text_under_1mb": "Text and <=1MiB: OK selectively or squash to summary CSV",
+    "text_over_1mb": "Prefer split, gzip in Release, or LFS",
+    "binary_or_large": "Parquet/npy/figures — do not put in normal git"
+  },
+  "total_files": 5384,
+  "total_size_human": "2328.9 MiB",
+  "recommended_small_git": {
+    "count": 4490,
+    "size_human": "126.99 MiB"
+  },
+  "text_under_1mb_add_on": {
+    "count": 317,
+    "size_human": "195.41 MiB"
+  },
+  "note": "Full results ~2.3GB: use GitHub Release zip, LFS, S3, or Zenodo for sharing.",
+  "full_file_list": "results_rerun_20260424_index.csv (per-path size and github_tier; omit from git if you prefer — regenerate locally).",
+  "paths_recommended_small_git_count": 4490
+}

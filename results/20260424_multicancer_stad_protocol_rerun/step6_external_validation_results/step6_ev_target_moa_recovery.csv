@@ -1,0 +1,61 @@
+cancer,canonical_drug_id,drug_name,target_recovered,moa_recovered,chembl_id,recovery_status,source_provenance
+brca,2438,ascorbate (vitamin C),,,,none,no_match
+brca,1375,Temozolomide,CHEMBL2311221,DNA inhibitor (target CHEMBL2311221),CHEMBL810,partial,ChEMBL public API
+brca,1615,CZC24832,,,,none,no_match
+brca,1089,Oxaliplatin,CHEMBL2311221,DNA inhibitor (target CHEMBL2311221),CHEMBL414804,partial,ChEMBL public API
+brca,1847,BEN,,,CHEMBL420,none,no_match
+brca,1507,Ruxolitinib,,,CHEMBL1789941,none,no_match
+brca,1806,Oxaliplatin,CHEMBL2311221,DNA inhibitor (target CHEMBL2311221),CHEMBL414804,partial,ChEMBL public API
+brca,1073,5-Fluorouracil,,,,none,no_match
+brca,2360,THR-101,,,,none,no_match
+brca,1043,JNK Inhibitor VIII,,,,none,no_match
+brca,1373,Dabrafenib,,,CHEMBL2028663,none,no_match
+brca,1629,ML323,,,,none,no_match
+brca,1237,EPZ004777,,,,none,no_match
+brca,2157,A-366,,,,none,no_match
+brca,1067,CCT007093,,,,none,no_match
+crc,2498,alpha-lipoic acid,,,,none,no_match
+crc,1931,MIRA-1,,,,none,no_match
+crc,1512,Cyclophosphamide,CHEMBL2311221,DNA inhibitor (target CHEMBL2311221),CHEMBL1200796,partial,ChEMBL public API
+crc,2359,GSK2830371,,,,none,no_match
+crc,1813,Fludarabine,"CHEMBL2095215, CHEMBL2363042",Ribonucleoside-diphosphate reductase RR1 inhibitor (target CHEMBL2095215); DNA polymerase (alpha/delta/epsilon) inhibitor (target CHEMBL2363042),CHEMBL1096882,partial,ChEMBL public API
+crc,1020,Lenalidomide,CHEMBL3833061,CRL4(CRBN) E3 ubiquitin ligase inhibitor (target CHEMBL3833061),CHEMBL848,partial,ChEMBL public API
+crc,2043,BIBR-1532,,,,none,no_match
+crc,1131,PRIMA-1MET,,,,none,no_match
+crc,1854,MN-64,,,,none,no_match
+crc,1557,LCL161,,,,none,no_match
+crc,1625,RVX-208,,,,none,no_match
+crc,1580,GSK2801,,,,none,no_match
+crc,1177,Niraparib,"CHEMBL5366, CHEMBL3105",Poly [ADP-ribose] polymerase 2 inhibitor (target CHEMBL5366); Poly [ADP-ribose] polymerase-1 inhibitor (target CHEMBL3105),CHEMBL1094636,partial,ChEMBL public API
+crc,1268,XAV939,,,,none,no_match
+crc,1621,PCI-34051,,,,none,no_match
+luad,2499,N-acetyl cysteine,,,,none,no_match
+luad,1814,Nelarabine,CHEMBL2311221,DNA inhibitor (target CHEMBL2311221),CHEMBL1201112,partial,ChEMBL public API
+luad,1018,Veliparib,CHEMBL3390820,"PARP 1, 2 and 3 inhibitor (target CHEMBL3390820)",CHEMBL506871,partial,ChEMBL public API
+luad,1563,EPZ5676,,,,none,no_match
+luad,1620,PFI3,,,,none,no_match
+luad,1578,Leflunomide,CHEMBL1966,Dihydroorotate dehydrogenase inhibitor (target CHEMBL1966),CHEMBL960,partial,ChEMBL public API
+luad,2057,Remodelin,,,,none,no_match
+luad,1048,Mirin,,,CHEMBL570841,none,no_match
+luad,2107,LJI308,,,,none,no_match
+luad,1925,GDC0810,,,,none,no_match
+luad,1030,KU-55933,,,CHEMBL222102,none,no_match
+luad,1033,Vismodegib,CHEMBL5971,Smoothened homolog inhibitor (target CHEMBL5971),CHEMBL473417,partial,ChEMBL public API
+luad,1933,P22077,,,,none,no_match
+luad,1927,GSK2578215A,,,,none,no_match
+luad,1913,AGI-5198,,,,none,no_match
+stad,2439,glutathione,,,CHEMBL145213,none,no_match
+stad,1815,Dacarbazine,CHEMBL2311221,DNA inhibitor (target CHEMBL2311221),CHEMBL476,partial,ChEMBL public API
+stad,1025,SB216763,,,,none,no_match
+stad,1852,LY2109761,,,,none,no_match
+stad,1042,Doramapimod,CHEMBL260,MAP kinase p38 alpha inhibitor (target CHEMBL260),CHEMBL103667,partial,ChEMBL public API
+stad,1029,Motesanib,"CHEMBL1936, CHEMBL2041, CHEMBL2095227, CHEMBL2095189",Stem cell growth factor receptor inhibitor (target CHEMBL1936); Tyrosine-protein kinase receptor RET inhibitor (target CHEMBL2041); Vascular endothelial growth factor receptor inhibitor (target CHEMBL2095227); Platelet-derived growth factor receptor inhibitor (target CHEMBL2095189),CHEMBL572881,partial,ChEMBL public API
+stad,1009,Tretinoin,CHEMBL2363071,Retinoid receptor agonist (target CHEMBL2363071),CHEMBL705,partial,ChEMBL public API
+stad,1449,AZD1208,,,,none,no_match
+stad,1598,LGK974,,,,none,no_match
+stad,1175,Rucaparib,CHEMBL3390820,"PARP 1, 2 and 3 inhibitor (target CHEMBL3390820)",CHEMBL1173055,partial,ChEMBL public API
+stad,1720,AZD5991,,,,none,no_match
+stad,1047,Nutlin-3a (-),,,,none,no_match
+stad,1816,Fulvestrant,"CHEMBL206, CHEMBL206",Estrogen receptor alpha antagonist (target CHEMBL206); Estrogen receptor degrader (target CHEMBL206),CHEMBL1358,partial,ChEMBL public API
+stad,1622,Wnt-C59,,,,none,no_match
+stad,2011,ICL-SIRT078,,,,none,no_match

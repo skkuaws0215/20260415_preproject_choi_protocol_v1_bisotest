@@ -1,0 +1,24 @@
+check_id,item,value,pass
+1,total_candidates,60,yes
+2,n_per_cancer_15,"{'brca': 15, 'crc': 15, 'luad': 15, 'stad': 15}",yes
+3,ev_composite_0_10 describe,"count    60.000000
+mean      2.150000
+std       3.394038
+min      -1.000000
+25%       0.000000
+50%       0.000000
+75%       5.250000
+max       9.000000",yes
+4,top1_ev_by_cancer (composite),"brca: Temozolomide (id=1375, comp=8.0, internal_rank=2) | crc: Fludarabine (id=1813, comp=9.0, internal_rank=5) | luad: Veliparib (id=1018, comp=6.0, internal_rank=3) | stad: Dacarbazine (id=1815, comp=8.0, internal_rank=2)",yes
+5,score_clinical_trial distribution,"score_clinical_trial
+0    40
+1     8
+2    12",yes
+6,score_approved_ind distribution,"score_approved_ind
+0    40
+1     3
+2    17",yes
+7,target_moa_recovery rate partial,17/60 = 0.283,yes
+8,external_response_all_zero,all_zero=True,yes
+9,LUAD_caveat_penalty_rows,n=15 (expected 15 for luad),yes
+10,admet_n_proposal,"primary40_top10, focused20_top5, full60_backup",yes

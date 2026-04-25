@@ -28,7 +28,14 @@
 20260421_new_pre_project_biso_STAD/data/
 
 # 질병별 학습 결과 (results/, logs/)
-**/results/
+# Note: "results/**" (not "results/") so we can re-include whitelisted subfolders.
+**/results/**
+!**/results/20260424_multicancer_stad_protocol_rerun/
+**/results/20260424_multicancer_stad_protocol_rerun/**
+!**/results/20260424_multicancer_stad_protocol_rerun/step6_external_validation_results/
+!**/results/20260424_multicancer_stad_protocol_rerun/step6_external_validation_results/**
+!**/results/20260424_multicancer_stad_protocol_rerun/step7_admet_prep/
+!**/results/20260424_multicancer_stad_protocol_rerun/step7_admet_prep/**
 **/logs/
 
 # FE/FS 중간 산출물

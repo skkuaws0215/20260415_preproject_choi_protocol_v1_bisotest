@@ -1,0 +1,4 @@
+source,used,notes
+ClinicalTrials.gov v2 (public API),yes,http_calls=162 failures=0
+ChEMBL API (public),yes,"molecule, mechanism, drug_indication"
+local GDSC/PRISM IC50,no,no_ic50_in_catalog_parquet; GDSC not joined in this step

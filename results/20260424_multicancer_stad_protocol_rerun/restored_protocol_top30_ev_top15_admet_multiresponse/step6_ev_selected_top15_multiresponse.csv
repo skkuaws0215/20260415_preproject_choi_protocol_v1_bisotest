@@ -1,0 +1,61 @@
+cancer,canonical_drug_id,drug_name,ev_composite_0_10,drug_level_score,rank,graph_luad_caveat,mandatory_caveat
+brca,1375,Temozolomide,8.0,6.8882608780791,1,False,
+brca,1089,Oxaliplatin,8.0,5.577161344702366,2,False,
+brca,1806,Oxaliplatin,8.0,5.268382980399586,3,False,
+brca,1507,Ruxolitinib,7.0,5.317588207291356,4,False,
+brca,1847,BEN,6.0,5.52592408768257,5,False,
+brca,1373,Dabrafenib,4.0,5.0027772280372265,6,False,
+brca,1073,5-Fluorouracil,3.0,5.1948658760674435,7,False,
+brca,1177,Niraparib,2.0,4.826517678969729,8,False,
+brca,1736,Selumetinib,2.0,,9,False,
+brca,2438,ascorbate (vitamin C),1.0,9.954418318753856,10,False,
+brca,1629,ML323,1.0,4.9590344846802275,11,False,
+brca,1925,GDC0810,1.0,,12,False,
+brca,1615,CZC24832,0.0,5.6441292000986065,13,False,
+brca,2360,THR-101,0.0,5.044570273561187,14,False,
+brca,1237,EPZ004777,0.0,4.924561685558328,15,False,
+crc,1813,Fludarabine,9.0,5.480882863926768,1,False,
+crc,1512,Cyclophosphamide,8.0,5.55198872178371,2,False,
+crc,1020,Lenalidomide,8.0,5.467791195521722,3,False,
+crc,2043,BIBR-1532,3.0,5.168885126330407,4,False,
+crc,1005,Cisplatin,2.0,,5,False,
+crc,2498,alpha-lipoic acid,1.0,7.610182965002853,6,False,
+crc,1931,MIRA-1,1.0,5.899061043513992,7,False,
+crc,1557,LCL161,1.0,5.0842868829282795,8,False,
+crc,1017,Olaparib,1.0,,9,False,
+crc,1799,Ibrutinib,1.0,,10,False,
+crc,1802,Zoledronate,1.0,,11,False,
+crc,1598,LGK974,1.0,,12,False,
+crc,1175,Rucaparib,1.0,,13,False,
+crc,2359,GSK2830371,0.0,5.4857290409703925,14,False,
+crc,1131,PRIMA-1MET,0.0,5.151820475210946,15,False,
+luad,1578,Leflunomide,7.0,4.9488010106463864,1,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1018,Veliparib,6.0,5.0746322509515345,2,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1814,Nelarabine,5.0,5.79743081228656,3,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,2499,N-acetyl cysteine,4.0,9.3845582065434,4,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1067,CCT007093,2.0,4.871366765292896,5,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1043,JNK Inhibitor VIII,1.0,4.947578159964503,6,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1853,OF-1,1.0,,7,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1816,Fulvestrant,1.0,,8,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1200,Fulvestrant,1.0,,9,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1620,PFI3,0.0,5.047005034905466,10,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,2057,Remodelin,0.0,4.861437406146044,11,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,2107,LJI308,0.0,4.666767687659287,12,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1199,Tamoxifen,0.0,,13,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,1510,Linsitinib,0.0,,14,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+luad,2113,VTP-B,0.0,,15,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.
+stad,1815,Dacarbazine,8.0,5.829550626987805,1,False,
+stad,1029,Motesanib,8.0,5.13106261246587,2,False,
+stad,1009,Tretinoin,6.0,5.0625006341471845,3,False,
+stad,1042,Doramapimod,5.0,5.165814099877274,4,False,
+stad,2439,glutathione,3.0,8.328967972449352,5,False,
+stad,1030,KU-55933,3.0,4.835127199052677,6,False,
+stad,1033,Vismodegib,1.0,4.986135134075577,7,False,
+stad,1549,Sapitinib,1.0,,8,False,
+stad,1013,Nilotinib,1.0,,9,False,
+stad,1918,AZD8186,1.0,,10,False,
+stad,1025,SB216763,0.0,5.223351596342501,11,False,
+stad,1852,LY2109761,0.0,5.179750528835374,12,False,
+stad,1449,AZD1208,0.0,5.032190646645942,13,False,
+stad,1580,GSK2801,0.0,4.943369499543638,14,False,
+stad,1854,MN-64,0.0,4.727536598214694,15,False,

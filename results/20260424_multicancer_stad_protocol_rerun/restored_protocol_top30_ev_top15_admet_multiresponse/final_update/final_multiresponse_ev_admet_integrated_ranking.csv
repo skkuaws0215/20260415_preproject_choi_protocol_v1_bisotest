@@ -1,0 +1,61 @@
+cancer,canonical_drug_id,ev_composite_0_10,graph_luad_caveat,mandatory_caveat,drug_name,score_clinical_trial,score_approved_ind,admet_tier,final_priority_score,final_recommendation_tier,admet_status_22assay,rank,drug_level_score,final_rank_by_cancer,final_rank_overall,drug_repurposing_category,n_clinicaltrials_studies_total,fda_approved_cancer_based,rank_step5,recommendation_stage_code,recommendation_stage_label_ko,recommendation_stage_rule
+brca,1375,8.0,False,,Temozolomide,2,2,D,0.6200000000000001,Priority 2,WARNING,2,6.8882608780791,1,1,current_use_same_cancer,21,True,5.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1089,8.0,False,,Oxaliplatin,2,2,C,0.7250000000000001,Priority 1,WARNING,4,5.577161344702366,2,2,current_use_same_cancer,49,True,7.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1806,8.0,False,,Oxaliplatin,2,2,C,0.7250000000000001,Priority 1,WARNING,7,5.268382980399586,3,3,current_use_same_cancer,49,True,12.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1507,7.0,False,,Ruxolitinib,2,2,C,0.66,Priority 2,PASS,6,5.317588207291356,4,4,current_use_same_cancer,12,True,11.0,stage1_transition_standard,1단계 약물,ADMET_PASS_and_(FDA_APPROVED_CANCER_BASED_or_CT>=3)
+brca,1847,6.0,False,,BEN,0,2,A,0.8049999999999999,Priority 1,WARNING,5,5.52592408768257,5,5,indication_expansion_candidate,0,False,9.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1373,4.0,False,,Dabrafenib,1,2,D,0.36,Backup,WARNING,10,5.0027772280372265,6,6,current_use_same_cancer,2,True,21.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1073,3.0,False,,5-Fluorouracil,2,0,C,0.4,Backup,WARNING,8,5.1948658760674435,7,7,indication_expansion_candidate,190,False,14.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1177,2.0,False,,Niraparib,2,0,D,0.23,Backup,WARNING,15,4.826517678969729,8,8,indication_expansion_candidate,29,False,29.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1736,2.0,False,,Selumetinib,2,0,D,0.23,Backup,PASS,25,,9,9,indication_expansion_candidate,12,False,,stage1_transition_standard,1단계 약물,ADMET_PASS_and_(FDA_APPROVED_CANCER_BASED_or_CT>=3)
+brca,2438,1.0,False,,ascorbate (vitamin C),1,0,B,0.375,Backup,WARNING,1,9.954418318753856,10,10,indication_expansion_candidate,1,False,1.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1629,1.0,False,,ML323,0,0,D,0.165,Hold,WARNING,11,4.9590344846802275,11,11,needs_manual_review,0,False,22.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1925,1.0,False,,GDC0810,1,0,C,0.27,Backup,WARNING,24,,12,12,indication_expansion_candidate,4,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,1615,0.0,False,,CZC24832,0,0,WARNING,0.0,3단계 약물,WARNING,3,5.6441292000986065,13,13,needs_manual_review,0,False,6.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+brca,2360,0.0,False,,THR-101,0,0,C,0.205,Backup,PASS,9,5.044570273561187,14,14,needs_manual_review,0,False,16.0,stage2_evidence_review,2단계 약물,ADMET_PASS_and_not_stage1
+brca,1237,0.0,False,,EPZ004777,0,0,WARNING,0.0,3단계 약물,WARNING,12,4.924561685558328,15,15,needs_manual_review,0,False,23.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1813,9.0,False,,Fludarabine,2,2,D,0.685,Priority 1,WARNING,5,5.480882863926768,1,1,current_use_same_cancer,53,True,11.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1512,8.0,False,,Cyclophosphamide,2,2,C,0.7250000000000001,Priority 1,WARNING,3,5.55198872178371,2,2,current_use_same_cancer,85,True,9.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1020,8.0,False,,Lenalidomide,2,2,C,0.7250000000000001,Priority 1,PASS,6,5.467791195521722,3,3,current_use_same_cancer,7,True,12.0,stage1_transition_standard,1단계 약물,ADMET_PASS_and_(FDA_APPROVED_CANCER_BASED_or_CT>=3)
+crc,2043,3.0,False,,BIBR-1532,0,0,C,0.4,Backup,WARNING,7,5.168885126330407,4,4,needs_manual_review,0,False,23.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1005,2.0,False,,Cisplatin,2,0,C,0.3349999999999999,Backup,WARNING,26,,5,5,indication_expansion_candidate,80,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,2498,1.0,False,,alpha-lipoic acid,1,0,A,0.48,Watchlist,WARNING,1,7.610182965002853,6,6,indication_expansion_candidate,2,False,4.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1931,1.0,False,,MIRA-1,0,0,C,0.27,Backup,WARNING,2,5.899061043513992,7,7,needs_manual_review,0,False,6.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1557,1.0,False,,LCL161,1,0,D,0.165,Hold,WARNING,9,5.0842868829282795,8,8,indication_expansion_candidate,1,False,27.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1017,1.0,False,,Olaparib,1,0,C,0.27,Backup,PASS,13,,9,9,indication_expansion_candidate,8,False,,stage1_transition_standard,1단계 약물,ADMET_PASS_and_(FDA_APPROVED_CANCER_BASED_or_CT>=3)
+crc,1799,1.0,False,,Ibrutinib,1,0,D,0.165,Hold,WARNING,16,,10,10,indication_expansion_candidate,2,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1802,1.0,False,,Zoledronate,1,0,WARNING,1.0,3단계 약물,WARNING,18,,11,11,needs_manual_review,1,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1598,1.0,False,,LGK974,1,0,WARNING,1.0,3단계 약물,WARNING,19,,12,12,needs_manual_review,2,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1175,1.0,False,,Rucaparib,1,0,D,0.165,Hold,PASS,23,,13,13,indication_expansion_candidate,3,False,,stage1_transition_standard,1단계 약물,ADMET_PASS_and_(FDA_APPROVED_CANCER_BASED_or_CT>=3)
+crc,2359,0.0,False,,GSK2830371,0,0,WARNING,0.0,3단계 약물,WARNING,4,5.4857290409703925,14,14,needs_manual_review,0,False,10.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+crc,1131,0.0,False,,PRIMA-1MET,0,0,WARNING,0.0,3단계 약물,WARNING,8,5.151820475210946,15,15,needs_manual_review,0,False,24.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1578,7.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,Leflunomide,1,2,C,0.66,Priority 2,WARNING,6,4.9488010106463864,1,1,current_use_same_cancer,1,True,15.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1018,6.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,Veliparib,2,1,B,0.7,Priority 1,WARNING,3,5.0746322509515345,2,2,indication_expansion_candidate,15,False,9.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1814,5.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,Nelarabine,0,2,D,0.425,Backup,WARNING,2,5.79743081228656,3,3,indication_expansion_candidate,0,False,6.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,2499,4.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,N-acetyl cysteine,2,0,B,0.57,Watchlist,WARNING,1,9.3845582065434,4,4,indication_expansion_candidate,6,False,2.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1067,2.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,CCT007093,0,0,D,0.23,Backup,WARNING,8,4.871366765292896,5,5,needs_manual_review,0,False,18.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1043,1.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,JNK Inhibitor VIII,0,0,C,0.27,Backup,PASS,7,4.947578159964503,6,6,needs_manual_review,0,False,16.0,stage2_evidence_review,2단계 약물,ADMET_PASS_and_not_stage1
+luad,1853,1.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,OF-1,2,0,C,0.27,Backup,WARNING,15,,7,7,indication_expansion_candidate,120,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1816,1.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,Fulvestrant,2,0,B,0.375,Backup,WARNING,22,,8,8,indication_expansion_candidate,24,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1200,1.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,Fulvestrant,2,0,B,0.375,Backup,WARNING,25,,9,9,indication_expansion_candidate,24,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1620,0.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,PFI3,0,0,C,0.205,Backup,WARNING,5,5.047005034905466,10,10,needs_manual_review,0,False,11.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,2057,0.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,Remodelin,0,0,WARNING,0.0,3단계 약물,WARNING,9,4.861437406146044,11,11,needs_manual_review,0,False,19.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,2107,0.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,LJI308,0,0,WARNING,0.0,3단계 약물,WARNING,11,4.666767687659287,12,12,needs_manual_review,0,False,28.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1199,0.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,Tamoxifen,1,0,WARNING,0.0,3단계 약물,WARNING,14,,13,13,needs_manual_review,4,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+luad,1510,0.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,Linsitinib,1,0,D,0.1,Hold,PASS,16,,14,14,indication_expansion_candidate,6,False,,stage1_transition_standard,1단계 약물,ADMET_PASS_and_(FDA_APPROVED_CANCER_BASED_or_CT>=3)
+luad,2113,0.0,True,Graph component is partial for LUAD due to missing LUAD 2-model graph evaluations.,VTP-B,1,0,WARNING,0.0,3단계 약물,WARNING,29,,15,15,needs_manual_review,1,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1815,8.0,False,,Dacarbazine,2,2,D,0.6200000000000001,Priority 2,WARNING,2,5.829550626987805,1,1,current_use_same_cancer,9,True,6.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1029,8.0,False,,Motesanib,0,1,D,0.6200000000000001,Priority 2,PASS,6,5.13106261246587,2,2,indication_expansion_candidate,0,False,11.0,stage2_evidence_review,2단계 약물,ADMET_PASS_and_not_stage1
+stad,1009,6.0,False,,Tretinoin,0,2,B,0.7,Priority 1,WARNING,7,5.0625006341471845,3,3,indication_expansion_candidate,0,False,12.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1042,5.0,False,,Doramapimod,0,1,D,0.425,Backup,WARNING,5,5.165814099877274,4,4,indication_expansion_candidate,0,False,10.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,2439,3.0,False,,glutathione,0,0,C,0.4,Backup,WARNING,1,8.328967972449352,5,5,needs_manual_review,0,False,2.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1030,3.0,False,,KU-55933,0,0,C,0.4,Backup,WARNING,11,4.835127199052677,6,6,needs_manual_review,0,False,21.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1033,1.0,False,,Vismodegib,1,0,C,0.27,Backup,WARNING,9,4.986135134075577,7,7,indication_expansion_candidate,3,False,16.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1549,1.0,False,,Sapitinib,1,0,D,0.165,Hold,WARNING,19,,8,8,indication_expansion_candidate,1,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1013,1.0,False,,Nilotinib,1,0,D,0.165,Hold,WARNING,23,,9,9,indication_expansion_candidate,1,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1918,1.0,False,,AZD8186,1,0,D,0.165,Hold,WARNING,25,,10,10,indication_expansion_candidate,1,False,,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1025,0.0,False,,SB216763,0,0,C,0.205,Backup,WARNING,3,5.223351596342501,11,11,needs_manual_review,0,False,8.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1852,0.0,False,,LY2109761,0,0,D,0.1,Hold,WARNING,4,5.179750528835374,12,12,needs_manual_review,0,False,9.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1449,0.0,False,,AZD1208,0,0,C,0.205,Backup,WARNING,8,5.032190646645942,13,13,needs_manual_review,0,False,14.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1580,0.0,False,,GSK2801,0,0,WARNING,0.0,3단계 약물,WARNING,10,4.943369499543638,14,14,needs_manual_review,0,False,18.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING
+stad,1854,0.0,False,,MN-64,0,0,WARNING,0.0,3단계 약물,WARNING,12,4.727536598214694,15,15,needs_manual_review,0,False,24.0,stage3_exploratory_supportive,3단계 약물,ADMET_WARNING

@@ -1,0 +1,11 @@
+cancer,recommendation_stage_code,recommendation_stage_label_ko,count
+brca,stage1_transition_standard,1단계 약물,2
+brca,stage2_evidence_review,2단계 약물,1
+brca,stage3_exploratory_supportive,3단계 약물,12
+crc,stage1_transition_standard,1단계 약물,3
+crc,stage3_exploratory_supportive,3단계 약물,12
+luad,stage1_transition_standard,1단계 약물,1
+luad,stage2_evidence_review,2단계 약물,1
+luad,stage3_exploratory_supportive,3단계 약물,13
+stad,stage2_evidence_review,2단계 약물,1
+stad,stage3_exploratory_supportive,3단계 약물,14

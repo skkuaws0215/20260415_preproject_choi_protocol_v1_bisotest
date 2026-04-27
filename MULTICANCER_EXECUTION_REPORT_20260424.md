@@ -83,3 +83,57 @@
 - 단기: Step5 `rank_mean` 중심으로 내부 후보·비교; Graph partial(95/120) 전제 유지
 - 중기: LUAD Graph 누락 25는 AWS Batch 또는 경량 GAT·별도 repair(무승인 재시도는 프로토콜 금지 범주와 별도 승인 필요)
 - 장기: Graph full은 로컬 단일 환경 대신 서버/AWS 병렬 실행 권고
+
+## 8) Step7 최신 업데이트 (2026-04-27)
+
+- 적용 규칙(프로토콜 정렬):
+  - `1단계`: `ADMET PASS` AND (`fda_approved_cancer_based == True` OR `n_clinicaltrials_studies_total >= 3`)
+  - `2단계`: `ADMET PASS` AND 1단계 미해당
+  - `3단계`: `ADMET WARNING`
+- Top30 선반정 후 Top15 재선정 반영:
+  - BRCA: `2` 교체
+  - CRC: `4` 교체
+  - LUAD: `4` 교체
+  - STAD: `2` 교체
+- 핵심 산출물:
+  - `results/20260424_multicancer_stad_protocol_rerun/restored_protocol_top30_ev_top15_admet_multiresponse/final_update/final_multiresponse_ev_admet_integrated_ranking.csv`
+  - `results/20260424_multicancer_stad_protocol_rerun/restored_protocol_top30_ev_top15_admet_multiresponse/final_update/final_multiresponse_three_tier_classification_top15.csv`
+  - `results/20260424_multicancer_stad_protocol_rerun/restored_protocol_top30_ev_top15_admet_multiresponse/final_update/step7_top30_to_top15_cutoff_reason_table.csv`
+- 대시보드 반영:
+  - `results/20260424_multicancer_stad_protocol_rerun/dashboard_extracts/multi_cancer_real_dashboard.html`
+  - `약물추천` 탭에 `3단계 표` + `Top30→Top15 컷오프 근거표` 표시
+
+## 9) Step8(Neo4j) 핸드오프 패키지 + 작업 제약
+
+### 9-1. 다른 팀원에게 전달할 최소 패키지
+
+- `Top15 최종 입력`:
+  - `.../final_update/final_multiresponse_ev_admet_integrated_ranking.csv`
+- `3단계 라벨 입력`:
+  - `.../final_update/final_multiresponse_three_tier_classification_top15.csv`
+- `컷오프 추적 입력`:
+  - `.../final_update/step7_top30_to_top15_cutoff_reason_table.csv`
+- `암종 승인 매핑 입력`:
+  - `.../final_update/cancer_approved_drug_mapping_table.csv`
+- `Step8 스크립트 진입점`:
+  - `run_step8_export_kg_json_multicancer.py`
+  - `run_step8_generate_kg_viewer_multicancer.py`
+  - `run_step8_neo4j_summary_multicancer.py`
+
+### 9-2. 전달 시 필수 메모(운영)
+
+- Step8 팀은 **반드시 Step7 최신 Top15(프로토콜 재선정본)**을 기준으로 KG를 생성해야 한다.
+- `fda_approved_cancer_based`, `admet_status_22assay`, `recommendation_stage_code`, `selected_top15`, `cutoff_reason` 컬럼은 Neo4j property로 유지 권고.
+- 이전 Top15 백업은 비교용이며, 운영 기준 입력은 최신 파일 1종으로 고정한다.
+
+### 9-3. Git 작업 제약(중요)
+
+- 본 저장소에서 **multi 범위 외 변경은 커밋/푸시 금지**.
+- 특히 아래 경로는 이번 작업 범위에서 제외:
+  - `20260416_new_pre_project_biso_Lung/`
+  - `20260420_new_pre_project_biso_Colon/`
+  - `20260421_new_pre_project_biso_STAD/`
+  - 기타 `multi` 실행 루트(`results/20260424_multicancer_stad_protocol_rerun/`) 외 실험성 파일
+- 병렬 에이전트 사용 시에도 동일 제약 적용:
+  - `multi 관련 파일만 stage`
+  - `non-multi 파일은 stage/commit/push 금지`

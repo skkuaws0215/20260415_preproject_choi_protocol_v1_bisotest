@@ -3,8 +3,8 @@
 Prepare STAD Step 4 Phase 2A inputs.
 
 Input files:
-- fe_qc/20260421_stad_fe_v1/features_slim.parquet
-- fe_qc/20260421_stad_fe_v1/features/labels.parquet
+- 20260427_Liver/base_data/20260421_liver/data/processed/slim_inputs/train_table.parquet
+- 20260427_Liver/base_data/20260421_liver/data/processed/model_inputs/drug_features.parquet
 
 Output files:
 - data/X_numeric.npy
@@ -46,8 +46,10 @@ def main() -> None:
     data_dir: Path = base_dir / "data" / args.run_id
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    features_slim_path: Path = base_dir / "fe_qc" / "20260421_stad_fe_v1" / "features_slim.parquet"
-    labels_path: Path = base_dir / "fe_qc" / "20260421_stad_fe_v1" / "features" / "labels.parquet"
+    workspace_root: Path = base_dir.parent.parent
+    liver_root: Path = workspace_root / "20260427_Liver" / "base_data" / "20260421_liver" / "data" / "processed"
+    features_slim_path: Path = liver_root / "slim_inputs" / "train_table.parquet"
+    labels_path: Path = features_slim_path
 
     log("=" * 90)
     log("Phase 2A input preparation (STAD)")
@@ -72,7 +74,10 @@ def main() -> None:
     log(f"features_slim shape: {df.shape}")
 
     numeric_cols: List[str] = df.select_dtypes(include=[np.number]).columns.tolist()
-    feature_cols: List[str] = [c for c in numeric_cols if c not in ["sample_id", "canonical_drug_id"]]
+    label_cols = {"label_regression", "label_binary", "label_main", "label_aux"}
+    feature_cols: List[str] = [
+        c for c in numeric_cols if c not in ["sample_id", "canonical_drug_id"] and c not in label_cols
+    ]
     non_numeric_cols: List[str] = [c for c in df.columns if c not in numeric_cols]
 
     log(f"Numeric feature cols: {len(feature_cols)}")
@@ -101,7 +106,7 @@ def main() -> None:
     np.save(y_path, y_train)
     log(f"Saved: {y_path} ({y_path.stat().st_size / 1024:.2f} KB)")
 
-    src_drug_features: Path = base_dir / "data" / "drug_features.parquet"
+    src_drug_features: Path = liver_root / "model_inputs" / "drug_features.parquet"
     dst_drug_features: Path = data_dir / "drug_features.parquet"
     if src_drug_features.exists():
         if not dst_drug_features.exists() or args.force:

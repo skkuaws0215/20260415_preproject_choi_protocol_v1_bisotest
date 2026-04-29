@@ -350,7 +350,16 @@ def main() -> None:
     results_dir = base_dir / "results" / args.result_tag / "graph"
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    features_slim_path = base_dir / "fe_qc" / "20260421_stad_fe_v1" / "features_slim.parquet"
+    features_slim_path = (
+        base_dir.parent.parent
+        / "20260427_Liver"
+        / "base_data"
+        / "20260421_liver"
+        / "data"
+        / "processed"
+        / "slim_inputs"
+        / "train_table.parquet"
+    )
     drug_features_path = data_dir / "drug_features.parquet"
     y_path = data_dir / "y_train.npy"
     for req in [features_slim_path, drug_features_path, y_path]:

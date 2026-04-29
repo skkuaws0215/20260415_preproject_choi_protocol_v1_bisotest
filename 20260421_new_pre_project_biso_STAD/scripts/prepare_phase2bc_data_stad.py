@@ -90,7 +90,9 @@ def main() -> None:
 
     base_dir: Path = Path(__file__).resolve().parents[1]
     data_dir: Path = base_dir / "data" / args.run_id
-    features_slim_path: Path = base_dir / "fe_qc" / "20260421_stad_fe_v1" / "features_slim.parquet"
+    workspace_root: Path = base_dir.parent.parent
+    liver_root: Path = workspace_root / "20260427_Liver" / "base_data" / "20260421_liver" / "data" / "processed"
+    features_slim_path: Path = liver_root / "slim_inputs" / "train_table.parquet"
     drug_features_path: Path = data_dir / "drug_features.parquet"
 
     x_numeric_path: Path = data_dir / "X_numeric.npy"
